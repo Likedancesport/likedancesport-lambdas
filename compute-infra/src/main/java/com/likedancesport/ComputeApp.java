@@ -1,0 +1,22 @@
+package com.likedancesport;
+
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.StackProps;
+
+public class ComputeApp {
+    public static void main(final String[] args) {
+        App app = new App();
+
+        new ComputeServerlessStack(app, "ComputeServerlessStack", StackProps.builder()
+                .env(Environment.builder()
+                        .account("066002146890")
+                        .region("eu-central-1")
+                        .build())
+
+                .build());
+
+        app.synth();
+    }
+}
+

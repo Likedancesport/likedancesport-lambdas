@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group 'com.likedancesport'
+version '1.0-SNAPSHOT'
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.postgresql:postgresql:42.5.3'
+    implementation "com.amazonaws.serverless:aws-serverless-java-container-springboot2:1.9.1"
+    implementation 'org.springframework:spring-context-indexer:5.3.25'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.5'
+    implementation 'com.likedancesport:like-dancesport-commons:1.0'
+    implementation 'com.likedancesport:like-dancelearn-objects:1.0'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+
+test {
+    useJUnitPlatform()
+}
