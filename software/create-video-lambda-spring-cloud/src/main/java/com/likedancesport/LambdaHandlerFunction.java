@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.likedancesport.model.CreateVideoRequest;
 import com.likedancesport.model.CreateVideoResult;
 import com.likedancesport.service.IVideoService;
-import dev.ponomarenko.util.serialization.json.JsonUtils;
+import com.likedancesport.utils.json.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

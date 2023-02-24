@@ -17,6 +17,7 @@ import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.s3.assets.AssetOptions;
 import software.constructs.Construct;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,9 +40,11 @@ public class ComputeServerlessStack extends Stack {
         List<String> buildingCommands = Arrays.asList(
                 "/bin/sh",
                 "-c",
-                "ls -la" +
-                "&& mvn clean install " +
+                "ls -la && echo BUILDING" +
+                        "&& mvn clean install && echo COPY" +
                         "&& cp /asset-input/target/create-video-lambda-spring-cloud-1.0-SNAPSHOT-aws.jar /asset-output/");
+
+        System.out.println(System.getProperty("user.home"));
 
         BundlingOptions createVideoLambdaBundlingOptions = BundlingOptions.builder()
                 .command(buildingCommands)
@@ -49,11 +52,11 @@ public class ComputeServerlessStack extends Stack {
                 .user("root")
                 .outputType(BundlingOutput.ARCHIVED)
                 .volumes(singletonList(DockerVolume.builder()
-                        .hostPath(System.getProperty("user.home") + "/.m2/") .containerPath("/root/.m2/")
+                        .hostPath(System.getProperty("user.home") + "/.m2/").containerPath("/root/.m2/")
                         .build()))
                 .build();
 
-        final Code createVideoLambdaCode = Code.fromAsset("../../software/create-video-lambda-spring-cloud", AssetOptions.builder()
+        final Code createVideoLambdaCode = Code.fromAsset("../software/create-video-lambda-spring-cloud", AssetOptions.builder()
                 .bundling(createVideoLambdaBundlingOptions)
                 .build());
 
