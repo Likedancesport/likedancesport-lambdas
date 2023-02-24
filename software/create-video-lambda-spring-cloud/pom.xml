@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.likedancesport</groupId>
             <artifactId>like-dancesport-commons</artifactId>
-            <version>1.2</version>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
