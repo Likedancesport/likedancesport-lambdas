@@ -8,9 +8,6 @@
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
             <outputDirectory>java/lib</outputDirectory>
-<!--            <excludes>-->
-<!--                <exclude>com.likedancesport:*:*:</exclude>-->
-<!--            </excludes>-->
         </dependencySet>
     </dependencySets>
 </assembly>
