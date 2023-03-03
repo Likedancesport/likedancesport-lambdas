@@ -1,6 +1,6 @@
 package com.likedancesport.config;
 
-import com.likedancesport.parameter.annotation.InjectSsmParameter;
+import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;

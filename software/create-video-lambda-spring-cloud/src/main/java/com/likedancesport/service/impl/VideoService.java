@@ -4,10 +4,10 @@ import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.likedancesport.dao.IVideoDao;
 import com.likedancesport.model.CreateVideoRequest;
 import com.likedancesport.model.CreateVideoResult;
-import com.likedancesport.model.impl.Video;
-import com.likedancesport.parameter.annotation.InjectSsmParameter;
+import com.likedancesport.common.model.impl.Video;
+import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
 import com.likedancesport.service.IVideoService;
-import com.likedancesport.service.storage.S3StorageService;
+import com.likedancesport.common.service.storage.S3StorageService;
 import com.likedancesport.utils.CreationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

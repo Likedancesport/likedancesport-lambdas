@@ -2,7 +2,7 @@ package com.likedancesport.config;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.likedancesport.service.storage.S3StorageService;
+import com.likedancesport.common.service.storage.S3StorageService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

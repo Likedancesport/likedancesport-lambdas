@@ -2,7 +2,7 @@ package com.likedancesport.utils;
 
 import com.likedancesport.model.CreateVideoRequest;
 import com.likedancesport.model.CreateVideoResult;
-import com.likedancesport.model.impl.Video;
+import com.likedancesport.common.model.impl.Video;
 
 import java.net.URL;
 

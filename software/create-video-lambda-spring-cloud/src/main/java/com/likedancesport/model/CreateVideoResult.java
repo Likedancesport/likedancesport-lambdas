@@ -1,6 +1,6 @@
 package com.likedancesport.model;
 
-import com.likedancesport.model.impl.Tag;
+import com.likedancesport.common.model.impl.Tag;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.net.URL;
 import java.util.Set;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)

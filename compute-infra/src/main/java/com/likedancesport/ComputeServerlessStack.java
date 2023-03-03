@@ -15,6 +15,8 @@ import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.Version;
+import software.amazon.awscdk.services.s3.Bucket;
+import software.amazon.awscdk.services.s3.IBucket;
 import software.amazon.awscdk.services.s3.assets.AssetOptions;
 import software.constructs.Construct;
 
@@ -36,10 +38,11 @@ public class ComputeServerlessStack extends Stack {
                 .build();
 
         final IRole role = Role.fromRoleArn(this, "lambda-role", "arn:aws:iam::066002146890:role/Rds-S3-SSM-Role");
-
-        final Code commonLambdaLayerCode = buildCode("mvn clean install",
+        IBucket deploymentBucket = Bucket.fromBucketArn(this, "testing-s3-mpu", "arn:aws:s3:::testing-s3-mpu");
+        final Code commonLambdaLayerCode = Code.fromBucket(deploymentBucket, "deployment-lambdas/likedancesport-create-video-layer-dependencies.jar");
+        /*buildCode("mvn clean install",
                 "common-lambda-layer-1.0-aws.jar",
-                "../software/common-lambda-layer");
+                "../software/common-lambda-layer");*/
 
         final LayerVersion commonLayer = LayerVersion.Builder.create(this, "common-lambda-layer")
                 .layerVersionName("common-lambda-layer")
@@ -49,9 +52,10 @@ public class ComputeServerlessStack extends Stack {
                 .description("Base layer with common dependencies")
                 .build();
 
-        final Code springCloudFunctionLayerCode = buildCode("mvn -PshadeProfile clean install",
+        /*final Code springCloudFunctionLayerCode =
+         *//* buildCode("mvn -PshadeProfile clean install",
                 "spring-cloud-function-layer-1.0-shaded.jar",
-                "../software/spring-cloud-function-layer");
+                "../software/spring-cloud-function-layer");*//*
 
         final LayerVersion springCloudFunctionLayer = LayerVersion.Builder.create(this, "spring-cloud-function-layer")
                 .layerVersionName("spring-cloud-function-layer")
@@ -59,20 +63,20 @@ public class ComputeServerlessStack extends Stack {
                 .code(springCloudFunctionLayerCode)
                 .compatibleRuntimes(List.of(Runtime.JAVA_11))
                 .description("layer with required dependencies")
-                .build();
+                .build();*/
 
-        final Code createVideoLambdaCode = buildCode("mvn clean package",
+        final Code createVideoLambdaCode = Code.fromBucket(deploymentBucket, "deployment-lambdas/create-video-lambda-spring-cloud-1.0.jar");/* buildCode("mvn clean package",
                 "create-video-lambda-spring-cloud-1.0-SNAPSHOT.jar",
-                "../software/create-video-lambda-spring-cloud");
+                "../software/create-video-lambda-spring-cloud");*/
 
         final Function createVideoLambda = Function.Builder.create(this, "create-video-lambda-cdk-layered")
                 .architecture(Architecture.X86_64)
                 .runtime(Runtime.JAVA_11)
                 .memorySize(1024)
                 .role(role)
-                .layers(List.of(commonLayer, springCloudFunctionLayer))
+                .layers(List.of(commonLayer))
                 .functionName("create-video-lambda-cdk-layered")
-                .handler("com.likedancesport.LambdaHandlerFunctionInvoker::handleRequest")
+                .handler("org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest")
                 .code(createVideoLambdaCode)
                 .build();
 

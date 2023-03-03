@@ -1,6 +1,6 @@
 package com.likedancesport.dao;
 
-import com.likedancesport.model.impl.Video;
+import com.likedancesport.common.model.impl.Video;
 import org.springframework.data.repository.Repository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
