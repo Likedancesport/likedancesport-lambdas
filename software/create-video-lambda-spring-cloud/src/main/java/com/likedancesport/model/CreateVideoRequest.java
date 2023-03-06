@@ -1,6 +1,6 @@
 package com.likedancesport.model;
 
-import com.likedancesport.model.impl.Tag;
+import com.likedancesport.common.model.impl.Tag;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

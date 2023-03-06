@@ -38,6 +38,7 @@ public class AppConfig {
 
     @Bean
     public DataSource dataSource(DbCredentialsBean dbCredentials) {
+        System.out.println("---- BUILD DATASOURCE ------");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(dbCredentials.getDbUrl());

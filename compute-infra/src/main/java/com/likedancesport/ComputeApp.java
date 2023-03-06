@@ -9,7 +9,7 @@ import java.nio.file.Path;
 public class ComputeApp {
     public static void main(final String[] args) {
         App app = new App();
-        new ComputeServerlessStack(app, "ComputeServerlessStack", StackProps.builder()
+        new ComputeServerlessStack(app, "ComputeServerlessStackWithLayers", StackProps.builder()
                 .env(Environment.builder()
                         .account("066002146890")
                         .region("eu-central-1")
