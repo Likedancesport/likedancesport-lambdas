@@ -1,6 +1,5 @@
 package com.likedancesport.common.model.impl;
 
-import com.likedancesport.common.model.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,7 +27,7 @@ import java.util.Set;
 @Entity(name = "tag")
 @Table(name = "tags")
 @NoArgsConstructor
-public class Tag implements Model {
+public class Tag implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false, updatable = false, name = "tag_id")
@@ -36,14 +36,9 @@ public class Tag implements Model {
     @Column(nullable = false, updatable = false, name = "title", unique = true)
     private String title;
 
-    @ManyToMany(mappedBy = "videoTags", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
     @ToString.Exclude
     private Set<Video> videos;
-
-    @Override
-    public Long getEntityId() {
-        return id;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -6,7 +6,7 @@
         <artifactId>likedancesport-parent</artifactId>
         <groupId>com.likedancesport</groupId>
         <version>1.0</version>
-        <relativePath>../../likedancesport-parent/pom.xml</relativePath>
+        <relativePath>../likedancesport-parent/pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
