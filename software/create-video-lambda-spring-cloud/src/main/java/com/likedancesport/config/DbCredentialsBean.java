@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 @Getter
 @Component
 @ToString
@@ -19,5 +21,10 @@ public class DbCredentialsBean {
 
     @Autowired
     public DbCredentialsBean() {
+    }
+
+    @PostConstruct
+    private void test() {
+        System.out.println("post contruct");
     }
 }
