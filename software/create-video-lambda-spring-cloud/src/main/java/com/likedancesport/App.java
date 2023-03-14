@@ -1,12 +1,17 @@
 package com.likedancesport;
 
+import com.amazonaws.serverless.exceptions.ContainerInitializationException;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.amazonaws.serverless.proxy.spring.SpringBootLambdaContainerHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class App {
-    public static void main(String[] args) {
+    public static SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> LAMBDA_CONTAINER_HANDLER;
+    public static void main(String[] args) throws ContainerInitializationException {
         System.out.println("------ STARTUP --------");
-        SpringApplication.run(App.class, args);
+        LAMBDA_CONTAINER_HANDLER = SpringBootLambdaContainerHandler.getAwsProxyHandler(App.class);
     }
 }

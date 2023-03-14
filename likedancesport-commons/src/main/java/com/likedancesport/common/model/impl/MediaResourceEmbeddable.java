@@ -22,7 +22,7 @@ public class MediaResourceEmbeddable<T extends MediaResource> {
     @JoinColumn(name = "parent_id")
     List<T> resources;
 
-    void addResource(T resource, IMediaResourceContainer<T> parent) {
+    public void addResource(T resource, IMediaResourceContainer<T> parent) {
         resource.setParent(parent);
         resources.add(resource);
     }

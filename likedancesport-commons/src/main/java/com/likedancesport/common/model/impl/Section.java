@@ -22,10 +22,5 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class Section extends MediaResource implements IMediaResourceContainer<Video> {
     @Embedded
-    private MediaResourceEmbeddable<Video> videoMediaResourceEmbeddable;
-
-    @Override
-    public MediaResourceEmbeddable<Video> getMediaResourceEmbeddable() {
-        return videoMediaResourceEmbeddable;
-    }
+    private MediaResourceEmbeddable<Video> mediaResourceEmbeddable;
 }

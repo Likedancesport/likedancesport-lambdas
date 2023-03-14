@@ -12,7 +12,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>likedancesport-commons</artifactId>
-    <version>1.0</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

@@ -11,7 +11,11 @@
         <relativePath>../spring-cloud-layer/pom.xml</relativePath>
     </parent>
 
-    <artifactId>create-video-lambda-spring-cloud</artifactId>
+    <artifactId>likedancesport-media-management-lambda</artifactId>
+    <description>
+        This lambda is used for managing media content
+
+    </description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

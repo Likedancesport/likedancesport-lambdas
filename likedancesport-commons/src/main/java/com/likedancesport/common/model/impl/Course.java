@@ -8,9 +8,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -22,10 +26,9 @@ import javax.persistence.Table;
 @Entity(name = "course")
 public class Course extends TaggableMediaResource implements IMediaResourceContainer<Section> {
     @Embedded
-    private MediaResourceEmbeddable<Section> sectionMediaResourceEmbeddable;
+    private MediaResourceEmbeddable<Section> mediaResourceEmbeddable;
 
-    @Override
-    public MediaResourceEmbeddable<Section> getMediaResourceEmbeddable() {
-        return sectionMediaResourceEmbeddable;
-    }
+    @Column
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "parent")
+    List<Section> resources;
 }
