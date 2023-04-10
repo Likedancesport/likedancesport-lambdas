@@ -18,12 +18,12 @@ public class ComputeApp {
                         .build())
                 .build());
 
-        new LikedancesportStaticStack(app, "LikedancesportStaticStack", StackProps.builder()
+   /*     new LikedancesportStaticStack(app, "LikedancesportStaticStack", StackProps.builder()
                 .env(Environment.builder()
                         .account("066002146890")
                         .region("eu-central-1")
                         .build())
-                .build());
+                .build());*/
 
         app.synth();
     }

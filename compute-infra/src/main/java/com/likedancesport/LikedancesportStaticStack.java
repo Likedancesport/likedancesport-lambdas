@@ -17,7 +17,7 @@ public class LikedancesportStaticStack extends Stack {
     public LikedancesportStaticStack(@Nullable Construct scope, @Nullable String id, @Nullable StackProps props) {
         super(scope, id, props);
 
-        final Transition mp4VideoTransition = Transition.builder()
+        /*final Transition mp4VideoTransition = Transition.builder()
                 .storageClass(StorageClass.GLACIER)
                 .transitionAfter(Duration.days(2))
                 .build();
@@ -57,7 +57,7 @@ public class LikedancesportStaticStack extends Stack {
                         .origin(new S3Origin(hlsBucket))
                         .build())
                 .build();
-
+*/
 
 /*        String pathToJobTemplateJson = System.getProperty("user.dir") + "/src/main/resources/JobTemplateSettings.json";
         System.out.println(pathToJobTemplateJson);
