@@ -1,5 +1,8 @@
 package com.likedancesport.common.model.impl;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,8 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,8 +28,8 @@ import java.util.Set;
 @Setter
 @ToString
 @Builder
-@Entity(name = "tag")
-@Table(name = "tags")
+@Entity(name = "Tag")
+@Table(name = "tag")
 @NoArgsConstructor
 public class Tag implements Serializable {
     @Id
@@ -36,14 +40,30 @@ public class Tag implements Serializable {
     @Column(nullable = false, updatable = false, name = "title", unique = true)
     private String title;
 
-    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+    @Cascade({
+            CascadeType.SAVE_UPDATE,
+            CascadeType.MERGE,
+    })
+    @ManyToMany(mappedBy = "tags")
     @ToString.Exclude
-    private Set<Video> videos;
+    @JsonBackReference
+    private Set<TaggableMediaResource> taggedResourses;
+
+    public void removeResource(TaggableMediaResource taggableMediaResource) {
+        taggedResourses.remove(taggableMediaResource);
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        if (o.getClass() != this.getClass()) {
+            return false;
+        }
         Tag tag = (Tag) o;
         return id != null && Objects.equals(id, tag.id);
     }

@@ -1,29 +1,21 @@
 package com.likedancesport;
 
-import software.amazon.awscdk.BundlingOptions;
-import software.amazon.awscdk.BundlingOutput;
-import software.amazon.awscdk.DockerVolume;
+import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.cloudfront.BehaviorOptions;
+import software.amazon.awscdk.services.cloudfront.Distribution;
+import software.amazon.awscdk.services.cloudfront.PriceClass;
+import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.iam.Role;
-import software.amazon.awscdk.services.lambda.Alias;
-import software.amazon.awscdk.services.lambda.Architecture;
-import software.amazon.awscdk.services.lambda.CfnFunction;
-import software.amazon.awscdk.services.lambda.Code;
-import software.amazon.awscdk.services.lambda.Function;
-import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.Version;
-import software.amazon.awscdk.services.s3.Bucket;
-import software.amazon.awscdk.services.s3.IBucket;
-import software.amazon.awscdk.services.s3.assets.AssetOptions;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.eventsources.S3EventSource;
+import software.amazon.awscdk.services.s3.*;
 import software.constructs.Construct;
 
-import java.util.Arrays;
 import java.util.List;
-
-import static java.util.Collections.singletonList;
 
 public class ComputeServerlessStack extends Stack {
     public ComputeServerlessStack(final Construct scope, final String id) {
@@ -33,16 +25,53 @@ public class ComputeServerlessStack extends Stack {
     public ComputeServerlessStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        CfnFunction.SnapStartProperty snapStartProperty = CfnFunction.SnapStartProperty.builder()
-                .applyOn("PublishedVersions")
+        final IRole role = Role.fromRoleArn(this, "lambda-role", "arn:aws:iam::066002146890:role/Rds-S3-SSM-Role");
+        IBucket deploymentBucket = Bucket.fromBucketArn(this, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
+
+
+        final Transition mp4VideoTransition = Transition.builder()
+                .storageClass(StorageClass.GLACIER)
+                .transitionAfter(Duration.days(2))
                 .build();
 
-        final IRole role = Role.fromRoleArn(this, "lambda-role", "arn:aws:iam::066002146890:role/Rds-S3-SSM-Role");
-        IBucket deploymentBucket = Bucket.fromBucketArn(this, "testing-s3-mpu", "arn:aws:s3:::testing-s3-mpu");
-        final Code commonLambdaLayerCode = Code.fromBucket(deploymentBucket, "deployment-lambdas/likedancesport-create-video-layer-dependencies.jar");
-        /*buildCode("mvn clean install",
-                "common-lambda-layer-1.0-aws.jar",
-                "../software/common-lambda-layer");*/
+        final LifecycleRule mp4VideoLifecycleRule = LifecycleRule.builder()
+                .id("mp4-video-lifecycle-rule")
+                .enabled(true)
+                .transitions(List.of(mp4VideoTransition))
+                .build();
+
+        final Bucket mp4Bucket = Bucket.Builder.create(this, "likedancesport-mp4-assets")
+                .bucketName("likedancesport-mp4-assets")
+                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
+                .accessControl(BucketAccessControl.BUCKET_OWNER_FULL_CONTROL)
+                .eventBridgeEnabled(true)
+                .lifecycleRules(List.of(mp4VideoLifecycleRule))
+                .encryption(BucketEncryption.KMS_MANAGED)
+                .build();
+
+
+        final Bucket thumbnailsBucket = Bucket.Builder.create(this, "likedancesport-thumbnails-bucket")
+                .bucketName("likedancesport-thumbnails-bucket")
+                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
+                .accessControl(BucketAccessControl.BUCKET_OWNER_FULL_CONTROL)
+                .build();
+
+
+        final Bucket hlsBucket = Bucket.Builder.create(this, "likedancesport-hls-bucket")
+                .bucketName("likedancesport-hls-bucket")
+                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
+                .accessControl(BucketAccessControl.AUTHENTICATED_READ)
+                .build();
+
+        Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
+                .priceClass(PriceClass.PRICE_CLASS_100)
+                .defaultBehavior(BehaviorOptions.builder()
+                        .origin(new S3Origin(hlsBucket))
+                        .build())
+                .build();
+
+
+        final Code commonLambdaLayerCode = Code.fromBucket(deploymentBucket, "likedancesport-layer-dependencies.jar");
 
         final LayerVersion commonLayer = LayerVersion.Builder.create(this, "common-lambda-layer")
                 .layerVersionName("common-lambda-layer")
@@ -52,37 +81,41 @@ public class ComputeServerlessStack extends Stack {
                 .description("Base layer with common dependencies")
                 .build();
 
-        /*final Code springCloudFunctionLayerCode =
-         *//* buildCode("mvn -PshadeProfile clean install",
-                "spring-cloud-function-layer-1.0-shaded.jar",
-                "../software/spring-cloud-function-layer");*//*
+        final Code mediaManagementLambdaCode = Code.fromBucket(deploymentBucket, "likedancesport-media-management-lambda-1.0.jar");
 
-        final LayerVersion springCloudFunctionLayer = LayerVersion.Builder.create(this, "spring-cloud-function-layer")
-                .layerVersionName("spring-cloud-function-layer")
-                .compatibleArchitectures(List.of(Architecture.X86_64, Architecture.ARM_64))
-                .code(springCloudFunctionLayerCode)
-                .compatibleRuntimes(List.of(Runtime.JAVA_11))
-                .description("layer with required dependencies")
-                .build();*/
-
-        final Code createVideoLambdaCode = Code.fromBucket(deploymentBucket, "deployment-lambdas/create-video-lambda-spring-cloud-1.0.jar");/* buildCode("mvn clean package",
-                "create-video-lambda-spring-cloud-1.0-SNAPSHOT.jar",
-                "../software/create-video-lambda-spring-cloud");*/
-
-        final Function createVideoLambda = Function.Builder.create(this, "create-video-lambda-cdk-layered")
+        final Function mediaManagementLambda = Function.Builder.create(this, "media-management-lambda")
                 .architecture(Architecture.X86_64)
                 .runtime(Runtime.JAVA_11)
-                .memorySize(1024)
+                .memorySize(2048)
                 .role(role)
                 .layers(List.of(commonLayer))
                 .functionName("create-video-lambda-cdk-layered")
-                .handler("org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest")
-                .code(createVideoLambdaCode)
+                .handler("com.likedancesport.LambdaHandler:handleRequest")
+                .code(mediaManagementLambdaCode)
                 .build();
 
-        ((CfnFunction) createVideoLambda.getNode().getDefaultChild()).setSnapStart(snapStartProperty);
+        final Code videoUploadHandlerCode = Code.fromBucket(deploymentBucket, "video-upload-handler-1.0.jar");
 
-        final Version version = createVideoLambda.getCurrentVersion();
+        IEventSource mp4s3UploadEventSource = S3EventSource.Builder.create(mp4Bucket)
+                .events(List.of(EventType.OBJECT_CREATED))
+                .build();
+
+        final Function videoUploadHandlerLambda = Function.Builder.create(this, "video-upload-handler")
+                .events(List.of(mp4s3UploadEventSource))
+                .architecture(Architecture.X86_64)
+                .runtime(Runtime.JAVA_11)
+                .memorySize(2048)
+                .role(role)
+                .layers(List.of(commonLayer))
+                .functionName("video-upload-handler")
+                .handler("org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest")
+                .code(videoUploadHandlerCode)
+                .build();
+
+        setSnapStart(mediaManagementLambda);
+        setSnapStart(videoUploadHandlerLambda);
+
+        final Version version = mediaManagementLambda.getCurrentVersion();
 
         Alias alias = Alias.Builder.create(this, "func-alias")
                 .aliasName("snap-alias")
@@ -91,28 +124,12 @@ public class ComputeServerlessStack extends Stack {
 
     }
 
-    private Code buildCode(String buildingCommand, String deploymentPackageFilename, String projectPath) {
-        System.out.println("BUNDLING " + deploymentPackageFilename);
-        List<String> buildingCommands = Arrays.asList(
-                "/bin/sh",
-                "-c",
-                "ls -la && echo BUILDING" +
-                        String.format("&& %s && echo COPY", buildingCommand) +
-                        String.format("&& cp /asset-input/target/%s /asset-output/", deploymentPackageFilename));
-
-        BundlingOptions bundlingOptions = BundlingOptions.builder()
-                .command(buildingCommands)
-                .image(Runtime.JAVA_11.getBundlingImage())
-                .user("root")
-                .outputType(BundlingOutput.ARCHIVED)
-                .volumes(singletonList(DockerVolume.builder()
-                        .hostPath(System.getProperty("user.home") + "/.m2/").containerPath("/root/.m2/")
-                        .build()))
+    private void setSnapStart(IFunction lambda) {
+        CfnFunction.SnapStartProperty snapStartProperty = CfnFunction.SnapStartProperty.builder()
+                .applyOn("PublishedVersions")
                 .build();
-
-        return Code.fromAsset(projectPath, AssetOptions.builder()
-                .bundling(bundlingOptions)
-                .build());
+        ((CfnFunction) lambda.getNode().getDefaultChild()).setSnapStart(snapStartProperty);
     }
+
 
 }
