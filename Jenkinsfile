@@ -5,6 +5,10 @@ pipeline {
         stage('Build') {
             steps {
                 echo '----- Building Lib -----'
+                dir('likedancesport-parent') {
+                    sh 'mvn dependency:resolve'
+                    sh 'mvn clean install'
+                }
                 dir('likedancesport-commons') {
                     sh 'mvn dependency:resolve'
                     sh 'mvn clean install'
