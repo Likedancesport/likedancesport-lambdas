@@ -9,10 +9,26 @@ import software.amazon.awscdk.services.cloudfront.PriceClass;
 import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.iam.Role;
+import software.amazon.awscdk.services.lambda.Alias;
+import software.amazon.awscdk.services.lambda.Architecture;
+import software.amazon.awscdk.services.lambda.CfnFunction;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.IEventSource;
+import software.amazon.awscdk.services.lambda.IFunction;
+import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.lambda.eventsources.S3EventSource;
-import software.amazon.awscdk.services.s3.*;
+import software.amazon.awscdk.services.s3.BlockPublicAccess;
+import software.amazon.awscdk.services.s3.Bucket;
+import software.amazon.awscdk.services.s3.BucketAccessControl;
+import software.amazon.awscdk.services.s3.BucketEncryption;
+import software.amazon.awscdk.services.s3.EventType;
+import software.amazon.awscdk.services.s3.IBucket;
+import software.amazon.awscdk.services.s3.LifecycleRule;
+import software.amazon.awscdk.services.s3.StorageClass;
+import software.amazon.awscdk.services.s3.Transition;
 import software.constructs.Construct;
 
 import java.util.List;
@@ -115,9 +131,14 @@ public class ComputeServerlessStack extends Stack {
         setSnapStart(mediaManagementLambda);
         setSnapStart(videoUploadHandlerLambda);
 
-        final Version mediaManagementLambdaCurrentVersion = mediaManagementLambda.getCurrentVersion();
 
-        final Version videoUploadHandlerLambdaCurrentVersion = videoUploadHandlerLambda.getCurrentVersion();
+        final Version mediaManagementLambdaCurrentVersion = Version.Builder.create(this, "media-management-v")
+                .lambda(mediaManagementLambda)
+                .build();/*mediaManagementLambda.getCurrentVersion();*/
+
+        final Version videoUploadHandlerLambdaCurrentVersion = Version.Builder.create(this, "video-upload-handler-v")
+                .lambda(videoUploadHandlerLambda)
+                .build();/*videoUploadHandlerLambda.getCurrentVersion();*/
 
         final Alias mediaManagementAlias = Alias.Builder.create(this, "media-management-alias")
                 .aliasName("snap-m-alias")
