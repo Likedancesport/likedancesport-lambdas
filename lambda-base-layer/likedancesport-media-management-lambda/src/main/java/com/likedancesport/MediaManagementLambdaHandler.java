@@ -6,8 +6,8 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-public class LambdaHandler implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
-    public LambdaHandler() throws ContainerInitializationException {
+public class MediaManagementLambdaHandler implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
+    public MediaManagementLambdaHandler() throws ContainerInitializationException {
         MediaManagementApplication.main(new String[]{});
     }
 
