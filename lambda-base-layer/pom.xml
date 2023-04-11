@@ -26,8 +26,6 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
-        <build.layerDescriptor.relativePath>layer-assembly.xml</build.layerDescriptor.relativePath>
-        <mainClass></mainClass>
     </properties>
 
     <dependencyManagement>
@@ -46,7 +44,7 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>mediaconvert</artifactId>
-            <version>LATEST</version>
+            <version>2.20.42</version>
         </dependency>
         <dependency>
             <groupId>com.likedancesport</groupId>
@@ -85,9 +83,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>${mainClass}</mainClass>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.springframework.boot.experimental</groupId>
@@ -108,7 +103,7 @@
                         <configuration>
                             <finalName>likedancesport</finalName>
                             <descriptors>
-                                <descriptor>${build.layerDescriptor.relativePath}</descriptor>
+                                <descriptor>layer-assembly.xml</descriptor>
                             </descriptors>
                             <attach>true</attach>
                             <archive>

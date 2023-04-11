@@ -1,0 +1,14 @@
+<assembly>
+    <id>layer-dependencies</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>java/lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+</assembly>
+
