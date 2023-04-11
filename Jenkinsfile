@@ -40,7 +40,7 @@ pipeline {
                 echo 'Deploying....'
                 dir('compute-infra') {
                     sh 'ls -la'
-                    sh 'cdk deploy --require-approval never'
+                    sh 'cdk deploy --require-approval never --force'
                 }
             }
         }
