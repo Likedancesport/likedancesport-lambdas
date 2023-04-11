@@ -89,7 +89,7 @@ public class ComputeServerlessStack extends Stack {
                 .memorySize(2048)
                 .role(role)
                 .layers(List.of(commonLayer))
-                .functionName("create-video-lambda-cdk-layered")
+                .functionName("media-management-lambda")
                 .handler("com.likedancesport.LambdaHandler:handleRequest")
                 .code(mediaManagementLambdaCode)
                 .build();
