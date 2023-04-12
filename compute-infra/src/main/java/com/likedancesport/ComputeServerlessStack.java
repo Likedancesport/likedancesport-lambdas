@@ -3,10 +3,6 @@ package com.likedancesport;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.cloudfront.BehaviorOptions;
-import software.amazon.awscdk.services.cloudfront.Distribution;
-import software.amazon.awscdk.services.cloudfront.PriceClass;
-import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.iam.Role;
 import software.amazon.awscdk.services.lambda.Alias;
@@ -132,15 +128,13 @@ public class ComputeServerlessStack extends Stack {
         setSnapStart(videoUploadHandlerLambda);
 
 
-        final Version mediaManagementLambdaCurrentVersion = mediaManagementLambda.getCurrentVersion();
-        /*Version.Builder.create(this, "media-management-v")
+        final Version mediaManagementLambdaCurrentVersion = Version.Builder.create(this, "media-management-v")
                 .lambda(mediaManagementLambda)
-                .build();*/
+                .build();
 
-        final Version videoUploadHandlerLambdaCurrentVersion = videoUploadHandlerLambda.getCurrentVersion();
-        /*Version.Builder.create(this, "video-upload-handler-v")
+        final Version videoUploadHandlerLambdaCurrentVersion = Version.Builder.create(this, "video-upload-handler-v")
                 .lambda(videoUploadHandlerLambda)
-                .build();*/
+                .build();
 
         final Alias mediaManagementAlias = Alias.Builder.create(this, "media-management-alias")
                 .aliasName("snap-m-alias")
