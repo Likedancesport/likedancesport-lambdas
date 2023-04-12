@@ -89,8 +89,8 @@ public class ComputeServerlessStack extends Stack {
 
         final Code commonLambdaLayerCode = Code.fromBucket(deploymentBucket, "likedancesport-layer-dependencies.jar");
 
-        final LayerVersion commonLayer = LayerVersion.Builder.create(this, "common-lambda-layer")
-                .layerVersionName("common-lambda-layer")
+        final LayerVersion commonLayer = LayerVersion.Builder.create(this, "likedancesport-common-lambda-layer")
+                .layerVersionName("likedancesport-common-lambda-layer")
                 .compatibleArchitectures(List.of(Architecture.X86_64, Architecture.ARM_64))
                 .code(commonLambdaLayerCode)
                 .compatibleRuntimes(List.of(Runtime.JAVA_11))
