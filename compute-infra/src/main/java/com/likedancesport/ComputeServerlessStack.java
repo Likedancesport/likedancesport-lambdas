@@ -106,7 +106,7 @@ public class ComputeServerlessStack extends Stack {
                 .role(role)
                 .layers(List.of(commonLayer))
                 .functionName("media-management-lambda")
-                .handler("com.likedancesport.LambdaHandler:handleRequest")
+                .handler("com.likedancesport.MediaManagementLambdaHandler:handleRequest")
                 .code(mediaManagementLambdaCode)
                 .build();
 
