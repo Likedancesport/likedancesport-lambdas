@@ -79,12 +79,12 @@ public class ComputeServerlessStack extends Stack {
                 .accessControl(BucketAccessControl.AUTHENTICATED_READ)
                 .build();
 
-        Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
+        /*Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
                 .priceClass(PriceClass.PRICE_CLASS_100)
                 .defaultBehavior(BehaviorOptions.builder()
                         .origin(new S3Origin(hlsBucket))
                         .build())
-                .build();
+                .build();*/
 
 
         final Code commonLambdaLayerCode = Code.fromBucket(deploymentBucket, "likedancesport-layer-dependencies.jar");
