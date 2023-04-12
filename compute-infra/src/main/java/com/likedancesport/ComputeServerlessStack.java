@@ -106,7 +106,7 @@ public class ComputeServerlessStack extends Stack {
                 .role(role)
                 .layers(List.of(commonLayer))
                 .functionName("media-management-lambda")
-                .handler("com.likedancesport.MediaManagementLambdaHandler:handleRequest")
+                .handler("com.likedancesport.MediaManagementLambdaHandler::handleRequest")
                 .code(mediaManagementLambdaCode)
                 .build();
 
@@ -132,13 +132,15 @@ public class ComputeServerlessStack extends Stack {
         setSnapStart(videoUploadHandlerLambda);
 
 
-        final Version mediaManagementLambdaCurrentVersion = Version.Builder.create(this, "media-management-v")
+        final Version mediaManagementLambdaCurrentVersion = mediaManagementLambda.getCurrentVersion();
+        /*Version.Builder.create(this, "media-management-v")
                 .lambda(mediaManagementLambda)
-                .build();/*mediaManagementLambda.getCurrentVersion();*/
+                .build();*/
 
-        final Version videoUploadHandlerLambdaCurrentVersion = Version.Builder.create(this, "video-upload-handler-v")
+        final Version videoUploadHandlerLambdaCurrentVersion = videoUploadHandlerLambda.getCurrentVersion();
+        /*Version.Builder.create(this, "video-upload-handler-v")
                 .lambda(videoUploadHandlerLambda)
-                .build();/*videoUploadHandlerLambda.getCurrentVersion();*/
+                .build();*/
 
         final Alias mediaManagementAlias = Alias.Builder.create(this, "media-management-alias")
                 .aliasName("snap-m-alias")
