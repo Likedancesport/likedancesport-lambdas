@@ -6,6 +6,7 @@ import com.likedancesport.common.model.impl.Video;
 import com.likedancesport.common.service.storage.S3StorageService;
 import com.likedancesport.dao.IVideoDao;
 import com.likedancesport.service.IVideoEncodingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Component
+@Slf4j
 public class VideoUploadHandlerFunction implements Function<S3Event, Void> {
     private final IVideoEncodingService videoEncodingService;
     private final IVideoDao videoDao;
@@ -20,6 +22,7 @@ public class VideoUploadHandlerFunction implements Function<S3Event, Void> {
 
     @Autowired
     public VideoUploadHandlerFunction(IVideoEncodingService videoEncodingService, IVideoDao videoDao, S3StorageService s3StorageService) {
+        log.info("---- FUNCTION INIT");
         this.videoEncodingService = videoEncodingService;
         this.videoDao = videoDao;
         this.s3StorageService = s3StorageService;
@@ -27,6 +30,7 @@ public class VideoUploadHandlerFunction implements Function<S3Event, Void> {
 
     @Override
     public Void apply(S3Event s3Event) {
+        log.info("---- HANDLING VIDEO UPLOAD EVENT");
         for (S3EventNotification.S3EventNotificationRecord record : s3Event.getRecords()) {
             String bucketName = record.getS3().getBucket().getName();
             String key = record.getS3().getObject().getKey();
