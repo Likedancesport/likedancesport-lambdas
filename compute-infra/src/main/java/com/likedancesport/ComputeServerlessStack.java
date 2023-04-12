@@ -3,6 +3,10 @@ package com.likedancesport;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.cloudfront.BehaviorOptions;
+import software.amazon.awscdk.services.cloudfront.Distribution;
+import software.amazon.awscdk.services.cloudfront.PriceClass;
+import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.iam.Role;
 import software.amazon.awscdk.services.lambda.Alias;
@@ -75,12 +79,12 @@ public class ComputeServerlessStack extends Stack {
                 .accessControl(BucketAccessControl.AUTHENTICATED_READ)
                 .build();
 
-        /*Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
+        Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
                 .priceClass(PriceClass.PRICE_CLASS_100)
                 .defaultBehavior(BehaviorOptions.builder()
                         .origin(new S3Origin(hlsBucket))
                         .build())
-                .build();*/
+                .build();
 
 
         final Code commonLambdaLayerCode = Code.fromBucket(deploymentBucket, "likedancesport-layer-dependencies.jar");
