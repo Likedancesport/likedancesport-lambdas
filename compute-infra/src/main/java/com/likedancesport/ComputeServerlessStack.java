@@ -154,10 +154,11 @@ public class ComputeServerlessStack extends Stack {
 
         final Resource courses = apiResource.addResource("courses");
         final Method addCourseMethod = courses.addMethod(POST, mediaManagementLambdaIntegration);
+
         final Method getCoursesMethod = courses.addMethod(GET, mediaManagementLambdaIntegration, MethodOptions.builder()
                 .requestParameters(new HashMap<>() {{
-                    put("pageNumber", true);
-                    put("pageSize", true);
+                    put("integration.request.querystring.pageNumber", true);
+                    put("integration.request.querystring.pageSize", true);
                 }})
                 .build());
 
