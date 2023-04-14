@@ -157,8 +157,8 @@ public class ComputeServerlessStack extends Stack {
 
         final Method getCoursesMethod = courses.addMethod(GET, mediaManagementLambdaIntegration, MethodOptions.builder()
                 .requestParameters(new HashMap<>() {{
-                    put("integration.request.querystring.pageNumber", true);
-                    put("integration.request.querystring.pageSize", true);
+                    put("method.request.querystring.pageNumber", true);
+                    put("method.request.querystring.pageSize", true);
                 }})
                 .build());
 
