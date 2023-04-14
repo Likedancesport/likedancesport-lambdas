@@ -1,4 +1,4 @@
-package com.likedancesport.dto.full;
+package com.likedancesport.common.dto.full;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;

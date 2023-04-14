@@ -58,21 +58,6 @@ public class LikedancesportStaticStack extends Stack {
                         .build())
                 .build();
 */
-
-/*        String pathToJobTemplateJson = System.getProperty("user.dir") + "/src/main/resources/JobTemplateSettings.json";
-        System.out.println(pathToJobTemplateJson);
-        JsonNode jsonNode;
-
-        try {
-            jsonNode = new ObjectMapper().readValue(new File(pathToJobTemplateJson), JsonNode.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        final CfnJobTemplate mediaConvertJobTemplate = CfnJobTemplate.Builder.create(this, "media-convert-classic-job-template")
-                .settingsJson(jsonNode)
-                .name("media-convert-classic-job-template")
-                .build();*/
     }
 
     public LikedancesportStaticStack(@Nullable Construct scope, @Nullable String id) {

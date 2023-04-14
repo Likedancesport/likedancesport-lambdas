@@ -1,4 +1,4 @@
-package com.likedancesport.dto.preview.impl;
+package com.likedancesport.common.dto.preview;
 
 import com.likedancesport.common.model.impl.Course;
 import com.likedancesport.common.model.impl.Lecturer;
@@ -17,7 +17,7 @@ public class CoursePreview extends BasePreview {
     private final int videosCount;
     private final List<String> lecturersNames;
 
-    public static CoursePreview fromCourse(Course course) {
+    public static CoursePreview of(Course course)  {
         return CoursePreview.builder()
                 .id(course.getId())
                 .title(course.getTitle())

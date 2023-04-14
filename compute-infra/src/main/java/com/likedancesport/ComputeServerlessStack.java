@@ -3,37 +3,26 @@ package com.likedancesport;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.apigateway.*;
 import software.amazon.awscdk.services.cloudfront.BehaviorOptions;
 import software.amazon.awscdk.services.cloudfront.Distribution;
 import software.amazon.awscdk.services.cloudfront.PriceClass;
 import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.iam.Role;
-import software.amazon.awscdk.services.lambda.Alias;
-import software.amazon.awscdk.services.lambda.Architecture;
-import software.amazon.awscdk.services.lambda.CfnFunction;
-import software.amazon.awscdk.services.lambda.Code;
-import software.amazon.awscdk.services.lambda.Function;
-import software.amazon.awscdk.services.lambda.IEventSource;
-import software.amazon.awscdk.services.lambda.IFunction;
-import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.Version;
+import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.eventsources.S3EventSource;
-import software.amazon.awscdk.services.s3.BlockPublicAccess;
-import software.amazon.awscdk.services.s3.Bucket;
-import software.amazon.awscdk.services.s3.BucketAccessControl;
-import software.amazon.awscdk.services.s3.BucketEncryption;
-import software.amazon.awscdk.services.s3.EventType;
-import software.amazon.awscdk.services.s3.IBucket;
-import software.amazon.awscdk.services.s3.LifecycleRule;
-import software.amazon.awscdk.services.s3.StorageClass;
-import software.amazon.awscdk.services.s3.Transition;
+import software.amazon.awscdk.services.s3.*;
 import software.constructs.Construct;
 
+import java.util.HashMap;
 import java.util.List;
 
+import static com.likedancesport.util.DevOpsConstants.*;
+
 public class ComputeServerlessStack extends Stack {
+
     public ComputeServerlessStack(final Construct scope, final String id) {
         this(scope, id, null);
     }
@@ -42,7 +31,7 @@ public class ComputeServerlessStack extends Stack {
         super(scope, id, props);
 
         final IRole role = Role.fromRoleArn(this, "lambda-role", "arn:aws:iam::066002146890:role/Rds-S3-SSM-Role");
-        IBucket deploymentBucket = Bucket.fromBucketArn(this, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
+        final IBucket deploymentBucket = Bucket.fromBucketArn(this, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
 
 
         final Transition mp4VideoTransition = Transition.builder()
@@ -79,13 +68,12 @@ public class ComputeServerlessStack extends Stack {
                 .accessControl(BucketAccessControl.AUTHENTICATED_READ)
                 .build();
 
-        Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
+        final Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
                 .priceClass(PriceClass.PRICE_CLASS_100)
                 .defaultBehavior(BehaviorOptions.builder()
                         .origin(new S3Origin(hlsBucket))
                         .build())
                 .build();
-
 
         final Code commonLambdaLayerCode = Code.fromBucket(deploymentBucket, "likedancesport-layer-dependencies.jar");
 
@@ -112,7 +100,7 @@ public class ComputeServerlessStack extends Stack {
 
         final Code videoUploadHandlerCode = Code.fromBucket(deploymentBucket, "video-upload-handler-1.0.jar");
 
-        IEventSource mp4s3UploadEventSource = S3EventSource.Builder.create(mp4Bucket)
+        final IEventSource mp4s3UploadEventSource = S3EventSource.Builder.create(mp4Bucket)
                 .events(List.of(EventType.OBJECT_CREATED))
                 .build();
 
@@ -151,6 +139,49 @@ public class ComputeServerlessStack extends Stack {
                 .build();
 
 
+        final RestApi likedancesportApi = RestApi.Builder.create(this, "likedancesport-management-api")
+                .restApiName("likedancesport-management-api")
+                .build();
+
+        final LambdaIntegration mediaManagementLambdaIntegration = LambdaIntegration.Builder.create(mediaManagementAlias)
+                .requestTemplates(new HashMap<>() {{
+                    put("application/json", "{ \"statusCode\": \"200\" }");
+                }})
+                .proxy(true)
+                .build();
+
+        final Resource apiResource = likedancesportApi.getRoot().addResource("api");
+
+        final Resource courses = apiResource.addResource("courses");
+        final Method addCourseMethod = courses.addMethod(POST, mediaManagementLambdaIntegration);
+        final Method getCoursesMethod = courses.addMethod(GET, mediaManagementLambdaIntegration, MethodOptions.builder()
+                .requestParameters(new HashMap<>() {{
+                    put("pageNumber", true);
+                    put("pageSize", true);
+                }})
+                .build());
+
+        final Resource course = courses.addResource("{courseId}");
+        final Method getCourseMethod = course.addMethod(GET, mediaManagementLambdaIntegration);
+        final Method updateCourseMethod = course.addMethod(PUT, mediaManagementLambdaIntegration);
+        final Method deleteCourseMethod = course.addMethod(DELETE, mediaManagementLambdaIntegration);
+
+        final Resource sections = courses.addResource("sections");
+        final Method createSectionMethod = sections.addMethod(POST, mediaManagementLambdaIntegration);
+
+        final Resource section = sections.addResource("{sectionId}");
+        final Method getSectionMethod = section.addMethod(GET, mediaManagementLambdaIntegration);
+        final Method updateSectionMethod = section.addMethod(PUT, mediaManagementLambdaIntegration);
+        final Method deleteSectionMethod = section.addMethod(DELETE, mediaManagementLambdaIntegration);
+
+        final Resource videos = section.addResource("videos");
+        final Method createVideoMethod = videos.addMethod(POST, mediaManagementLambdaIntegration);
+
+        final Resource video = videos.addResource("{video}");
+        final Method getVideoMethod = video.addMethod(GET, mediaManagementLambdaIntegration);
+        final Method updateVideoMethod = video.addMethod(PUT, mediaManagementLambdaIntegration);
+        final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration);
+
     }
 
     private void setSnapStart(IFunction lambda) {
@@ -160,5 +191,20 @@ public class ComputeServerlessStack extends Stack {
         ((CfnFunction) lambda.getNode().getDefaultChild()).setSnapStart(snapStartProperty);
     }
 
+    // MediaConvert Job Template
+    /*        String pathToJobTemplateJson = System.getProperty("user.dir") + "/src/main/resources/JobTemplateSettings.json";
+        System.out.println(pathToJobTemplateJson);
+        JsonNode jsonNode;
+
+        try {
+            jsonNode = new ObjectMapper().readValue(new File(pathToJobTemplateJson), JsonNode.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final CfnJobTemplate mediaConvertJobTemplate = CfnJobTemplate.Builder.create(this, "media-convert-classic-job-template")
+                .settingsJson(jsonNode)
+                .name("media-convert-classic-job-template")
+                .build();*/
 
 }
