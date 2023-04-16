@@ -147,6 +147,7 @@ public class ComputeServerlessStack extends Stack {
                 .requestTemplates(new HashMap<>() {{
                     put("application/json", "{ \"statusCode\": \"200\" }");
                 }})
+                .timeout(Duration.seconds(29))
                 .proxy(true)
                 .build();
 
@@ -182,7 +183,6 @@ public class ComputeServerlessStack extends Stack {
         final Method getVideoMethod = video.addMethod(GET, mediaManagementLambdaIntegration);
         final Method updateVideoMethod = video.addMethod(PUT, mediaManagementLambdaIntegration);
         final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration);
-
     }
 
     private void setSnapStart(IFunction lambda) {
