@@ -1,0 +1,11 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 5248
+      Handler: com.likedancesport.LambdaHandler
+      CodeUri: /Users/mponomarenko/IdeaProjects/likedancesport-lambdas/lambda-base-layer/likedancesport-media-management-lambda
+      Runtime: java11
+      Architectures:
+        - x86_64
