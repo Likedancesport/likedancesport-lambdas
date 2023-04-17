@@ -143,6 +143,10 @@ public class ComputeServerlessStack extends Stack {
                 .restApiName("likedancesport-management-api")
                 .build();
 
+        final MethodOptions defaultMethodOptions = MethodOptions.builder()
+                .apiKeyRequired(false)
+                .build();
+
         final LambdaIntegration mediaManagementLambdaIntegration = LambdaIntegration.Builder.create(mediaManagementAlias)
                 .requestTemplates(new HashMap<>() {{
                     put("application/json", "{ \"statusCode\": \"200\" }");
@@ -154,35 +158,37 @@ public class ComputeServerlessStack extends Stack {
         final Resource apiResource = likedancesportApi.getRoot().addResource("api");
 
         final Resource courses = apiResource.addResource("courses");
-        final Method addCourseMethod = courses.addMethod(POST, mediaManagementLambdaIntegration);
+
+        final Method addCourseMethod = courses.addMethod(POST, mediaManagementLambdaIntegration, defaultMethodOptions);
 
         final Method getCoursesMethod = courses.addMethod(GET, mediaManagementLambdaIntegration, MethodOptions.builder()
                 .requestParameters(new HashMap<>() {{
                     put("method.request.querystring.pageNumber", true);
                     put("method.request.querystring.pageSize", true);
                 }})
+                .apiKeyRequired(false)
                 .build());
 
         final Resource course = courses.addResource("{courseId}");
-        final Method getCourseMethod = course.addMethod(GET, mediaManagementLambdaIntegration);
-        final Method updateCourseMethod = course.addMethod(PUT, mediaManagementLambdaIntegration);
-        final Method deleteCourseMethod = course.addMethod(DELETE, mediaManagementLambdaIntegration);
+        final Method getCourseMethod = course.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
+        final Method updateCourseMethod = course.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
+        final Method deleteCourseMethod = course.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
 
         final Resource sections = courses.addResource("sections");
-        final Method createSectionMethod = sections.addMethod(POST, mediaManagementLambdaIntegration);
+        final Method createSectionMethod = sections.addMethod(POST, mediaManagementLambdaIntegration, defaultMethodOptions);
 
         final Resource section = sections.addResource("{sectionId}");
-        final Method getSectionMethod = section.addMethod(GET, mediaManagementLambdaIntegration);
-        final Method updateSectionMethod = section.addMethod(PUT, mediaManagementLambdaIntegration);
-        final Method deleteSectionMethod = section.addMethod(DELETE, mediaManagementLambdaIntegration);
+        final Method getSectionMethod = section.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
+        final Method updateSectionMethod = section.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
+        final Method deleteSectionMethod = section.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
 
         final Resource videos = section.addResource("videos");
-        final Method createVideoMethod = videos.addMethod(POST, mediaManagementLambdaIntegration);
+        final Method createVideoMethod = videos.addMethod(POST, mediaManagementLambdaIntegration, defaultMethodOptions);
 
         final Resource video = videos.addResource("{video}");
-        final Method getVideoMethod = video.addMethod(GET, mediaManagementLambdaIntegration);
-        final Method updateVideoMethod = video.addMethod(PUT, mediaManagementLambdaIntegration);
-        final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration);
+        final Method getVideoMethod = video.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
+        final Method updateVideoMethod = video.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
+        final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
     }
 
     private void setSnapStart(IFunction lambda) {
