@@ -182,7 +182,7 @@ public class ComputeServerlessStack extends Stack {
         final Method updateCourseMethod = course.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method deleteCourseMethod = course.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
 
-        final Resource sections = courses.addResource("sections");
+        final Resource sections = course.addResource("sections");
         final Method createSectionMethod = sections.addMethod(POST, mediaManagementLambdaIntegration, defaultMethodOptions);
 
         final Resource section = sections.addResource("{sectionId}");
