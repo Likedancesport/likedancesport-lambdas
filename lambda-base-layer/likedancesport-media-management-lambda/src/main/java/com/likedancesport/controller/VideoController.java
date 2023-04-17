@@ -35,8 +35,8 @@ public class VideoController {
         URL presignedVideoUploadUrl = s3StorageService.generatePresingedUploadUrl(persistedVideo.getVideoS3Key(), videoBucketName);
         URL presignedPhotoUploadUrl = s3StorageService.generatePresingedUploadUrl(persistedVideo.getPreviewPhotoS3Key(), videoBucketName);
         MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.add("mp4-upload", presignedVideoUploadUrl.getPath());
-        headers.add("photo-upload", presignedPhotoUploadUrl.getPath());
+        headers.add("mp4-upload", presignedVideoUploadUrl.toString());
+        headers.add("photo-upload", presignedPhotoUploadUrl.toString());
         return new ResponseEntity<>(persistedVideo, headers, HttpStatus.CREATED);
     }
 
