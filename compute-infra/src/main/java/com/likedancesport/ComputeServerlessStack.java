@@ -141,9 +141,17 @@ public class ComputeServerlessStack extends Stack {
 
         final RestApi likedancesportApi = RestApi.Builder.create(this, "likedancesport-management-api")
                 .restApiName("likedancesport-management-api")
+                .deploy(true)
+                .deployOptions(StageOptions.builder()
+                        .stageName("dev")
+                        .build())
+                .defaultMethodOptions(MethodOptions.builder()
+                        .authorizationType(AuthorizationType.NONE)
+                        .build())
                 .build();
 
         final MethodOptions defaultMethodOptions = MethodOptions.builder()
+                .authorizationType(AuthorizationType.NONE)
                 .apiKeyRequired(false)
                 .build();
 
