@@ -10,14 +10,18 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import software.amazon.awssdk.services.mediaconvert.MediaConvertClient;
+import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsRequest;
+import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsResponse;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.net.URI;
 import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.likedancesport")
-public class AppConfig {
+public class VideoUploadHandlerConfig {
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -74,5 +78,19 @@ public class AppConfig {
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL81Dialect");
         return properties;
+    }
+
+    @Bean
+    public MediaConvertClient mediaConvertClient() {
+        try (MediaConvertClient mc = MediaConvertClient.create()) {
+            DescribeEndpointsResponse res = mc
+                    .describeEndpoints(DescribeEndpointsRequest.builder().maxResults(20).build());
+
+            String endpointURL = res.endpoints().get(0).url();
+            return MediaConvertClient.builder()
+                    .region(mc.serviceClientConfiguration().region())
+                    .endpointOverride(URI.create(endpointURL))
+                    .build();
+        }
     }
 }
