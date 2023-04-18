@@ -20,6 +20,7 @@ public class CourseDto extends TaggableMediaResourceDto {
     public static CourseDto of(Course course) {
         return CourseDto.builder()
                 .id(course.getId())
+                .title(course.getTitle())
                 .tags(course.getTags())
                 .description(course.getDescription())
                 .previewPhotoS3Key(course.getPreviewPhotoS3Key())
