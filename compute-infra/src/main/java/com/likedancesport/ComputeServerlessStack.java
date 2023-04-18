@@ -3,17 +3,39 @@ package com.likedancesport;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.apigateway.*;
+import software.amazon.awscdk.services.apigateway.AuthorizationType;
+import software.amazon.awscdk.services.apigateway.LambdaIntegration;
+import software.amazon.awscdk.services.apigateway.Method;
+import software.amazon.awscdk.services.apigateway.MethodOptions;
+import software.amazon.awscdk.services.apigateway.Resource;
+import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.apigateway.StageOptions;
 import software.amazon.awscdk.services.cloudfront.BehaviorOptions;
 import software.amazon.awscdk.services.cloudfront.Distribution;
 import software.amazon.awscdk.services.cloudfront.PriceClass;
 import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.iam.Role;
+import software.amazon.awscdk.services.lambda.Alias;
+import software.amazon.awscdk.services.lambda.Architecture;
+import software.amazon.awscdk.services.lambda.CfnFunction;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.IEventSource;
+import software.amazon.awscdk.services.lambda.IFunction;
+import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.lambda.eventsources.S3EventSource;
-import software.amazon.awscdk.services.s3.*;
+import software.amazon.awscdk.services.s3.BlockPublicAccess;
+import software.amazon.awscdk.services.s3.Bucket;
+import software.amazon.awscdk.services.s3.BucketAccessControl;
+import software.amazon.awscdk.services.s3.BucketEncryption;
+import software.amazon.awscdk.services.s3.EventType;
+import software.amazon.awscdk.services.s3.IBucket;
+import software.amazon.awscdk.services.s3.LifecycleRule;
+import software.amazon.awscdk.services.s3.StorageClass;
+import software.amazon.awscdk.services.s3.Transition;
 import software.constructs.Construct;
 
 import java.util.HashMap;
@@ -120,13 +142,9 @@ public class ComputeServerlessStack extends Stack {
         setSnapStart(videoUploadHandlerLambda);
 
 
-        final Version mediaManagementLambdaVersion = Version.Builder.create(this, "media-management-v")
-                .lambda(mediaManagementLambda)
-                .build();
+        final Version mediaManagementLambdaVersion = mediaManagementLambda.getCurrentVersion();
 
-        final Version videoUploadHandlerLambdaVersion = Version.Builder.create(this, "video-upload-handler-v")
-                .lambda(videoUploadHandlerLambda)
-                .build();
+        final Version videoUploadHandlerLambdaVersion = videoUploadHandlerLambda.getCurrentVersion();
 
         final Alias mediaManagementAlias = Alias.Builder.create(this, "media-management-alias")
                 .aliasName("snap-m-alias")
