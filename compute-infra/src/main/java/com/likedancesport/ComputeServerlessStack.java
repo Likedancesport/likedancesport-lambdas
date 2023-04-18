@@ -120,22 +120,22 @@ public class ComputeServerlessStack extends Stack {
         setSnapStart(videoUploadHandlerLambda);
 
 
-        final Version mediaManagementLambdaCurrentVersion = Version.Builder.create(this, "media-management-v")
+        final Version mediaManagementLambdaVersion = Version.Builder.create(this, "media-management-v")
                 .lambda(mediaManagementLambda)
                 .build();
 
-        final Version videoUploadHandlerLambdaCurrentVersion = Version.Builder.create(this, "video-upload-handler-v")
+        final Version videoUploadHandlerLambdaVersion = Version.Builder.create(this, "video-upload-handler-v")
                 .lambda(videoUploadHandlerLambda)
                 .build();
 
         final Alias mediaManagementAlias = Alias.Builder.create(this, "media-management-alias")
                 .aliasName("snap-m-alias")
-                .version(mediaManagementLambdaCurrentVersion)
+                .version(mediaManagementLambdaVersion)
                 .build();
 
         final Alias videoUploadHandlerAlias = Alias.Builder.create(this, "video-upload-alias")
                 .aliasName("snap-v-alias")
-                .version(videoUploadHandlerLambdaCurrentVersion)
+                .version(videoUploadHandlerLambdaVersion)
                 .build();
 
 
