@@ -183,7 +183,7 @@ public class ComputeServerlessStack extends Stack {
 
         final Resource apiResource = likedancesportApi.getRoot().addResource("api");
 
-        /*final Resource courses = apiResource.addResource("courses");
+        final Resource courses = apiResource.addResource("courses");
 
         final Method addCourseMethod = courses.addMethod(POST, mediaManagementLambdaIntegration, defaultMethodOptions);
 
@@ -193,7 +193,7 @@ public class ComputeServerlessStack extends Stack {
                     put("method.request.querystring.pageSize", true);
                 }})
                 .apiKeyRequired(false)
-                .build());*/
+                .build());
 
         /*final Resource course = courses.addResource("{courseId}");
         final Method getCourseMethod = course.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
