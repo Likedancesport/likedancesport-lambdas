@@ -3,13 +3,12 @@ package com.likedancesport.controller;
 import com.likedancesport.common.model.impl.Video;
 import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
 import com.likedancesport.common.service.storage.S3StorageService;
+import com.likedancesport.common.utils.rest.RestUtils;
 import com.likedancesport.request.VideoUpdateRequest;
 import com.likedancesport.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.net.URL;
 
 @RestController
@@ -26,9 +28,11 @@ import java.net.URL;
 public class VideoController {
     private final IVideoService videoService;
     private final S3StorageService s3StorageService;
-
-    @InjectSsmParameter(parameterName = "s3-bucket-name")
+    @InjectSsmParameter(parameterName = "mp4-bucket-name", encrypted = true)
     private String videoBucketName;
+
+    @InjectSsmParameter(parameterName = "thumbnails-bucket-name", encrypted = true)
+    private String thumbnailsBucketName;
 
     @Autowired
     public VideoController(IVideoService videoService, S3StorageService s3StorageService) {
@@ -37,14 +41,19 @@ public class VideoController {
     }
 
     @PostMapping
-    public ResponseEntity<Video> createVideo(@PathVariable(name = "sectionId") Long sectionId, @RequestBody Video video) {
+    public ResponseEntity<Video> createVideo(@PathVariable(name = "sectionId") Long sectionId,
+                                             @PathVariable(name = "courseId") Long courseId,
+                                             @RequestBody @Valid Video video,
+                                             UriComponentsBuilder uriComponentsBuilder) {
         Video persistedVideo = videoService.createVideo(sectionId, video);
         URL presignedVideoUploadUrl = s3StorageService.generatePresingedUploadUrl(persistedVideo.getVideoS3Key(), videoBucketName);
         URL presignedPhotoUploadUrl = s3StorageService.generatePresingedUploadUrl(persistedVideo.getPreviewPhotoS3Key(), videoBucketName);
-        MultiValueMap<String, String> headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.add("mp4-upload", presignedVideoUploadUrl.toString());
         headers.add("photo-upload", presignedPhotoUploadUrl.toString());
-        return new ResponseEntity<>(persistedVideo, headers, HttpStatus.CREATED);
+        URI uri = RestUtils.buildUri(uriComponentsBuilder, "api", "courses", courseId.toString(),
+                "sections", sectionId.toString(), "videos", video.getId().toString());
+        return ResponseEntity.created(uri).headers(headers).body(video);
     }
 
     @PutMapping("/{videoId}")

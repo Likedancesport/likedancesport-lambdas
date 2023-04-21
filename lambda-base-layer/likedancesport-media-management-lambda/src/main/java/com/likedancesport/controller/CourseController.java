@@ -3,12 +3,16 @@ package com.likedancesport.controller;
 import com.likedancesport.common.dto.full.CourseDto;
 import com.likedancesport.common.dto.preview.CoursePreview;
 import com.likedancesport.common.model.impl.Course;
+import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
+import com.likedancesport.common.service.storage.S3StorageService;
+import com.likedancesport.common.utils.rest.RestUtils;
 import com.likedancesport.request.CourseUpdateRequest;
 import com.likedancesport.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,19 +24,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URL;
+
 @RestController
 @RequestMapping("api/courses")
 public class CourseController {
     private final ICourseService courseService;
+    private final S3StorageService s3StorageService;
+    @InjectSsmParameter(parameterName = "thumbnails-bucket-name", encrypted = true)
+    private String thumbnailsBucketName;
 
     @Autowired
-    public CourseController(ICourseService courseService) {
+    public CourseController(ICourseService courseService, S3StorageService s3StorageService) {
         this.courseService = courseService;
+        this.s3StorageService = s3StorageService;
     }
 
     @PostMapping
-    public Course createCourse(@RequestBody Course course) {
-        return courseService.createCourse(course);
+    public ResponseEntity<CourseDto> createCourse(@RequestBody Course course, UriComponentsBuilder uriComponentsBuilder) {
+        Course persistedCourse = courseService.createCourse(course);
+        URL photoUploadUrl = s3StorageService.generatePresingedUploadUrl(persistedCourse.getPreviewPhotoS3Key(), thumbnailsBucketName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("photo-upload", photoUploadUrl.toString());
+        URI courseUri = RestUtils.buildUri(uriComponentsBuilder, "api", "courses", persistedCourse.getId().toString());
+        return ResponseEntity.created(courseUri).headers(headers).body(CourseDto.of(persistedCourse));
     }
 
     @DeleteMapping("/{courseId}")

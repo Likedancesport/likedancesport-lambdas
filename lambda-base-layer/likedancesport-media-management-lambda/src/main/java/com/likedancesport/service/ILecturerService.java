@@ -16,5 +16,5 @@ public interface ILecturerService {
 
     Lecturer createLecturer(Lecturer lecturer);
 
-    Lecturer updateLecturer(LecturerUpdateRequest updateRequest);
+    Lecturer updateLecturer(Long lecturerId,LecturerUpdateRequest updateRequest);
 }

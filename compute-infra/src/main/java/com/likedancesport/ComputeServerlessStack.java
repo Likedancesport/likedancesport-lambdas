@@ -211,7 +211,7 @@ public class ComputeServerlessStack extends Stack {
         final Resource videos = section.addResource("videos");
         final Method createVideoMethod = videos.addMethod(POST, mediaManagementLambdaIntegration, defaultMethodOptions);
 
-        final Resource video = videos.addResource("{video}");
+        final Resource video = videos.addResource("{videoId}");
         final Method getVideoMethod = video.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method updateVideoMethod = video.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
