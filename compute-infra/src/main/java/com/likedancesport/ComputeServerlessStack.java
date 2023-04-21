@@ -195,7 +195,7 @@ public class ComputeServerlessStack extends Stack {
                 .apiKeyRequired(false)
                 .build());
 
-        /*final Resource course = courses.addResource("{courseId}");
+        final Resource course = courses.addResource("{courseId}");
         final Method getCourseMethod = course.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method updateCourseMethod = course.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method deleteCourseMethod = course.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
@@ -214,7 +214,7 @@ public class ComputeServerlessStack extends Stack {
         final Resource video = videos.addResource("{videoId}");
         final Method getVideoMethod = video.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method updateVideoMethod = video.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
-        final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);*/
+        final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
     }
 
     private void setSnapStart(IFunction lambda) {
