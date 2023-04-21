@@ -37,8 +37,6 @@ public class Video extends TaggableMediaResource implements IOrderableEntity {
     private Integer orderInSection;
 
     @Column(name = "duration_seconds", nullable = false)
-    @NotNull(message = "Video duration must be specified")
-    @Min(value = 1, message = "Duration must be at least one second")
     private Long durationSeconds;
 
     @Column(name = "views_count", nullable = false)
@@ -46,7 +44,6 @@ public class Video extends TaggableMediaResource implements IOrderableEntity {
     private Long viewsCount = 0L;
 
     @Column(name = "s3_key", nullable = false, unique = true, updatable = false)
-    @NotBlank(message = "Video key is mandatory")
     private String videoS3Key;
 
     @ManyToOne

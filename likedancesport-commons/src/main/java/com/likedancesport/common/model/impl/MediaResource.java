@@ -34,11 +34,9 @@ public abstract class MediaResource {
     private Long id;
 
     @Column(nullable = false, name = "title")
-    @NotBlank(message = "Title must be specified")
     private String title;
 
     @Column(nullable = false, name = "description")
-    @NotBlank(message = "Description must be specified")
     private String description;
 
     @Column(nullable = false, name = "preview_photo_s3_key", unique = true, updatable = false)
