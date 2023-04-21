@@ -53,7 +53,7 @@ public class ComputeServerlessStack extends Stack {
         final IBucket deploymentBucket = Bucket.fromBucketArn(this, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
         final IBucket hlsBucket = Bucket.fromBucketName(this, "hls", "likedancesport-hls-bucket");
         final IBucket mp4Bucket = Bucket.fromBucketName(this, "likedancesport-mp4-assets", "likedancesport-mp4-assets");
-        final IBucket thumbnailsBucket = Bucket.fromBucketArn(this, "likedancesport-thumbnails-bucket", "likedancesport-thumbnails-bucket");
+        final IBucket thumbnailsBucket = Bucket.fromBucketName(this, "likedancesport-thumbnails-bucket", "likedancesport-thumbnails-bucket");
 
         final Transition mp4VideoTransition = Transition.builder()
                 .storageClass(StorageClass.GLACIER)
