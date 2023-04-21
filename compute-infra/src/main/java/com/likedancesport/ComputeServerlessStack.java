@@ -27,10 +27,7 @@ import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.lambda.eventsources.S3EventSource;
-import software.amazon.awscdk.services.s3.BlockPublicAccess;
 import software.amazon.awscdk.services.s3.Bucket;
-import software.amazon.awscdk.services.s3.BucketAccessControl;
-import software.amazon.awscdk.services.s3.BucketEncryption;
 import software.amazon.awscdk.services.s3.EventType;
 import software.amazon.awscdk.services.s3.IBucket;
 import software.amazon.awscdk.services.s3.LifecycleRule;
@@ -54,7 +51,9 @@ public class ComputeServerlessStack extends Stack {
 
         final IRole role = Role.fromRoleArn(this, "lambda-role", "arn:aws:iam::066002146890:role/Rds-S3-SSM-Role");
         final IBucket deploymentBucket = Bucket.fromBucketArn(this, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
-
+        final IBucket hlsBucket = Bucket.fromBucketName(this, "hls", "likedancesport-hls-bucket");
+        final IBucket mp4Bucket = Bucket.fromBucketName(this, "likedancesport-mp4-assets", "likedancesport-mp4-assets");
+        final IBucket thumbnailsBucket = Bucket.fromBucketArn(this, "likedancesport-thumbnails-bucket", "likedancesport-thumbnails-bucket");
 
         final Transition mp4VideoTransition = Transition.builder()
                 .storageClass(StorageClass.GLACIER)
@@ -67,28 +66,6 @@ public class ComputeServerlessStack extends Stack {
                 .transitions(List.of(mp4VideoTransition))
                 .build();
 
-        final Bucket mp4Bucket = Bucket.Builder.create(this, "likedancesport-mp4-assets")
-                .bucketName("likedancesport-mp4-assets")
-                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
-                .accessControl(BucketAccessControl.BUCKET_OWNER_FULL_CONTROL)
-                .eventBridgeEnabled(true)
-                .lifecycleRules(List.of(mp4VideoLifecycleRule))
-                .encryption(BucketEncryption.KMS_MANAGED)
-                .build();
-
-
-        final Bucket thumbnailsBucket = Bucket.Builder.create(this, "likedancesport-thumbnails-bucket")
-                .bucketName("likedancesport-thumbnails-bucket")
-                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
-                .accessControl(BucketAccessControl.BUCKET_OWNER_FULL_CONTROL)
-                .build();
-
-
-        final Bucket hlsBucket = Bucket.Builder.create(this, "likedancesport-hls-bucket")
-                .bucketName("likedancesport-hls-bucket")
-                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
-                .accessControl(BucketAccessControl.AUTHENTICATED_READ)
-                .build();
 
         final Distribution hlsDistribution = Distribution.Builder.create(this, "likedancesport-hls-cdn")
                 .priceClass(PriceClass.PRICE_CLASS_100)
@@ -122,7 +99,7 @@ public class ComputeServerlessStack extends Stack {
 
         final Code videoUploadHandlerCode = Code.fromBucket(deploymentBucket, "video-upload-handler-1.0.jar");
 
-        final IEventSource mp4s3UploadEventSource = S3EventSource.Builder.create(mp4Bucket)
+        final IEventSource mp4s3UploadEventSource = S3EventSource.Builder.create((Bucket) mp4Bucket)
                 .events(List.of(EventType.OBJECT_CREATED))
                 .build();
 
