@@ -1,7 +1,7 @@
 package com.likedancesport.service.impl;
 
-import com.likedancesport.common.model.impl.Lecturer;
-import com.likedancesport.dao.ILecturerDao;
+import com.likedancesport.common.dao.ILecturerDao;
+import com.likedancesport.common.model.domain.impl.Lecturer;
 import com.likedancesport.request.LecturerUpdateRequest;
 import com.likedancesport.service.ILecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +46,10 @@ public class LecturerService implements ILecturerService {
         lecturer.setName(updateRequest.getName());
         lecturer.setDescription(updateRequest.getDescription());
         return null;
+    }
+
+    @Override
+    public void delete(Long lecturerId) {
+        lecturerDao.deleteById(lecturerId);
     }
 }

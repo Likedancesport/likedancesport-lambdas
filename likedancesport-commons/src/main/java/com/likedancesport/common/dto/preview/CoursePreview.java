@@ -1,7 +1,7 @@
 package com.likedancesport.common.dto.preview;
 
-import com.likedancesport.common.model.impl.Course;
-import com.likedancesport.common.model.impl.Lecturer;
+import com.likedancesport.common.model.domain.impl.Course;
+import com.likedancesport.common.model.domain.impl.Lecturer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;

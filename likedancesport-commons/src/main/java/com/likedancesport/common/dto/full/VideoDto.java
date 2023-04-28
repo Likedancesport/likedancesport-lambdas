@@ -1,6 +1,6 @@
 package com.likedancesport.common.dto.full;
 
-import com.likedancesport.common.model.impl.Video;
+import com.likedancesport.common.model.domain.impl.Video;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;

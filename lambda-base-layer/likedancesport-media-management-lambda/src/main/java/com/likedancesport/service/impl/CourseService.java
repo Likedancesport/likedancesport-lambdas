@@ -1,10 +1,10 @@
 package com.likedancesport.service.impl;
 
-import com.likedancesport.common.model.impl.Course;
-import com.likedancesport.common.model.impl.Lecturer;
-import com.likedancesport.common.model.impl.MediaResource;
-import com.likedancesport.dao.ICourseDao;
-import com.likedancesport.dao.ILecturerDao;
+import com.likedancesport.common.dao.ICourseDao;
+import com.likedancesport.common.dao.ILecturerDao;
+import com.likedancesport.common.model.domain.impl.Course;
+import com.likedancesport.common.model.domain.impl.Lecturer;
+import com.likedancesport.common.model.domain.impl.MediaResource;
 import com.likedancesport.request.CourseUpdateRequest;
 import com.likedancesport.service.ICourseService;
 import com.likedancesport.service.ITagService;

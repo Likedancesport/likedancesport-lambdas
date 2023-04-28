@@ -1,6 +1,6 @@
 package com.likedancesport.common.utils.collection;
 
-import com.likedancesport.common.model.IOrderableEntity;
+import com.likedancesport.common.model.domain.IOrderableEntity;
 
 import java.util.Collection;
 import java.util.List;

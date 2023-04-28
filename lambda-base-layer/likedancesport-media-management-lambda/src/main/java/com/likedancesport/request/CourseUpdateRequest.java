@@ -19,5 +19,5 @@ public class CourseUpdateRequest extends TaggableMediaResourceUpdateRequest {
      * ID of section is mapped to its order in course (ID -> Order)
      */
     @JsonDeserialize(as = HashMap.class)
-    private Map<Long,Integer> sectionOrderingMap;
+    private Map<Long, Integer> sectionOrderingMap;
 }

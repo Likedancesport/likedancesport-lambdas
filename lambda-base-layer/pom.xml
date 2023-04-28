@@ -13,7 +13,8 @@
 
     <modules>
         <module>likedancesport-media-management-lambda</module>
-        <module>video-upload-handler</module>
+        <module>mp4-video-upload-handler</module>
+        <module>transcoding-job-complete-handler</module>
     </modules>
 
 
@@ -41,11 +42,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>mediaconvert</artifactId>
-            <version>2.20.42</version>
-        </dependency>
         <dependency>
             <groupId>com.likedancesport</groupId>
             <artifactId>likedancesport-commons</artifactId>
