@@ -1,6 +1,6 @@
 package com.likedancesport.service;
 
-import com.likedancesport.common.model.impl.MediaResource;
+import com.likedancesport.common.model.domain.impl.MediaResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,6 +1,6 @@
 package com.likedancesport.service;
 
-import com.likedancesport.common.model.impl.Lecturer;
+import com.likedancesport.common.model.domain.impl.Lecturer;
 import com.likedancesport.request.LecturerUpdateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,5 +16,7 @@ public interface ILecturerService {
 
     Lecturer createLecturer(Lecturer lecturer);
 
-    Lecturer updateLecturer(LecturerUpdateRequest updateRequest);
+    Lecturer updateLecturer(Long lecturerId, LecturerUpdateRequest updateRequest);
+
+    void delete(Long lecturerId);
 }

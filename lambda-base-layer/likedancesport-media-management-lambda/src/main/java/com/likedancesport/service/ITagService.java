@@ -1,7 +1,7 @@
 package com.likedancesport.service;
 
-import com.likedancesport.common.model.impl.Tag;
-import com.likedancesport.common.model.impl.TaggableMediaResource;
+import com.likedancesport.common.model.domain.impl.Tag;
+import com.likedancesport.common.model.domain.impl.TaggableMediaResource;
 
 import java.util.Set;
 

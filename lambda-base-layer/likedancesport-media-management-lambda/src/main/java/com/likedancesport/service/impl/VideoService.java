@@ -1,11 +1,11 @@
 package com.likedancesport.service.impl;
 
+import com.likedancesport.common.dao.ISectionDao;
+import com.likedancesport.common.dao.IVideoDao;
 import com.likedancesport.common.enums.VideoStatus;
-import com.likedancesport.common.model.impl.MediaResource;
-import com.likedancesport.common.model.impl.Section;
-import com.likedancesport.common.model.impl.Video;
-import com.likedancesport.dao.ISectionDao;
-import com.likedancesport.dao.IVideoDao;
+import com.likedancesport.common.model.domain.impl.MediaResource;
+import com.likedancesport.common.model.domain.impl.Section;
+import com.likedancesport.common.model.domain.impl.Video;
 import com.likedancesport.request.VideoUpdateRequest;
 import com.likedancesport.service.ITagService;
 import com.likedancesport.service.IVideoService;

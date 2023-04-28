@@ -2,7 +2,7 @@ package com.likedancesport.common.dto.full;
 
 import com.likedancesport.common.dto.preview.LecturerPreview;
 import com.likedancesport.common.dto.preview.SectionPreview;
-import com.likedancesport.common.model.impl.Course;
+import com.likedancesport.common.model.domain.impl.Course;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -20,6 +20,7 @@ public class CourseDto extends TaggableMediaResourceDto {
     public static CourseDto of(Course course) {
         return CourseDto.builder()
                 .id(course.getId())
+                .title(course.getTitle())
                 .tags(course.getTags())
                 .description(course.getDescription())
                 .previewPhotoS3Key(course.getPreviewPhotoS3Key())

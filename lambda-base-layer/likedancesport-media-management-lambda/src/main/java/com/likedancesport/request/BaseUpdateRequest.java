@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public abstract class BaseUpdateRequest{
+public abstract class BaseUpdateRequest {
     private String title;
     private String description;
 }
