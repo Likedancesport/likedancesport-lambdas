@@ -1,7 +1,7 @@
 package com.likedancesport.controller;
 
 import com.likedancesport.common.dto.full.SectionDto;
-import com.likedancesport.common.model.domain.impl.Section;
+import com.likedancesport.common.model.domain.learning.Section;
 import com.likedancesport.common.utils.rest.HttpHeadersManager;
 import com.likedancesport.common.utils.rest.RestUtils;
 import com.likedancesport.request.SectionUpdateRequest;

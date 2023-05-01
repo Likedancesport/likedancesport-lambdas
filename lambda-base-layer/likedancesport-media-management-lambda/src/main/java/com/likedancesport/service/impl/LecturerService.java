@@ -1,7 +1,7 @@
 package com.likedancesport.service.impl;
 
 import com.likedancesport.common.dao.ILecturerDao;
-import com.likedancesport.common.model.domain.impl.Lecturer;
+import com.likedancesport.common.model.domain.learning.Lecturer;
 import com.likedancesport.request.LecturerUpdateRequest;
 import com.likedancesport.service.ILecturerService;
 import org.springframework.beans.factory.annotation.Autowired;

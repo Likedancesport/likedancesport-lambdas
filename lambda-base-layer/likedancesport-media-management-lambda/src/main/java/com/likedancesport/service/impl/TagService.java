@@ -1,8 +1,8 @@
 package com.likedancesport.service.impl;
 
 import com.likedancesport.common.dao.ITagDao;
-import com.likedancesport.common.model.domain.impl.Tag;
-import com.likedancesport.common.model.domain.impl.TaggableMediaResource;
+import com.likedancesport.common.model.domain.learning.Tag;
+import com.likedancesport.common.model.domain.learning.TaggableMediaResource;
 import com.likedancesport.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;

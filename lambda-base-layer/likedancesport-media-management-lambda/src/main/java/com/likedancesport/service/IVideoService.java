@@ -1,7 +1,7 @@
 package com.likedancesport.service;
 
 
-import com.likedancesport.common.model.domain.impl.Video;
+import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.request.VideoUpdateRequest;
 
 public interface IVideoService extends ITaggableMediaResourseService<Video> {

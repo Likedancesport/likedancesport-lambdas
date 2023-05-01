@@ -1,7 +1,7 @@
 package com.likedancesport.common.utils.rest;
 
 import com.likedancesport.common.model.domain.IPreviewable;
-import com.likedancesport.common.model.domain.impl.Video;
+import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
 import com.likedancesport.common.service.storage.S3StorageService;
 import org.springframework.beans.factory.annotation.Autowired;

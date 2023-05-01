@@ -2,9 +2,9 @@ package com.likedancesport.service.impl;
 
 import com.likedancesport.common.dao.ICourseDao;
 import com.likedancesport.common.dao.ISectionDao;
-import com.likedancesport.common.model.domain.impl.Course;
-import com.likedancesport.common.model.domain.impl.MediaResource;
-import com.likedancesport.common.model.domain.impl.Section;
+import com.likedancesport.common.model.domain.learning.Course;
+import com.likedancesport.common.model.domain.learning.MediaResource;
+import com.likedancesport.common.model.domain.learning.Section;
 import com.likedancesport.request.SectionUpdateRequest;
 import com.likedancesport.service.ISectionService;
 import org.springframework.beans.factory.annotation.Autowired;

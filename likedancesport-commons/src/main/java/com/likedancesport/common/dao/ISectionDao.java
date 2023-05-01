@@ -1,8 +1,6 @@
 package com.likedancesport.common.dao;
 
-import com.likedancesport.common.model.domain.impl.Section;
-import org.springframework.stereotype.Repository;
+import com.likedancesport.common.model.domain.learning.Section;
 
-@Repository
 public interface ISectionDao extends IMediaResourceDao<Section> {
 }

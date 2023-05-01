@@ -1,7 +1,7 @@
 package com.likedancesport.service.impl;
 
 import com.likedancesport.common.dao.ITaggableMediaResourceDao;
-import com.likedancesport.common.model.domain.impl.TaggableMediaResource;
+import com.likedancesport.common.model.domain.learning.TaggableMediaResource;
 import com.likedancesport.service.ITagService;
 
 public abstract class TaggableMediaResourceService<T extends TaggableMediaResource> extends BaseMediaResourceService<T> {

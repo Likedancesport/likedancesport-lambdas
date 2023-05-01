@@ -1,4 +1,4 @@
-package com.likedancesport.common.model.domain.impl;
+package com.likedancesport.common.model.domain.learning;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;

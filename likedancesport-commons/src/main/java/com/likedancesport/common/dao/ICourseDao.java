@@ -1,8 +1,6 @@
 package com.likedancesport.common.dao;
 
-import com.likedancesport.common.model.domain.impl.Course;
-import org.springframework.stereotype.Repository;
+import com.likedancesport.common.model.domain.learning.Course;
 
-@Repository
 public interface ICourseDao extends ITaggableMediaResourceDao<Course> {
 }

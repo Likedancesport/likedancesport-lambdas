@@ -1,6 +1,6 @@
 package com.likedancesport.request;
 
-import com.likedancesport.common.model.domain.impl.Tag;
+import com.likedancesport.common.model.domain.learning.Tag;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

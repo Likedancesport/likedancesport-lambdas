@@ -2,7 +2,7 @@ package com.likedancesport.controller;
 
 import com.likedancesport.common.dto.full.CourseDto;
 import com.likedancesport.common.dto.preview.CoursePreview;
-import com.likedancesport.common.model.domain.impl.Course;
+import com.likedancesport.common.model.domain.learning.Course;
 import com.likedancesport.common.utils.rest.HttpHeadersManager;
 import com.likedancesport.common.utils.rest.RestUtils;
 import com.likedancesport.request.CourseUpdateRequest;

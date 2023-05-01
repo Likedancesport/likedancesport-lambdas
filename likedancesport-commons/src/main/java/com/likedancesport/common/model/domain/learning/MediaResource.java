@@ -1,4 +1,4 @@
-package com.likedancesport.common.model.domain.impl;
+package com.likedancesport.common.model.domain.learning;
 
 import com.likedancesport.common.model.domain.IPreviewable;
 import lombok.Getter;

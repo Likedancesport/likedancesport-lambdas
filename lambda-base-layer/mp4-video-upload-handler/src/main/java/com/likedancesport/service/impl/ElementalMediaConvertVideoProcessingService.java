@@ -4,7 +4,7 @@ import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotificatio
 import com.likedancesport.common.dao.ITranscodingJobDao;
 import com.likedancesport.common.dao.IVideoDao;
 import com.likedancesport.common.enums.VideoStatus;
-import com.likedancesport.common.model.domain.impl.Video;
+import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.common.model.internal.TranscodingJob;
 import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
 import com.likedancesport.common.service.storage.S3StorageService;

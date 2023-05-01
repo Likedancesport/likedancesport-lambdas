@@ -1,6 +1,6 @@
 package com.likedancesport.service;
 
-import com.likedancesport.common.model.domain.impl.Lecturer;
+import com.likedancesport.common.model.domain.learning.Lecturer;
 import com.likedancesport.request.LecturerUpdateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,6 @@
 package com.likedancesport.common.dao;
 
-import com.likedancesport.common.model.domain.impl.Video;
-import org.springframework.stereotype.Component;
+import com.likedancesport.common.model.domain.learning.Video;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

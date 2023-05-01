@@ -1,6 +1,8 @@
 package com.likedancesport;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -61,6 +63,7 @@ import java.util.stream.Collectors;
 
 import static com.likedancesport.util.DevOpsConstants.*;
 
+@Component
 public class ComputeServerlessStack extends Stack {
     private Bucket mp4Bucket;
     private Bucket thumbnailsBucket;
@@ -296,7 +299,7 @@ public class ComputeServerlessStack extends Stack {
                 .version(videoUploadHandlerLambdaVersion)
                 .build();
 
-        videoUploadHandlerAlias.addEventSource(SqsEventSource.Builder.create());
+//        videoUploadHandlerAlias.addEventSource(SqsEventSource.Builder.create());
     }
 
 

@@ -3,7 +3,7 @@ package com.likedancesport.service.impl;
 import com.likedancesport.common.dao.ITranscodingJobDao;
 import com.likedancesport.common.dao.IVideoDao;
 import com.likedancesport.common.enums.VideoStatus;
-import com.likedancesport.common.model.domain.impl.Video;
+import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.common.model.internal.TranscodingJob;
 import com.likedancesport.model.aws.MediaConvertJobStateChangeEvent;
 import com.likedancesport.model.aws.OutputDetail;
