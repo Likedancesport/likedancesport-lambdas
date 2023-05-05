@@ -2,8 +2,7 @@ package com.likedancesport.common.utils.rest;
 
 import com.likedancesport.common.model.domain.IPreviewable;
 import com.likedancesport.common.model.domain.learning.Video;
-import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
-import com.likedancesport.common.service.storage.S3StorageService;
+import com.likedancesport.common.service.S3StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -16,12 +15,6 @@ import java.net.URL;
 public class HttpHeadersManager {
     private final S3StorageService s3StorageService;
 
-    @InjectSsmParameter(parameterName = "mp4-bucket-name", encrypted = true)
-    private String videoBucketName;
-
-    @InjectSsmParameter(parameterName = "thumbnails-bucket-name", encrypted = true)
-    private String thumbnailsBucketName;
-
     @Autowired
     public HttpHeadersManager(S3StorageService s3StorageService) {
         this.s3StorageService = s3StorageService;
@@ -29,14 +22,14 @@ public class HttpHeadersManager {
 
     public HttpHeaders generateUploadHeaders(IPreviewable previewableEntity) {
         HttpHeaders headers = new HttpHeaders();
-        URL presignedPhotoUploadUrl = s3StorageService.generatePresingedUploadUrl(previewableEntity.getPhotoS3Key(), thumbnailsBucketName);
+        URL presignedPhotoUploadUrl = s3StorageService.generatePresignedUploadUrl(previewableEntity.getPhotoS3Key());
         headers.add("preview-upload", presignedPhotoUploadUrl.toString());
         return headers;
     }
 
     private HttpHeaders generateUploadHeaders(Video video) {
         HttpHeaders headers = generateUploadHeaders((IPreviewable) video);
-        URL presignedVideoUploadUrl = s3StorageService.generatePresingedUploadUrl(video.getVideoS3Key(), videoBucketName);
+        URL presignedVideoUploadUrl = s3StorageService.generatePresignedUploadUrl(video.getMp4AssetS3Key());
         headers.add("mp4-upload", presignedVideoUploadUrl.toString());
         return headers;
     }
@@ -63,14 +56,14 @@ public class HttpHeadersManager {
         }
 
         public HttpHeadersChain uploads(IPreviewable previewable) {
-            URL presignedPhotoUploadUrl = s3StorageService.generatePresingedUploadUrl(previewable.getPhotoS3Key(), thumbnailsBucketName);
+            URL presignedPhotoUploadUrl = s3StorageService.generatePresignedUploadUrl(previewable.getPhotoS3Key());
             headers.add("preview-upload", presignedPhotoUploadUrl.toString());
             return this;
         }
 
         public HttpHeadersChain uploads(Video video) {
             uploads((IPreviewable) video);
-            URL presignedVideoUploadUrl = s3StorageService.generatePresingedUploadUrl(video.getVideoS3Key(), videoBucketName);
+            URL presignedVideoUploadUrl = s3StorageService.generatePresignedUploadUrl(video.getMp4AssetS3Key());
             headers.add("mp4-upload", presignedVideoUploadUrl.toString());
             return this;
         }

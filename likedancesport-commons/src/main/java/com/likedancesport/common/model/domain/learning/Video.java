@@ -2,7 +2,9 @@ package com.likedancesport.common.model.domain.learning;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.likedancesport.common.enums.VideoStatus;
+import com.likedancesport.common.lifecycle.VideoEntityListener;
 import com.likedancesport.common.model.domain.IOrderableEntity;
+import com.likedancesport.common.model.domain.S3Key;
 import com.likedancesport.common.utils.misc.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +15,12 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
@@ -29,6 +35,7 @@ import javax.persistence.Table;
 @Entity(name = "Video")
 @Table(name = "video")
 @NoArgsConstructor
+@EntityListeners(VideoEntityListener.class)
 public class Video extends TaggableMediaResource implements IOrderableEntity {
     @Column(nullable = false, name = "order_in_section")
     private Integer orderInSection;
@@ -40,8 +47,19 @@ public class Video extends TaggableMediaResource implements IOrderableEntity {
     @Builder.Default
     private Long viewsCount = 0L;
 
-    @Column(name = "s3_key", nullable = false, unique = true, updatable = false)
-    private String videoS3Key;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "bucketName", column = @Column(name = "mp4_video_bucket_name")),
+            @AttributeOverride(name = "key", column = @Column(name = "mp4_video_key"))
+    })
+    private S3Key mp4AssetS3Key;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "bucketName", column = @Column(name = "hls_video_bucket_name")),
+            @AttributeOverride(name = "key", column = @Column(name = "hls_video_key"))
+    })
+    private S3Key hlsVideoS3Key;
 
     @ManyToOne
     @JoinColumn(name = "section_id", nullable = false)
@@ -51,10 +69,6 @@ public class Video extends TaggableMediaResource implements IOrderableEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private VideoStatus status;
-
-    public void setVideoS3Key(String s3Key) {
-        this.videoS3Key = s3Key;
-    }
 
     @Override
     public Integer getOrder() {

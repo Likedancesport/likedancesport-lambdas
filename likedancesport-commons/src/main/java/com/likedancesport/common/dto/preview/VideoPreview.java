@@ -15,7 +15,6 @@ public class VideoPreview extends BasePreview {
         return VideoPreview.builder()
                 .id(video.getId())
                 .title(video.getTitle())
-                .previewPhotoS3Key(video.getPreviewPhotoS3Key())
                 .viewsCount(video.getViewsCount().intValue())
                 .build();
 

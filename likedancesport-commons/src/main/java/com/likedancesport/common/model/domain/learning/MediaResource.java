@@ -1,6 +1,8 @@
 package com.likedancesport.common.model.domain.learning;
 
+import com.likedancesport.common.lifecycle.BaseS3StorableEntityListener;
 import com.likedancesport.common.model.domain.IPreviewable;
+import com.likedancesport.common.model.domain.S3Key;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,8 +10,12 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +33,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
+@EntityListeners(BaseS3StorableEntityListener.class)
 public abstract class MediaResource implements IPreviewable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,8 +46,12 @@ public abstract class MediaResource implements IPreviewable {
     @Column(nullable = false, name = "description")
     private String description;
 
-    @Column(nullable = false, name = "preview_photo_s3_key", unique = true, updatable = false)
-    private String previewPhotoS3Key;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "bucketName", column = @Column(name = "preview_photo_bucket_name")),
+            @AttributeOverride(name = "key", column = @Column(name = "preview_photo_key"))
+    })
+    private S3Key previewPhotoS3Key;
 
     @Override
     public boolean equals(Object o) {
@@ -67,8 +78,13 @@ public abstract class MediaResource implements IPreviewable {
     public abstract void remove();
 
     @Override
-    public String getPhotoS3Key() {
+    public S3Key getPhotoS3Key() {
         return previewPhotoS3Key;
+    }
+
+    @Override
+    public void setPhotoS3Key(S3Key s3Key) {
+        this.previewPhotoS3Key = s3Key;
     }
 
     public static String generatePreviewPhotoS3Key() {

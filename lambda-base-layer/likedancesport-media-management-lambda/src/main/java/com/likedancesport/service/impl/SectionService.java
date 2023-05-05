@@ -24,7 +24,6 @@ public class SectionService extends BaseMediaResourceService<Section> implements
     @Override
     @Transactional
     public Section createSection(Long courseId, Section section) {
-        section.setPreviewPhotoS3Key(MediaResource.generatePreviewPhotoS3Key());
         Course course = courseDao.findById(courseId).orElseThrow();
         course.addSection(section);
         return serviceDomainDao.save(section);

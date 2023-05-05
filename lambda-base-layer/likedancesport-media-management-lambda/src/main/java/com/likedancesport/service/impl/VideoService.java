@@ -24,8 +24,6 @@ public class VideoService extends TaggableMediaResourceService<Video> implements
 
     @Override
     public Video createVideo(Long sectionId, Video video) {
-        video.setPreviewPhotoS3Key(MediaResource.generatePreviewPhotoS3Key());
-        video.setVideoS3Key(Video.generateS3Key(video));
         video.setStatus(VideoStatus.UPLOADING);
         tagService.persistAndReplaceTransientTagsIn(video);
         Section section = sectionDao.findById(sectionId).orElseThrow();

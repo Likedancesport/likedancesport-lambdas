@@ -5,9 +5,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.net.URL;
 
 public class RestUtils {
+    public static final String r = "cwcww";
+
     public static URI buildUri(UriComponentsBuilder uriComponentsBuilder, String... pathSegments) {
         return uriComponentsBuilder.
                 pathSegment(pathSegments)
