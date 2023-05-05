@@ -21,7 +21,6 @@ public class CoursePreview extends BasePreview {
         return CoursePreview.builder()
                 .id(course.getId())
                 .title(course.getTitle())
-                .previewPhotoS3Key(course.getPreviewPhotoS3Key())
                 .lecturersNames(course.getLecturers().stream()
                         .map(Lecturer::getName)
                         .collect(Collectors.toList()))

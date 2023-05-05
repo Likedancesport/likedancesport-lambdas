@@ -3,7 +3,9 @@ package com.likedancesport.common.model.domain.learning;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.likedancesport.common.lifecycle.BaseS3StorableEntityListener;
 import com.likedancesport.common.model.domain.IPreviewable;
+import com.likedancesport.common.model.domain.S3Key;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity(name = "Lecturer")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@EntityListeners(BaseS3StorableEntityListener.class)
 public class Lecturer implements IPreviewable {
     @Id
     private Long id;
@@ -44,7 +48,7 @@ public class Lecturer implements IPreviewable {
     @Column
     private String description;
     @Column
-    private String photoS3Key;
+    private S3Key photoS3Key;
 
     @ManyToMany
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.DETACH, CascadeType.LOCK, CascadeType.DELETE})

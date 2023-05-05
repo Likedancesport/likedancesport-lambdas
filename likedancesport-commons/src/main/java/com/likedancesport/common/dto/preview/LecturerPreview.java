@@ -15,7 +15,6 @@ public class LecturerPreview {
         return LecturerPreview.builder()
                 .id(lecturer.getId())
                 .name(lecturer.getName())
-                .avatarS3Key(lecturer.getPhotoS3Key())
                 .build();
     }
 }

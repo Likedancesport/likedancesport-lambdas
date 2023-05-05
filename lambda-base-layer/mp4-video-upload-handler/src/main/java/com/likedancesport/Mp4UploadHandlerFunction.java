@@ -2,6 +2,7 @@ package com.likedancesport;
 
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
+import com.likedancesport.common.model.domain.S3Key;
 import com.likedancesport.common.utils.json.JsonUtils;
 import com.likedancesport.service.IVideoProcessingService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,8 @@ public class Mp4UploadHandlerFunction implements Function<SQSEvent, Void> {
     }
 
     private void processS3Event(S3Event s3Event) {
-        s3Event.getRecords().forEach(videoEncodingService::processVideo);
+        s3Event.getRecords().forEach(record ->
+                videoEncodingService.processVideo(S3Key.of(record.getS3().getBucket().getName(),
+                        record.getS3().getObject().getKey())));
     }
 }

@@ -11,4 +11,7 @@ public abstract class TaggableMediaResourceService<T extends TaggableMediaResour
         super(serviceDomainDao);
         this.tagService = tagService;
     }
+
+
+
 }

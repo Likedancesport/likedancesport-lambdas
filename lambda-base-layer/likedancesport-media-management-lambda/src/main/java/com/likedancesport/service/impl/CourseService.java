@@ -31,7 +31,6 @@ public class CourseService extends TaggableMediaResourceService<Course> implemen
 
     @Override
     public Course createCourse(Course course) {
-        course.setPreviewPhotoS3Key(MediaResource.generatePreviewPhotoS3Key());
         tagService.persistAndReplaceTransientTagsIn(course);
         return serviceDomainDao.save(course);
     }

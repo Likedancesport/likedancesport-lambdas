@@ -15,7 +15,6 @@ public class SectionPreview extends BasePreview {
         return SectionPreview.builder()
                 .id(section.getId())
                 .title(section.getTitle())
-                .previewPhotoS3Key(section.getPreviewPhotoS3Key())
                 .videosCount(section.getVideos().size())
                 .build();
     }

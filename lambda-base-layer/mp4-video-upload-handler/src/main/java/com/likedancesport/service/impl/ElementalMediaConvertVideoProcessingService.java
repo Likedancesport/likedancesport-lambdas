@@ -4,10 +4,11 @@ import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotificatio
 import com.likedancesport.common.dao.ITranscodingJobDao;
 import com.likedancesport.common.dao.IVideoDao;
 import com.likedancesport.common.enums.VideoStatus;
+import com.likedancesport.common.model.domain.S3Key;
 import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.common.model.internal.TranscodingJob;
-import com.likedancesport.common.parameter.annotation.InjectSsmParameter;
-import com.likedancesport.common.service.storage.S3StorageService;
+import com.likedancesport.common.annotation.InjectSsmParameter;
+import com.likedancesport.common.service.S3StorageService;
 import com.likedancesport.service.IVideoProcessingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,20 +45,18 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
 
     @Override
     @Transactional
-    public void processVideo(S3EventNotification.S3EventNotificationRecord record) {
-        String bucketName = record.getS3().getBucket().getName();
-        String videoS3Key = record.getS3().getObject().getKey();
-        Optional<Video> videoOptional = videoDao.findByVideoS3Key(videoS3Key);
+    public void processVideo(S3Key s3Key) {
+        Optional<Video> videoOptional = videoDao.findByMp4AssetS3Key(s3Key);
         if (videoOptional.isEmpty()) {
-            s3StorageService.deleteObject(videoS3Key, bucketName);
+            s3StorageService.deleteObject(s3Key);
             return;
         }
         Video video = videoOptional.get();
 
-        String s3Key = video.getVideoS3Key();
+        String key = video.getMp4AssetS3Key().getKey();
 
         JobSettings jobSettings = JobSettings.builder().inputs(Input.builder()
-                        .fileInput(s3Key)
+                        .fileInput(key)
                         .build())
                 .build();
 

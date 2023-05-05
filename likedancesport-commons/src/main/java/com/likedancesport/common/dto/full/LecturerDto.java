@@ -19,7 +19,6 @@ public class LecturerDto {
     public static LecturerDto of(Lecturer lecturer) {
         return LecturerDto.builder()
                 .id(lecturer.getId())
-                .avatarS3Key(lecturer.getPhotoS3Key())
                 .name(lecturer.getName())
                 .courses(lecturer.getCourses().stream()
                         .map(CoursePreview::of)

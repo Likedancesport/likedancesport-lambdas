@@ -45,7 +45,8 @@ public class LecturerService implements ILecturerService {
         Lecturer lecturer = lecturerDao.findById(lecturerId).orElseThrow();
         lecturer.setName(updateRequest.getName());
         lecturer.setDescription(updateRequest.getDescription());
-        return null;
+        lecturerDao.save(lecturer);
+        return lecturer;
     }
 
     @Override
