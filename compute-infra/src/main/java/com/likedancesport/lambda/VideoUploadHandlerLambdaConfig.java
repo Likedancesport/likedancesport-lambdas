@@ -23,7 +23,7 @@ public class VideoUploadHandlerLambdaConfig extends AbstractLambdaConfig {
     private final IRole videoUploadHandlerRole;
 
     public VideoUploadHandlerLambdaConfig(Stack stack, StackProps stackProps,
-                                          @Qualifier("codebaseBucket") IBucket codebaseBucket,
+                                          IBucket codebaseBucket,
                                           @Qualifier("commonLayer") LayerVersion commonLayer,
                                           @Qualifier("videoUploadHandlerRole") IRole videoUploadHandlerRole) {
         super(stack, stackProps, codebaseBucket, commonLayer);

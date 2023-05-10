@@ -25,7 +25,7 @@ public class MediaManagementLambdaConfig extends AbstractLambdaConfig {
 
     @Autowired
     public MediaManagementLambdaConfig(Stack stack, StackProps stackProps,
-                                       @Qualifier("mediaManagementRole") IRole mediaManagementLambdaRole,
+                                       IRole mediaManagementLambdaRole,
                                        @Qualifier("codebaseBucket") IBucket codebaseBucket,
                                        @Qualifier("commonLayer") LayerVersion commonLayer) {
         super(stack, stackProps, codebaseBucket, commonLayer);

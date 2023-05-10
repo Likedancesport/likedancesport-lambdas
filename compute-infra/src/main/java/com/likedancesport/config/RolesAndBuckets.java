@@ -25,6 +25,6 @@ public class RolesAndBuckets extends AbstractCdkConfig{
 
     @Bean
     public IRole role(){
-        return Role.fromRoleArn(stack, "lambda-role", "arn:aws:iam::066002146890:role/Rds-S3-SSM-Role");
+        return Role.fromRoleArn(stack, "lambda-basic-role", "arn:aws:iam::066002146890:role/Rds-S3-SSM-Role");
     }
 }
