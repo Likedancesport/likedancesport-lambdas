@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.s3.BlockPublicAccess;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketAccessControl;
@@ -18,8 +19,8 @@ import java.util.List;
 @Configuration
 public class BucketsConfig extends AbstractCdkConfig {
     @Autowired
-    public BucketsConfig(Stack stack) {
-        super(stack);
+    public BucketsConfig(Stack stack, StackProps stackProps) {
+        super(stack, stackProps);
     }
 
     @Bean(name = "mp4Bucket")

@@ -16,20 +16,13 @@
         <module>mp4-video-upload-handler</module>
         <module>transcoding-job-complete-handler</module>
         <module>likedancesport-marketplace-manager</module>
-        <module>test-lambda</module>
+        <module>marketplace-upload-handler</module>
     </modules>
 
 
     <artifactId>lambda-base-layer</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud.version>2021.0.5</spring-cloud.version>
-    </properties>
 
     <dependencyManagement>
         <dependencies>

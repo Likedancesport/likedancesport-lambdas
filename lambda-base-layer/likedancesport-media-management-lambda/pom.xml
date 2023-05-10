@@ -15,13 +15,6 @@
         This lambda is used for managing media content
     </description>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud.version>2021.0.5</spring-cloud.version>
-    </properties>
-
     <build>
         <plugins>
             <plugin>

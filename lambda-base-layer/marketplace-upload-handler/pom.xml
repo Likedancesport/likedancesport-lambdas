@@ -9,7 +9,6 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>likedancesport-marketplace-manager</artifactId>
-
+    <artifactId>marketplace-upload-handler</artifactId>
 
 </project>

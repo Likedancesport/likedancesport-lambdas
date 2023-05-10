@@ -15,8 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.mediaconvert.MediaConvertClient;
 import software.amazon.awssdk.services.mediaconvert.model.CreateJobRequest;
 import software.amazon.awssdk.services.mediaconvert.model.CreateJobResponse;
+import software.amazon.awssdk.services.mediaconvert.model.HlsSettings;
 import software.amazon.awssdk.services.mediaconvert.model.Input;
 import software.amazon.awssdk.services.mediaconvert.model.JobSettings;
+import software.amazon.awssdk.services.mediaconvert.model.JobTemplate;
+import software.amazon.awssdk.services.mediaconvert.model.Output;
+import software.amazon.awssdk.services.mediaconvert.model.OutputSettings;
 
 import java.util.Optional;
 
@@ -55,7 +59,8 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
 
         String key = video.getMp4AssetS3Key().getKey();
 
-        JobSettings jobSettings = JobSettings.builder().inputs(Input.builder()
+        JobSettings jobSettings = JobSettings.builder()
+                .inputs(Input.builder()
                         .fileInput(key)
                         .build())
                 .build();
