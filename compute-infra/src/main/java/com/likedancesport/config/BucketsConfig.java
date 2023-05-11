@@ -9,7 +9,6 @@ import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.s3.BlockPublicAccess;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketAccessControl;
-import software.amazon.awscdk.services.s3.BucketEncryption;
 import software.amazon.awscdk.services.s3.IBucket;
 import software.amazon.awscdk.services.s3.LifecycleRule;
 import software.amazon.awscdk.services.s3.StorageClass;
@@ -45,10 +44,8 @@ public class BucketsConfig extends AbstractCdkConfig {
         return Bucket.Builder.create(stack, "likedancesport-mp4-assets")
                 .bucketName("likedancesport-mp4-assets")
                 .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
-                .accessControl(BucketAccessControl.BUCKET_OWNER_FULL_CONTROL)
                 .eventBridgeEnabled(true)
                 .lifecycleRules(List.of(mp4VideoLifecycleRule))
-                .encryption(BucketEncryption.KMS_MANAGED)
                 .build();
     }
 
