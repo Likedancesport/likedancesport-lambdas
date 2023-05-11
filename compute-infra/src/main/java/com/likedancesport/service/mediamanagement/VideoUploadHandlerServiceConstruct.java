@@ -4,6 +4,7 @@ import com.likedancesport.service.AbstractLambdaServiceConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iam.IRole;
@@ -60,6 +61,8 @@ public class VideoUploadHandlerServiceConstruct extends AbstractLambdaServiceCon
                 .build();
 
         Queue queue = Queue.Builder.create(stack, "mp4-asset-upload-handler-queue")
+                .visibilityTimeout(Duration.seconds(10))
+                .retentionPeriod(Duration.hours(5))
                 .fifo(false)
                 .queueName("mp4-asset-upload-handler-queue")
                 .build();

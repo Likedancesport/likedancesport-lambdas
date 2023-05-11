@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.s3.BlockPublicAccess;
 import software.amazon.awscdk.services.s3.Bucket;
-import software.amazon.awscdk.services.s3.BucketAccessControl;
 import software.amazon.awscdk.services.s3.IBucket;
 import software.amazon.awscdk.services.s3.LifecycleRule;
 import software.amazon.awscdk.services.s3.StorageClass;
@@ -18,6 +18,8 @@ import java.util.List;
 
 @Configuration
 public class BucketsConfig extends AbstractCdkConfig {
+    private static final RemovalPolicy REMOVAL_POLICY = RemovalPolicy.DESTROY;
+
     @Autowired
     public BucketsConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
@@ -45,6 +47,7 @@ public class BucketsConfig extends AbstractCdkConfig {
                 .bucketName("likedancesport-mp4-assets")
                 .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
                 .eventBridgeEnabled(true)
+                .removalPolicy(REMOVAL_POLICY)
                 .lifecycleRules(List.of(mp4VideoLifecycleRule))
                 .build();
     }
@@ -53,6 +56,8 @@ public class BucketsConfig extends AbstractCdkConfig {
     public Bucket hlsBucket() {
         return Bucket.Builder.create(stack, "likedancesport-hls-bucket")
                 .bucketName("likedancesport-hls-bucket")
+                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
+                .removalPolicy(REMOVAL_POLICY)
                 .build();
     }
 
@@ -60,6 +65,7 @@ public class BucketsConfig extends AbstractCdkConfig {
     public Bucket thumbnailsBucket() {
         return Bucket.Builder.create(stack, "likedancesport-thumbnails-bucket")
                 .bucketName("likedancesport-thumbnails-bucket")
+                .removalPolicy(REMOVAL_POLICY)
                 .build();
     }
 }
