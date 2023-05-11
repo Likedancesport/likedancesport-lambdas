@@ -53,8 +53,6 @@ public class BucketsConfig extends AbstractCdkConfig {
     public Bucket hlsBucket() {
         return Bucket.Builder.create(stack, "likedancesport-hls-bucket")
                 .bucketName("likedancesport-hls-bucket")
-                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
-                .accessControl(BucketAccessControl.AUTHENTICATED_READ)
                 .build();
     }
 
@@ -62,8 +60,6 @@ public class BucketsConfig extends AbstractCdkConfig {
     public Bucket thumbnailsBucket() {
         return Bucket.Builder.create(stack, "likedancesport-thumbnails-bucket")
                 .bucketName("likedancesport-thumbnails-bucket")
-                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
-                .accessControl(BucketAccessControl.BUCKET_OWNER_FULL_CONTROL)
                 .build();
     }
 }
