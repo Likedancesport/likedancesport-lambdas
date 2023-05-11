@@ -63,7 +63,6 @@ public class VideoUploadHandlerServiceConstruct extends AbstractLambdaServiceCon
         Queue queue = Queue.Builder.create(stack, "mp4-asset-upload-handler-queue")
                 .visibilityTimeout(Duration.seconds(10))
                 .retentionPeriod(Duration.hours(5))
-                .fifo(false)
                 .queueName("mp4-asset-upload-handler-queue")
                 .build();
 
