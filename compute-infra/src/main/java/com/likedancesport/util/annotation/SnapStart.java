@@ -1,4 +1,4 @@
-package com.likedancesport.annotation;
+package com.likedancesport.util.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

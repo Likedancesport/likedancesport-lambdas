@@ -8,7 +8,7 @@ import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.mediaconvert.CfnQueue;
 
 @Configuration
-public class MediaConvertConfig extends AbstractCdkConfig{
+public class MediaConvertConfig extends AbstractCdkConfig {
     @Autowired
     public MediaConvertConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
@@ -18,15 +18,6 @@ public class MediaConvertConfig extends AbstractCdkConfig{
     public CfnQueue likedancesportLearningMediaConvertQueue() {
         return CfnQueue.Builder.create(stack, "likedancesport-learning-transcoding-queue")
                 .name("likedancesport-learning-transcoding-queue")
-                .pricingPlan("ON_DEMAND")
-                .status("ACTIVE")
-                .build();
-    }
-
-    @Bean(name = "likedancesportMarketplaceMediaConvertQueue")
-    public CfnQueue likedancesportMarketplaceMediaConvertQueue() {
-        return CfnQueue.Builder.create(stack, "likedancesport-marketplace-transcoding-queue")
-                .name("likedancesport-marketplace-transcoding-queue")
                 .pricingPlan("ON_DEMAND")
                 .status("ACTIVE")
                 .build();

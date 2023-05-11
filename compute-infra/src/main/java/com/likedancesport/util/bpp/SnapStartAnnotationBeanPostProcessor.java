@@ -1,6 +1,6 @@
-package com.likedancesport.bpp;
+package com.likedancesport.util.bpp;
 
-import com.likedancesport.annotation.SnapStart;
+import com.likedancesport.util.annotation.SnapStart;
 import com.likedancesport.util.CdkUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;

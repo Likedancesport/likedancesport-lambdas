@@ -10,6 +10,7 @@ import software.amazon.awscdk.services.s3.BlockPublicAccess;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketAccessControl;
 import software.amazon.awscdk.services.s3.BucketEncryption;
+import software.amazon.awscdk.services.s3.IBucket;
 import software.amazon.awscdk.services.s3.LifecycleRule;
 import software.amazon.awscdk.services.s3.StorageClass;
 import software.amazon.awscdk.services.s3.Transition;
@@ -23,7 +24,12 @@ public class BucketsConfig extends AbstractCdkConfig {
         super(stack, stackProps);
     }
 
-    @Bean(name = "mp4Bucket")
+    @Bean("codebaseBucket")
+    public IBucket codebaseBucket() {
+        return Bucket.fromBucketArn(stack, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
+    }
+
+    @Bean(name = "mp4AssetsBucket")
     public Bucket mp4Bucket() {
         Transition mp4VideoTransition = Transition.builder()
                 .storageClass(StorageClass.GLACIER)

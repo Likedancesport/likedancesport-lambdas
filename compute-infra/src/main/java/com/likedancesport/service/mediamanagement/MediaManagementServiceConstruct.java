@@ -1,37 +1,72 @@
-package com.likedancesport.integration.impl;
+package com.likedancesport.service.mediamanagement;
 
-import com.likedancesport.integration.ILambdaTriggerMapper;
+import com.likedancesport.service.AbstractLambdaServiceConstruct;
+import com.likedancesport.util.CdkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.apigateway.AuthorizationType;
 import software.amazon.awscdk.services.apigateway.LambdaIntegration;
 import software.amazon.awscdk.services.apigateway.Method;
 import software.amazon.awscdk.services.apigateway.MethodOptions;
 import software.amazon.awscdk.services.apigateway.Resource;
 import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.apigateway.StageOptions;
+import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.lambda.Alias;
-import software.amazon.awscdk.services.lambda.IFunction;
+import software.amazon.awscdk.services.lambda.Architecture;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.HttpMethod;
+import software.amazon.awscdk.services.lambda.LayerVersion;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.lambda.Version;
+import software.amazon.awscdk.services.s3.IBucket;
 
 import java.util.HashMap;
-
-import static com.likedancesport.util.DevOpsConstants.*;
+import java.util.List;
 
 @Component
-public class MediaManagementApiMapper implements ILambdaTriggerMapper {
-    private final RestApi mediaManagementApi;
-    private final IFunction mediaManagementAlias;
+public class MediaManagementServiceConstruct extends AbstractLambdaServiceConstruct {
+    public static final String POST = HttpMethod.POST.name();
+    public static final String DELETE = HttpMethod.DELETE.name();
+    public static final String PUT = HttpMethod.PUT.name();
+    public static final String GET = HttpMethod.GET.name();
 
     @Autowired
-    public MediaManagementApiMapper(@Qualifier("mediaManagementApi") RestApi mediaManagementApi,
-                                    @Qualifier("mediaManagementAlias") Alias mediaManagementAlias) {
-        this.mediaManagementApi = mediaManagementApi;
-        this.mediaManagementAlias = mediaManagementAlias;
+    public MediaManagementServiceConstruct(IRole role,
+                                           @Qualifier("codebaseBucket") IBucket codebaseBucket,
+                                           LayerVersion commonLambdaLayer) {
+        super(role, codebaseBucket, commonLambdaLayer);
     }
 
     @Override
-    public void mapLambdas() {
+    public void construct(Stack stack, StackProps stackProps) {
+        final Code mediaManagementLambdaCode = Code.fromBucket(codebaseBucket, "likedancesport-media-management-lambda-1.0.jar");
+
+        final Function mediaManagementLambda = Function.Builder.create(stack, "media-management-lambda")
+                .architecture(Architecture.X86_64)
+                .runtime(Runtime.JAVA_11)
+                .memorySize(3000)
+                .role(role)
+                .layers(List.of(commonLambdaLayer))
+                .functionName("media-management-lambda")
+                .handler("com.likedancesport.MediaManagementLambdaHandler::handleRequest")
+                .code(mediaManagementLambdaCode)
+                .build();
+
+        CdkUtils.setSnapStart(mediaManagementLambda);
+
+        final Version mediaManagementLambdaVersion = mediaManagementLambda.getCurrentVersion();
+
+        final Alias mediaManagementAlias = Alias.Builder.create(stack, "media-management-alias")
+                .aliasName("snap-m-alias")
+                .version(mediaManagementLambdaVersion)
+                .build();
+
         final LambdaIntegration mediaManagementLambdaIntegration = LambdaIntegration.Builder.create(mediaManagementAlias)
                 .requestTemplates(new HashMap<>() {{
                     put("application/json", "{ \"statusCode\": \"200\" }");
@@ -43,6 +78,17 @@ public class MediaManagementApiMapper implements ILambdaTriggerMapper {
         final MethodOptions defaultMethodOptions = MethodOptions.builder()
                 .authorizationType(AuthorizationType.NONE)
                 .apiKeyRequired(false)
+                .build();
+
+        RestApi mediaManagementApi = RestApi.Builder.create(stack, "likedancesport-management-api")
+                .restApiName("likedancesport-management-api")
+                .deploy(true)
+                .deployOptions(StageOptions.builder()
+                        .stageName("dev")
+                        .build())
+                .defaultMethodOptions(MethodOptions.builder()
+                        .authorizationType(AuthorizationType.NONE)
+                        .build())
                 .build();
 
         final Resource apiResource = mediaManagementApi.getRoot().addResource("api");
@@ -79,5 +125,6 @@ public class MediaManagementApiMapper implements ILambdaTriggerMapper {
         final Method getVideoMethod = video.addMethod(GET, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method updateVideoMethod = video.addMethod(PUT, mediaManagementLambdaIntegration, defaultMethodOptions);
         final Method deleteVideoMethod = video.addMethod(DELETE, mediaManagementLambdaIntegration, defaultMethodOptions);
+
     }
 }
