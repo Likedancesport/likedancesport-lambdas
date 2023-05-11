@@ -48,7 +48,7 @@ public class VideoUploadHandlerServiceConstruct extends AbstractLambdaServiceCon
                 .memorySize(3000)
                 .role(role)
                 .layers(List.of(commonLambdaLayer))
-                .functionName("video-upload-handler")
+                .functionName("mp4-video-upload-handler")
                 .handler("org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest")
                 .code(code)
                 .build();

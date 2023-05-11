@@ -30,7 +30,7 @@ pipeline {
                         sh 'aws s3 cp ./target/likedancesport-media-management-lambda-1.0.jar s3://likedancesport-codebase/likedancesport-media-management-lambda-1.0.jar'
                     }
                     dir('video-upload-handler') {
-                        sh 'aws s3 cp ./target/video-upload-handler-1.0.jar s3://likedancesport-codebase/video-upload-handler-1.0.jar'
+                        sh 'aws s3 cp ./target/video-upload-handler-1.0.jar s3://likedancesport-codebase/mp4-video-upload-handler-1.0.jar'
                     }
                 }
             }
