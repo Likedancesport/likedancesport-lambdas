@@ -10,6 +10,7 @@ import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.events.EventBus;
 import software.amazon.awscdk.services.events.EventPattern;
+import software.amazon.awscdk.services.events.IEventBus;
 import software.amazon.awscdk.services.events.Rule;
 import software.amazon.awscdk.services.events.targets.SqsQueue;
 import software.amazon.awscdk.services.iam.IRole;
@@ -31,14 +32,14 @@ import java.util.Map;
 @Component
 public class LearningVideoTranscodingJobCompleteHandlerServiceConstruct extends AbstractLambdaServiceConstruct {
     private final CfnQueue mediaConvertQueue;
-    private final EventBus likedancesportEventBus;
+    private final IEventBus likedancesportEventBus;
 
     @Autowired
     public LearningVideoTranscodingJobCompleteHandlerServiceConstruct(IRole role,
                                                                       @Qualifier("codebaseBucket") IBucket codebaseBucket,
                                                                       LayerVersion commonLambdaLayer,
                                                                       @Qualifier("likedancesportLearningMediaConvertQueue") CfnQueue mediaConvertQueue,
-                                                                      EventBus likedancesportEventBus) {
+                                                                      IEventBus likedancesportEventBus) {
         super(role, codebaseBucket, commonLambdaLayer);
         this.mediaConvertQueue = mediaConvertQueue;
         this.likedancesportEventBus = likedancesportEventBus;
