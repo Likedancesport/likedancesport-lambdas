@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.events.EventBus;
 import software.amazon.awscdk.services.events.EventPattern;
 import software.amazon.awscdk.services.events.IEventBus;
 import software.amazon.awscdk.services.events.Rule;
@@ -18,6 +17,7 @@ import software.amazon.awscdk.services.lambda.Alias;
 import software.amazon.awscdk.services.lambda.Architecture;
 import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.IFunction;
 import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.Version;
@@ -69,31 +69,10 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceConstruct extends 
                 .eventBus(likedancesportEventBus)
                 .build();
 
-        Alias alias = getAlias(stack);
-
-        alias.addEventSource(new SqsEventSource(transcodingCompleteLambdaQueue));
-    }
-
-    @NotNull
-    private Alias getAlias(Stack stack) {
         Code code = Code.fromBucket(codebaseBucket, "learning-video-transcoding-job-complete-handler.jar");
 
-        Function function = Function.Builder.create(stack, "learning-video-transcoding-job-complete-handler")
-                .functionName("learning-video-transcoding-job-complete-handler")
-                .architecture(Architecture.X86_64)
-                .runtime(Runtime.JAVA_11)
-                .handler("org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest")
-                .code(code)
-                .layers(List.of(commonLambdaLayer))
-                .memorySize(3000)
-                .build();
+        IFunction function = buildSpringCloudFunctionLambda(stack, code, "learning-video-transcoding-job-complete-handler");
 
-        Version version = function.getCurrentVersion();
-
-        Alias alias = Alias.Builder.create(stack, "learning-video-transcoding-job-complete-handler-alias")
-                .aliasName("learning-video-transcoding-job-complete-handler-alias")
-                .version(version)
-                .build();
-        return alias;
+        function.addEventSource(new SqsEventSource(transcodingCompleteLambdaQueue));
     }
 }

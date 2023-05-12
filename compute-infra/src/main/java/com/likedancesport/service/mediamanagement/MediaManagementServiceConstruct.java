@@ -1,7 +1,6 @@
 package com.likedancesport.service.mediamanagement;
 
 import com.likedancesport.service.AbstractLambdaServiceConstruct;
-import com.likedancesport.util.CdkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -16,18 +15,13 @@ import software.amazon.awscdk.services.apigateway.Resource;
 import software.amazon.awscdk.services.apigateway.RestApi;
 import software.amazon.awscdk.services.apigateway.StageOptions;
 import software.amazon.awscdk.services.iam.IRole;
-import software.amazon.awscdk.services.lambda.Alias;
-import software.amazon.awscdk.services.lambda.Architecture;
 import software.amazon.awscdk.services.lambda.Code;
-import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.HttpMethod;
+import software.amazon.awscdk.services.lambda.IFunction;
 import software.amazon.awscdk.services.lambda.LayerVersion;
-import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.s3.IBucket;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class MediaManagementServiceConstruct extends AbstractLambdaServiceConstruct {
@@ -47,27 +41,12 @@ public class MediaManagementServiceConstruct extends AbstractLambdaServiceConstr
     public void construct(Stack stack, StackProps stackProps) {
         final Code mediaManagementLambdaCode = Code.fromBucket(codebaseBucket, "likedancesport-media-management-lambda.jar");
 
-        final Function mediaManagementLambda = Function.Builder.create(stack, "media-management-lambda")
-                .architecture(Architecture.X86_64)
-                .runtime(Runtime.JAVA_11)
-                .memorySize(3000)
-                .role(role)
-                .layers(List.of(commonLambdaLayer))
-                .functionName("media-management-lambda")
-                .handler("com.likedancesport.MediaManagementLambdaHandler::handleRequest")
-                .code(mediaManagementLambdaCode)
-                .build();
+        final IFunction mediaManagementFunction = buildSpringRestLambda(stack, mediaManagementLambdaCode,
+                "likedancesport-media-management-lambda",
+                "com.likedancesport.MediaManagementLambdaHandler::handleRequest");
 
-        CdkUtils.setSnapStart(mediaManagementLambda);
 
-        final Version mediaManagementLambdaVersion = mediaManagementLambda.getCurrentVersion();
-
-        final Alias mediaManagementAlias = Alias.Builder.create(stack, "media-management-alias")
-                .aliasName("snap-m-alias")
-                .version(mediaManagementLambdaVersion)
-                .build();
-
-        final LambdaIntegration mediaManagementLambdaIntegration = LambdaIntegration.Builder.create(mediaManagementAlias)
+        final LambdaIntegration mediaManagementLambdaIntegration = LambdaIntegration.Builder.create(mediaManagementFunction)
                 .requestTemplates(new HashMap<>() {{
                     put("application/json", "{ \"statusCode\": \"200\" }");
                 }})
