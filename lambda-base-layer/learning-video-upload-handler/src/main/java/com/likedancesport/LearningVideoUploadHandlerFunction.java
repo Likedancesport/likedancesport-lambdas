@@ -14,11 +14,11 @@ import java.util.function.Function;
 
 @Component
 @Slf4j
-public class Mp4UploadHandlerFunction implements Function<SQSEvent, Void> {
+public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Void> {
     private final IVideoProcessingService videoEncodingService;
 
     @Autowired
-    public Mp4UploadHandlerFunction(IVideoProcessingService videoEncodingService) {
+    public LearningVideoUploadHandlerFunction(IVideoProcessingService videoEncodingService) {
         log.info("---- FUNCTION INIT");
         this.videoEncodingService = videoEncodingService;
     }

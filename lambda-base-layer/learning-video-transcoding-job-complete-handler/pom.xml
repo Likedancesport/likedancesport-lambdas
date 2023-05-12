@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>mp4-video-upload-handler</artifactId>
+    <artifactId>learning-video-transcoding-job-complete-handler</artifactId>
 
     <build>
         <plugins>
@@ -17,7 +17,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.likedancesport.Mp4VideoUploadHandlerApp</mainClass>
+                    <mainClass>com.likedancesport.LearningVideoTranscodingJobCompleteHandlerApplication</mainClass>
                 </configuration>
                 <dependencies>
                     <dependency>

@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.function.Function;
 
 @Component
-public class TranscodingJobCompleteHandlerFunction implements Function<SQSEvent, Void> {
+public class LearningVideoTranscodingJobCompleteHandlerFunction implements Function<SQSEvent, Void> {
     private final ITranscodingJobCompleteHandlerService transcodingJobCompleteHandlerService;
 
     @Autowired
-    public TranscodingJobCompleteHandlerFunction(ITranscodingJobCompleteHandlerService transcodingJobCompleteHandlerService) {
+    public LearningVideoTranscodingJobCompleteHandlerFunction(ITranscodingJobCompleteHandlerService transcodingJobCompleteHandlerService) {
         this.transcodingJobCompleteHandlerService = transcodingJobCompleteHandlerService;
     }
 

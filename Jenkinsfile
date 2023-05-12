@@ -25,12 +25,16 @@ pipeline {
         stage('Copy') {
             steps {
                 dir('lambda-base-layer') {
-                    sh 'aws s3 cp ./target/likedancesport-layer-dependencies.jar s3://likedancesport-codebase/likedancesport-layer-dependencies.jar'
+                    sh 'aws s3 cp ./target/likedancesport-layer-dependencies.jar s3://likedancesport-codebase/likedancesport-layer-dependencies'
                     dir('likedancesport-media-management-lambda') {
-                        sh 'aws s3 cp ./target/likedancesport-media-management-lambda-1.0.jar s3://likedancesport-codebase/likedancesport-media-management-lambda-1.0.jar'
+                        sh 'aws s3 cp ./target/likedancesport-media-management-lambda-1.0.jar s3://likedancesport-codebase/likedancesport-media-management-lambda.jar'
                     }
-                    dir('video-upload-handler') {
-                        sh 'aws s3 cp ./target/video-upload-handler-1.0.jar s3://likedancesport-codebase/mp4-video-upload-handler-1.0.jar'
+                    dir('learning-video-upload-handler') {
+                        sh 'aws s3 cp ./target/learning-video-upload-handler-1.0.jar s3://likedancesport-codebase/mp4-video-upload-handler.jar'
+                    }
+                    dir('learning-video-transcoding-job-complete-handler') {
+                        sh 'aws s3 cp ./target/learning-video-transcoding-job-complete-handler-1.0.jar s3://likedancesport-codebase/learning-video-transcoding-job-complete-handler.jar'
+
                     }
                 }
             }

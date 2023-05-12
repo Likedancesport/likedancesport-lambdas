@@ -13,8 +13,8 @@
 
     <modules>
         <module>likedancesport-media-management-lambda</module>
-        <module>mp4-video-upload-handler</module>
-        <module>transcoding-job-complete-handler</module>
+        <module>learning-video-upload-handler</module>
+        <module>learning-video-transcoding-job-complete-handler</module>
         <module>likedancesport-marketplace-manager</module>
         <module>marketplace-upload-handler</module>
     </modules>

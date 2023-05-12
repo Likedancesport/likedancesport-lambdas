@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>transcoding-job-complete-handler</artifactId>
+    <artifactId>learning-video-upload-handler</artifactId>
 
     <build>
         <plugins>
@@ -17,7 +17,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.likedancesport.TranscodingJobCompleteHandlerApplication</mainClass>
+                    <mainClass>com.likedancesport.LearningVideoUploadHandlerApp</mainClass>
                 </configuration>
                 <dependencies>
                     <dependency>
