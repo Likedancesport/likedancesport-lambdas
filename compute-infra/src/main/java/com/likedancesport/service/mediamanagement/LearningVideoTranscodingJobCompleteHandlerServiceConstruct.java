@@ -52,7 +52,7 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceConstruct extends 
                 .detailType(List.of("MediaConvert Job State Change"))
                 .region(List.of(stackProps.getEnv().getRegion()))
                 .account(List.of(stackProps.getEnv().getAccount()))
-                .detail(Map.of("status", "COMPLETE",
+                .detail(Map.of("status", new String[]{"COMPLETE"},
                         "queue", new String[]{mediaConvertQueue.getAttrArn()}))
                 .build();
 
