@@ -49,8 +49,8 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceConstruct extends 
     public void construct(Stack stack, StackProps stackProps) {
         Queue transcodingCompleteLambdaQueue = Queue.Builder.create(stack, "learning-video-transcoding-job-complete-handler-queue")
                 .queueName("learning-video-transcoding-job-complete-handler-queue")
-                .fifo(false)
                 .visibilityTimeout(Duration.seconds(10))
+                .retentionPeriod(Duration.hours(5))
                 .build();
 
         EventPattern eventPattern = EventPattern.builder()
