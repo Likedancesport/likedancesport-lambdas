@@ -1,7 +1,6 @@
 package com.likedancesport.service.mediamanagement;
 
 import com.likedancesport.service.AbstractLambdaServiceConstruct;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -13,14 +12,9 @@ import software.amazon.awscdk.services.events.IEventBus;
 import software.amazon.awscdk.services.events.Rule;
 import software.amazon.awscdk.services.events.targets.SqsQueue;
 import software.amazon.awscdk.services.iam.IRole;
-import software.amazon.awscdk.services.lambda.Alias;
-import software.amazon.awscdk.services.lambda.Architecture;
 import software.amazon.awscdk.services.lambda.Code;
-import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.IFunction;
 import software.amazon.awscdk.services.lambda.LayerVersion;
-import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.lambda.eventsources.SqsEventSource;
 import software.amazon.awscdk.services.mediaconvert.CfnQueue;
 import software.amazon.awscdk.services.s3.IBucket;
@@ -59,7 +53,7 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceConstruct extends 
                 .region(List.of(stackProps.getEnv().getRegion()))
                 .account(List.of(stackProps.getEnv().getAccount()))
                 .detail(Map.of("status", "COMPLETE",
-                        "queue", mediaConvertQueue.getAttrArn()))
+                        "queue", new String[]{mediaConvertQueue.getAttrArn()}))
                 .build();
 
         Rule.Builder.create(stack, "media-convert-learning-job-complete-event")
