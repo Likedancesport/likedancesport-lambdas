@@ -40,9 +40,9 @@ public class VideoUploadHandlerServiceConstruct extends AbstractLambdaServiceCon
 
     @Override
     public void construct(Stack stack, StackProps stackProps) {
-        Code code = Code.fromBucket(codebaseBucket, "mp4-video-upload-handler-1.0.jar");
+        Code code = Code.fromBucket(codebaseBucket, "learning-video-upload-handler.jar");
 
-        Function function = Function.Builder.create(stack, "mp4-video-upload-handler")
+        Function function = Function.Builder.create(stack, "learning-video-upload-handler")
                 .architecture(Architecture.X86_64)
                 .runtime(Runtime.JAVA_11)
                 .memorySize(3000)
@@ -55,12 +55,12 @@ public class VideoUploadHandlerServiceConstruct extends AbstractLambdaServiceCon
 
         Version version = function.getCurrentVersion();
 
-        Alias alias = Alias.Builder.create(stack, "video-upload-handler-alias")
+        Alias alias = Alias.Builder.create(stack, "learning-video-upload-handler-alias")
                 .aliasName("snap-v-alias")
                 .version(version)
                 .build();
 
-        Queue queue = Queue.Builder.create(stack, "mp4-asset-upload-handler-queue")
+        Queue queue = Queue.Builder.create(stack, "learning-asset-upload-handler-queue")
                 .visibilityTimeout(Duration.seconds(10))
                 .retentionPeriod(Duration.hours(5))
                 .queueName("mp4-asset-upload-handler-queue")

@@ -45,7 +45,7 @@ public class MediaManagementServiceConstruct extends AbstractLambdaServiceConstr
 
     @Override
     public void construct(Stack stack, StackProps stackProps) {
-        final Code mediaManagementLambdaCode = Code.fromBucket(codebaseBucket, "likedancesport-media-management-lambda-1.0.jar");
+        final Code mediaManagementLambdaCode = Code.fromBucket(codebaseBucket, "likedancesport-media-management-lambda.jar");
 
         final Function mediaManagementLambda = Function.Builder.create(stack, "media-management-lambda")
                 .architecture(Architecture.X86_64)

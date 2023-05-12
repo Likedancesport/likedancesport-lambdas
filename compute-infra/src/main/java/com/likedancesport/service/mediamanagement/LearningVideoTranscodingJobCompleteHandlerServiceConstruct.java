@@ -1,6 +1,7 @@
 package com.likedancesport.service.mediamanagement;
 
 import com.likedancesport.service.AbstractLambdaServiceConstruct;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -67,6 +68,13 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceConstruct extends 
                 .eventBus(likedancesportEventBus)
                 .build();
 
+        Alias alias = getAlias(stack);
+
+        alias.addEventSource(new SqsEventSource(transcodingCompleteLambdaQueue));
+    }
+
+    @NotNull
+    private Alias getAlias(Stack stack) {
         Code code = Code.fromBucket(codebaseBucket, "learning-video-transcoding-job-complete-handler.jar");
 
         Function function = Function.Builder.create(stack, "learning-video-transcoding-job-complete-handler")
@@ -85,7 +93,6 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceConstruct extends 
                 .aliasName("learning-video-transcoding-job-complete-handler-alias")
                 .version(version)
                 .build();
-
-        alias.addEventSource(new SqsEventSource(transcodingCompleteLambdaQueue));
+        return alias;
     }
 }
