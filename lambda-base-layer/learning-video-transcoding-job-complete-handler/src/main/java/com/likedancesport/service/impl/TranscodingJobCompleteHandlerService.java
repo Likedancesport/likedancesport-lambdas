@@ -34,9 +34,12 @@ public class TranscodingJobCompleteHandlerService implements ITranscodingJobComp
         String jobId = mediaConvertJobStateChangeEvent.getDetail().getJobId();
         TranscodingJob transcodingJob = transcodingJobDao.findById(jobId);
         Video video = videoDao.findById(transcodingJob.getVideoId()).orElseThrow();
+
         Duration videoDuration = getDuration(mediaConvertJobStateChangeEvent);
         video.setDurationSeconds(videoDuration.getSeconds());
+
         video.setStatus(VideoStatus.READY);
+
         videoDao.save(video);
     }
 

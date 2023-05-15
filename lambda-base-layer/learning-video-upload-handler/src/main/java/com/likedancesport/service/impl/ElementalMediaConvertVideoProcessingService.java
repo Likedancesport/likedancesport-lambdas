@@ -75,6 +75,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
 
         transcodingJobDao.save(transcodingJob);
         video.setStatus(VideoStatus.PROCESSING);
+
         videoDao.save(video);
     }
 }

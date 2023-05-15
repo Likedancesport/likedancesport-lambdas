@@ -36,6 +36,7 @@ public class SectionController extends AbstractController {
     public ResponseEntity<SectionDto> updateSection(@PathVariable(name = "sectionId") Long sectionId, @RequestBody SectionUpdateRequest updateRequest) {
         Section section = sectionService.updateSection(sectionId, updateRequest);
         HttpHeaders headers = httpHeadersManager.generateUploadHeaders(section);
+
         return ResponseEntity.ok().headers(headers).body(SectionDto.of(section));
     }
 
