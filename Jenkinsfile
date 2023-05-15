@@ -25,7 +25,7 @@ pipeline {
         stage('Copy') {
             steps {
                 dir('lambda-base-layer') {
-                    sh 'aws s3 cp ./target/likedancesport-layer-dependencies.jar s3://likedancesport-codebase/likedancesport-layer-dependencies'
+                    sh 'aws s3 cp ./target/likedancesport-layer-dependencies.jar s3://likedancesport-codebase/likedancesport-layer-dependencies.jar'
                     dir('likedancesport-media-management-lambda') {
                         sh 'aws s3 cp ./target/likedancesport-media-management-lambda-1.0.jar s3://likedancesport-codebase/likedancesport-media-management-lambda.jar'
                     }
