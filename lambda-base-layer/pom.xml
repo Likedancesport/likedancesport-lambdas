@@ -17,6 +17,7 @@
         <module>learning-video-transcoding-job-complete-handler</module>
         <module>likedancesport-marketplace-manager</module>
         <module>marketplace-upload-handler</module>
+        <module>likedancesport-learning-user-service</module>
     </modules>
 
 

@@ -1,13 +1,12 @@
 package com.likedancesport.service.impl;
 
-import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
+import com.likedancesport.common.annotation.InjectSsmParameter;
 import com.likedancesport.common.dao.ITranscodingJobDao;
 import com.likedancesport.common.dao.IVideoDao;
 import com.likedancesport.common.enums.VideoStatus;
 import com.likedancesport.common.model.domain.S3Key;
 import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.common.model.internal.TranscodingJob;
-import com.likedancesport.common.annotation.InjectSsmParameter;
 import com.likedancesport.common.service.S3StorageService;
 import com.likedancesport.service.IVideoProcessingService;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.mediaconvert.MediaConvertClient;
 import software.amazon.awssdk.services.mediaconvert.model.CreateJobRequest;
 import software.amazon.awssdk.services.mediaconvert.model.CreateJobResponse;
-import software.amazon.awssdk.services.mediaconvert.model.HlsSettings;
 import software.amazon.awssdk.services.mediaconvert.model.Input;
 import software.amazon.awssdk.services.mediaconvert.model.JobSettings;
-import software.amazon.awssdk.services.mediaconvert.model.JobTemplate;
-import software.amazon.awssdk.services.mediaconvert.model.Output;
-import software.amazon.awssdk.services.mediaconvert.model.OutputSettings;
 
 import java.util.Optional;
 

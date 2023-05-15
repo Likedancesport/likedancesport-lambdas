@@ -27,7 +27,7 @@ public class HttpHeadersManager {
         return headers;
     }
 
-    private HttpHeaders generateUploadHeaders(Video video) {
+    public HttpHeaders generateUploadHeaders(Video video) {
         HttpHeaders headers = generateUploadHeaders((IPreviewable) video);
         URL presignedVideoUploadUrl = s3StorageService.generatePresignedUploadUrl(video.getMp4AssetS3Key());
         headers.add("mp4-upload", presignedVideoUploadUrl.toString());

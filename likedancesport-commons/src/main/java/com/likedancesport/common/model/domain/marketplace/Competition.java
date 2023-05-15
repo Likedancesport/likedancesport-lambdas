@@ -13,6 +13,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -38,7 +39,7 @@ public class Competition implements IPreviewable {
     @Column
     private String name;
 
-    @Column(name = "photo_s3_key")
+    @Embedded
     private S3Key photoS3Key;
 
     @Column(name = "date_of_issue")
