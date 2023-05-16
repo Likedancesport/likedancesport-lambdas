@@ -2,6 +2,7 @@ package com.likedancesport.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import software.amazon.awssdk.services.mediaconvert.MediaConvertClient;
 import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsRequest;
 import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsResponse;
@@ -9,6 +10,7 @@ import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsRespo
 import java.net.URI;
 
 @Configuration
+@Lazy
 public class MediaConvertConfig {
     @Bean
     public MediaConvertClient mediaConvertClient() {
