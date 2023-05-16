@@ -45,7 +45,7 @@ public class JpaConfig {
     @Bean
     @Profile("local")
     public DataSource localDataSource() {
-        System.out.println("---- BUILD DATASOURCE ------");
+        System.out.println("---- BUILD LOCAL DATASOURCE ------");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/likedancesport");
@@ -58,7 +58,7 @@ public class JpaConfig {
     @Bean
     @Profile("!local")
     public DataSource dataSource(DbCredentialsBean dbCredentials) {
-        System.out.println("---- BUILD DATASOURCE ------");
+        System.out.println("---- BUILD DEV DATASOURCE ------");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(dbCredentials.getDbUrl());
