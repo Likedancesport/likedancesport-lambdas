@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.rest;
+package com.likedancesport.common.utils;
 
 import com.likedancesport.common.model.domain.IPreviewable;
 import com.likedancesport.common.model.domain.learning.Video;

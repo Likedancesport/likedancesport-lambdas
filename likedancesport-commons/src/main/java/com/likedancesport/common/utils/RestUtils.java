@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.rest;
+package com.likedancesport.common.utils;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;

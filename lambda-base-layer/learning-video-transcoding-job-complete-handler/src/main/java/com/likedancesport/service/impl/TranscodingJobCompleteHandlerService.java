@@ -3,18 +3,26 @@ package com.likedancesport.service.impl;
 import com.likedancesport.common.dao.ITranscodingJobDao;
 import com.likedancesport.common.dao.IVideoDao;
 import com.likedancesport.common.enums.VideoStatus;
+import com.likedancesport.common.model.domain.HlsGroup;
+import com.likedancesport.common.model.domain.S3Key;
 import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.common.model.internal.TranscodingJob;
-import com.likedancesport.model.aws.MediaConvertJobStateChangeEvent;
-import com.likedancesport.model.aws.OutputDetail;
-import com.likedancesport.model.aws.OutputGroupDetail;
+import com.likedancesport.common.utils.MediaConvertUtils;
+import com.likedancesport.common.utils.S3Utils;
+import com.likedancesport.common.aws.MediaConvertJobStateChangeEvent;
+import com.likedancesport.common.aws.OutputDetail;
+import com.likedancesport.common.aws.OutputGroupDetail;
 import com.likedancesport.service.ITranscodingJobCompleteHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 import java.util.OptionalLong;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 @Service
@@ -35,22 +43,13 @@ public class TranscodingJobCompleteHandlerService implements ITranscodingJobComp
         TranscodingJob transcodingJob = transcodingJobDao.findById(jobId);
         Video video = videoDao.findById(transcodingJob.getVideoId()).orElseThrow();
 
-        Duration videoDuration = getDuration(mediaConvertJobStateChangeEvent);
-        video.setDurationSeconds(videoDuration.getSeconds());
+        Duration videoDuration = MediaConvertUtils.getDuration(mediaConvertJobStateChangeEvent);
+        HlsGroup hlsGroup = MediaConvertUtils.getHlsGroup(mediaConvertJobStateChangeEvent);
 
+        video.setDurationSeconds(videoDuration.getSeconds());
+        video.setHlsGroup(hlsGroup);
         video.setStatus(VideoStatus.READY);
 
         videoDao.save(video);
-    }
-
-    private Duration getDuration(MediaConvertJobStateChangeEvent event) {
-        Long durationInMillis = event.getDetail().getOutputGroupDetails().stream()
-                .map(OutputGroupDetail::getOutputDetails)
-                .map(outputDetails -> outputDetails.stream().mapToLong(OutputDetail::getDurationInMs))
-                .map(LongStream::max)
-                .map(OptionalLong::orElseThrow)
-                .max(Long::compareTo)
-                .orElseThrow();
-        return Duration.ofMillis(durationInMillis);
     }
 }

@@ -3,7 +3,7 @@ package com.likedancesport;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.likedancesport.common.model.domain.S3Key;
-import com.likedancesport.common.utils.json.JsonUtils;
+import com.likedancesport.common.utils.JsonUtils;
 import com.likedancesport.service.IVideoProcessingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

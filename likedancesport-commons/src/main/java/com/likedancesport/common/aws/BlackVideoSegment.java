@@ -1,4 +1,4 @@
-package com.likedancesport.model.aws;
+package com.likedancesport.common.aws;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;

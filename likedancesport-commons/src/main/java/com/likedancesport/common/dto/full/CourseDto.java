@@ -23,7 +23,7 @@ public class CourseDto extends TaggableMediaResourceDto {
                 .title(course.getTitle())
                 .tags(course.getTags())
                 .description(course.getDescription())
-                .previewPhotoS3Key(course.getPreviewPhotoS3Key())
+                .previewPhotoS3Key(course.getPhotoS3Key())
                 .lecturers(course.getLecturers().stream()
                         .map(LecturerPreview::of)
                         .collect(Collectors.toList()))

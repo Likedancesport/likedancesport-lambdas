@@ -2,8 +2,8 @@ package com.likedancesport.controller;
 
 import com.likedancesport.common.dto.full.VideoDto;
 import com.likedancesport.common.model.domain.learning.Video;
-import com.likedancesport.common.utils.rest.HttpHeadersManager;
-import com.likedancesport.common.utils.rest.RestUtils;
+import com.likedancesport.common.utils.HttpHeadersManager;
+import com.likedancesport.common.utils.RestUtils;
 import com.likedancesport.request.VideoUpdateRequest;
 import com.likedancesport.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;

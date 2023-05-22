@@ -1,66 +1,70 @@
 {
-  "TimecodeConfig": {
-    "Source": "ZEROBASED"
-  },
-  "OutputGroups": [
-    {
-      "CustomName": "cu",
-      "Name": "Apple HLS",
-      "Outputs": [
-        {
-          "ContainerSettings": {
-            "Container": "M3U8",
-            "M3u8Settings": {}
-          },
-          "VideoDescription": {
-            "CodecSettings": {
-              "Codec": "H_264",
-              "H264Settings": {
-                "MaxBitrate": 1200000,
-                "RateControlMode": "QVBR",
-                "SceneChangeDetect": "TRANSITION_DETECTION"
-              }
-            }
-          },
-          "AudioDescriptions": [
-            {
-              "CodecSettings": {
-                "Codec": "AAC",
-                "AacSettings": {
-                  "Bitrate": 96000,
-                  "CodingMode": "CODING_MODE_2_0",
-                  "SampleRate": 48000
-                }
-              }
-            }
-          ],
-          "OutputSettings": {
-            "HlsSettings": {
-              "SegmentModifier": "_original"
-            }
-          },
-          "NameModifier": "_vid"
-        }
-      ],
-      "OutputGroupSettings": {
-        "Type": "HLS_GROUP_SETTINGS",
-        "HlsGroupSettings": {
-          "SegmentLength": 10,
-          "Destination": "s3://testing-s3-mpu/simple/",
-          "MinSegmentLength": 0
-        }
-      }
-    }
+  "version": "0",
+  "id": "e3d193ca-4d73-5b24-22bd-a5e70e0e66ae",
+  "detail-type": "MediaConvert Job State Change",
+  "source": "aws.mediaconvert",
+  "account": "066002146890",
+  "time": "2023-05-18T12:22:00Z",
+  "region": "eu-central-1",
+  "resources": [
+    "arn:aws:mediaconvert:eu-central-1:066002146890:jobs/1684412517069-4ec7s1"
   ],
-  "Inputs": [
-    {
-      "AudioSelectors": {
-        "Audio Selector 1": {
-          "DefaultSelection": "DEFAULT"
-        }
-      },
-      "VideoSelector": {},
-      "TimecodeSource": "ZEROBASED"
-    }
-  ]
+  "detail": {
+    "timestamp": 1684412520535,
+    "accountId": "066002146890",
+    "queue": "arn:aws:mediaconvert:eu-central-1:066002146890:queues/Default",
+    "jobId": "1684412517069-4ec7s1",
+    "status": "COMPLETE",
+    "userMetadata": {},
+    "outputGroupDetails": [
+      {
+        "outputDetails": [
+          {
+            "outputFilePaths": [
+              "s3://testing-s3-mpu/apple-hls/video1467596853_jdjw.m3u8"
+            ],
+            "durationInMs": 4960,
+            "videoDetails": {
+              "widthInPx": 640,
+              "heightInPx": 360,
+              "averageBitrate": 18359,
+              "qvbrAvgQuality": 10.0,
+              "qvbrMinQuality": 10.0,
+              "qvbrMaxQuality": 10.0,
+              "qvbrMinQualityLocation": 0,
+              "qvbrMaxQualityLocation": 0
+            }
+          },
+          {
+            "outputFilePaths": [
+              "s3://testing-s3-mpu/apple-hls/video1467596853_mdew.m3u8"
+            ],
+            "durationInMs": 4960,
+            "videoDetails": {
+              "widthInPx": 640,
+              "heightInPx": 360,
+              "averageBitrate": 18359,
+              "qvbrAvgQuality": 10.0,
+              "qvbrMinQuality": 10.0,
+              "qvbrMaxQuality": 10.0,
+              "qvbrMinQualityLocation": 0,
+              "qvbrMaxQualityLocation": 0
+            }
+          }
+        ],
+        "playlistFilePaths": [
+          "s3://testing-s3-mpu/apple-hls/video1467596853.m3u8"
+        ],
+        "type": "HLS_GROUP"
+      }
+    ],
+    "paddingInserted": 0,
+    "blackVideoDetected": 80,
+    "blackVideoSegments": [
+      {
+        "start": 0,
+        "end": 80
+      }
+    ]
+  }
 }

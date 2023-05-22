@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.collection;
+package com.likedancesport.common.utils;
 
 import com.likedancesport.common.model.domain.IOrderableEntity;
 

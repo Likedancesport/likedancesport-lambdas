@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.datetime;
+package com.likedancesport.common.utils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

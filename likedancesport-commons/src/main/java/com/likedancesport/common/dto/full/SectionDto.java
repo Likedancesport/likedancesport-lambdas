@@ -20,7 +20,7 @@ public class SectionDto extends BaseMediaResourceDto {
                 .id(section.getId())
                 .title(section.getTitle())
                 .description(section.getDescription())
-                .previewPhotoS3Key(section.getPreviewPhotoS3Key())
+                .previewPhotoS3Key(section.getPhotoS3Key())
                 .videos(section.getVideos().stream()
                         .map(VideoPreview::of)
                         .collect(Collectors.toList()))

@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.constants;
+package com.likedancesport.common.utils;
 
 import java.util.regex.Pattern;
 

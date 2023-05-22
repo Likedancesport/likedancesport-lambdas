@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.constants;
+package com.likedancesport.common.utils;
 
 public class ParameterNames {
     public static final String THUMBNAILS_BUCKET_NAME = "thumbnails-bucket-name";

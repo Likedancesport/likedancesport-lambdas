@@ -18,7 +18,7 @@ public class VideoDto extends TaggableMediaResourceDto {
                 .id(video.getId())
                 .title(video.getTitle())
                 .tags(video.getTags())
-                .previewPhotoS3Key(video.getPreviewPhotoS3Key())
+                .previewPhotoS3Key(video.getPhotoS3Key())
                 .videoS3Key(video.getMp4AssetS3Key())
                 .description(video.getDescription())
                 .viewsCount(video.getViewsCount().intValue())

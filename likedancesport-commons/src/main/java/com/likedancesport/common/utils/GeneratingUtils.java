@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.misc;
+package com.likedancesport.common.utils;
 
 import java.util.UUID;
 

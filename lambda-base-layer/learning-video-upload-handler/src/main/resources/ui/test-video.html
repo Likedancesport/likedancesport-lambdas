@@ -12,7 +12,7 @@
         var video = document.getElementById('my-video');
         var hls = new Hls();
 
-        hls.loadSource('https://testing-s3-mpu.s3.eu-central-1.amazonaws.com/simple/video1467596853_HLS.m3u8');
+        hls.loadSource('https://testing-s3-mpu.s3.eu-central-1.amazonaws.com/apple-hls/video1467596853_mdew.m3u8');
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED,function() {
           video.play();

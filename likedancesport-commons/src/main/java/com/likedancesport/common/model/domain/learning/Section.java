@@ -2,7 +2,7 @@ package com.likedancesport.common.model.domain.learning;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.likedancesport.common.model.domain.IOrderableEntity;
-import com.likedancesport.common.utils.collection.CollectionUtils;
+import com.likedancesport.common.utils.CollectionUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.likedancesport.common.utils.data;
+package com.likedancesport.common.utils;
 
 import org.springframework.data.domain.Pageable;
 
