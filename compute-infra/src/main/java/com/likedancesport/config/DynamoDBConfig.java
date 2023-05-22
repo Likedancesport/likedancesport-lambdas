@@ -2,6 +2,7 @@ package com.likedancesport.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.dynamodb.Attribute;
@@ -28,6 +29,7 @@ public class DynamoDBConfig extends AbstractCdkConfig{
                 .tableClass(TableClass.STANDARD)
                 .readCapacity(1)
                 .writeCapacity(1)
+                .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
     }
 }
