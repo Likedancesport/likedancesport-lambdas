@@ -7,13 +7,19 @@ import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.apigateway.Cors;
 import software.amazon.awscdk.services.s3.BlockPublicAccess;
 import software.amazon.awscdk.services.s3.Bucket;
+import software.amazon.awscdk.services.s3.BucketAccessControl;
+import software.amazon.awscdk.services.s3.CorsRule;
+import software.amazon.awscdk.services.s3.HttpMethods;
 import software.amazon.awscdk.services.s3.IBucket;
 import software.amazon.awscdk.services.s3.LifecycleRule;
+import software.amazon.awscdk.services.s3.ObjectOwnership;
 import software.amazon.awscdk.services.s3.StorageClass;
 import software.amazon.awscdk.services.s3.Transition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -46,6 +52,13 @@ public class BucketsConfig extends AbstractCdkConfig {
         return Bucket.Builder.create(stack, "likedancesport-mp4-assets")
                 .bucketName("likedancesport-mp4-assets")
                 .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
+                .publicReadAccess(false)
+                .cors(new ArrayList<>(){{
+                    add(CorsRule.builder()
+                            .allowedMethods(List.of(HttpMethods.PUT, HttpMethods.POST))
+                            .allowedOrigins(List.of("*"))
+                            .build());
+                }})
                 .eventBridgeEnabled(true)
                 .removalPolicy(REMOVAL_POLICY)
                 .lifecycleRules(List.of(mp4VideoLifecycleRule))
