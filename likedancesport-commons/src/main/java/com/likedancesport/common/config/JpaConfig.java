@@ -1,5 +1,6 @@
 package com.likedancesport.common.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.likedancesport")
+@Slf4j
 public class JpaConfig {
 
     @Bean(name = "entityManagerFactory")
@@ -45,7 +47,7 @@ public class JpaConfig {
     @Bean
     @Profile("local")
     public DataSource localDataSource() {
-        System.out.println("---- BUILD LOCAL DATASOURCE ------");
+        log.info("---- BUILD LOCAL DATASOURCE ------");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/likedancesport");
@@ -58,7 +60,7 @@ public class JpaConfig {
     @Bean
     @Profile("!local")
     public DataSource dataSource(DbCredentialsBean dbCredentials) {
-        System.out.println("---- BUILD DEV DATASOURCE ------");
+        log.info("---- BUILD DEV DATASOURCE ------");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(dbCredentials.getDbUrl());

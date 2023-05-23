@@ -2,6 +2,7 @@ package com.likedancesport.common.beanpostprocessor;
 
 import com.likedancesport.common.annotation.InjectSsmParameter;
 import com.likedancesport.common.service.SsmParameterStoreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -13,12 +14,13 @@ import java.lang.reflect.Field;
 
 @Component
 @Primary
+@Slf4j
 public class InjectSsmParameterAnnotationBeanPostProcessor implements BeanPostProcessor {
     private final SsmParameterStoreService ssm;
 
     @Autowired
     public InjectSsmParameterAnnotationBeanPostProcessor(SsmParameterStoreService ssm) {
-        System.out.println("-----INIT SSM BPP");
+        log.info("-----INIT SSM BPP");
         this.ssm = ssm;
     }
 
