@@ -26,7 +26,10 @@ public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Vo
     @Override
     @Transactional
     public Void apply(SQSEvent sqsEvent) {
+
         for (SQSEvent.SQSMessage sqsMessage : sqsEvent.getRecords()) {
+            log.info(sqsMessage.toString());
+            log.info(sqsMessage.getBody());
             S3Event s3Event = JsonUtils.fromJson(sqsMessage.getBody(), S3Event.class);
             processS3Event(s3Event);
         }
