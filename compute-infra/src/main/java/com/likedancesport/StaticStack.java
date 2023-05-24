@@ -12,6 +12,7 @@ import software.amazon.awscdk.StackProps;
 public class StaticStack extends Stack {
     @Autowired
     public StaticStack(@Nullable ParentStack scope, @Qualifier("stageModifier") CfnParameter stageModifier, @Nullable StackProps props) {
-        super(scope, "LikedancesportStaticStack-" + stageModifier.getValueAsString(), props);
+        super(scope, "LikedancesportStaticStack-" + "DEV", props);
+        System.out.println(stageModifier.getValueAsString());
     }
 }
