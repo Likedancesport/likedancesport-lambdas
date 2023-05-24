@@ -2,17 +2,23 @@ package com.likedancesport;
 
 import com.likedancesport.service.IServiceConstruct;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import software.amazon.awscdk.App;
+import software.amazon.awscdk.CfnParameter;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 
 import java.util.List;
 
+@Component
 public class ComputeStack extends Stack {
     private final StackProps stackProps;
 
-    public ComputeStack(@Nullable App scope, @Nullable String modifier, @Nullable StackProps props) {
-        super(scope, "LikedancesportComputeStack-" + modifier, props);
+    @Autowired
+    public ComputeStack(@Nullable App scope, @Qualifier("stageModifier") CfnParameter stageModifier, @Nullable StackProps props) {
+        super(scope, "LikedancesportComputeStack-" + stageModifier.getValueAsString(), props);
         this.stackProps = props;
     }
 

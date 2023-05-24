@@ -5,8 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import software.amazon.awscdk.App;
+import software.amazon.awscdk.CfnParameter;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.StackProps;
+
+import java.util.List;
 
 @SpringBootApplication
 public class ComputeApp {
@@ -31,14 +34,13 @@ public class ComputeApp {
                 .build();
     }
 
-    @Bean
-    public ComputeStack computeStack() {
-        return new ComputeStack(app(), "dev", stackProps());
-    }
-
-    @Bean
-    public StaticStack staticStack() {
-        return new StaticStack(app(), "dev", stackProps());
+    @Bean("stageModifier")
+    public CfnParameter stageModifier() {
+        return CfnParameter.Builder.create(app(), "stageModifier")
+                .type("String")
+                .allowedValues(List.of("DEV", "PROD", "TEST"))
+                .description("This parameter specifies which env would be used for deployment")
+                .build();
     }
 }
 
