@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 public class LearningVideoTranscodingJobCompleteHandlerApplication {
     public static void main(String[] args) {
-        log.info("----- STARTUP");
+        log.info("----- STARTUP -----");
         SpringApplication.run(LearningVideoTranscodingJobCompleteHandlerApplication.class, args);
     }
 }
