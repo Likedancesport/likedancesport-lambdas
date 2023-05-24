@@ -17,7 +17,7 @@ public class ComputeStack extends Stack {
     private final StackProps stackProps;
 
     @Autowired
-    public ComputeStack(@Nullable App scope, @Qualifier("stageModifier") CfnParameter stageModifier, @Nullable StackProps props) {
+    public ComputeStack(@Nullable ParentStack scope, @Qualifier("stageModifier") CfnParameter stageModifier, @Nullable StackProps props) {
         super(scope, "LikedancesportComputeStack-" + stageModifier.getValueAsString(), props);
         this.stackProps = props;
     }
