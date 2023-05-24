@@ -31,7 +31,7 @@ public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Vo
             log.info(sqsMessage.toString());
             log.info(sqsMessage.getBody());
             try {
-                S3Event s3Event = JsonUtils.fromJson(sqsMessage.getBody(), S3Event.class);
+                S3Event s3Event = JsonUtils.s3EventFromJson(sqsMessage.getBody());
                 processS3Event(s3Event);
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
