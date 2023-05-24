@@ -8,11 +8,11 @@ import software.amazon.awscdk.StackProps;
 
 import java.util.List;
 
-public class LikedancesportStack extends Stack {
+public class ComputeStack extends Stack {
     private final StackProps stackProps;
 
-    public LikedancesportStack(@Nullable App scope, @Nullable String modifier, @Nullable StackProps props) {
-        super(scope, "LikedancesportStack-" + modifier, props);
+    public ComputeStack(@Nullable App scope, @Nullable String modifier, @Nullable StackProps props) {
+        super(scope, "LikedancesportComputeStack-" + modifier, props);
         this.stackProps = props;
     }
 

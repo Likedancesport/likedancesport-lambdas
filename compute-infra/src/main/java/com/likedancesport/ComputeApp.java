@@ -32,8 +32,13 @@ public class ComputeApp {
     }
 
     @Bean
-    public LikedancesportStack stack() {
-        return new LikedancesportStack(app(), "dev", stackProps());
+    public ComputeStack computeStack() {
+        return new ComputeStack(app(), "dev", stackProps());
+    }
+
+    @Bean
+    public StaticStack staticStack() {
+        return new StaticStack(app(), "dev", stackProps());
     }
 }
 

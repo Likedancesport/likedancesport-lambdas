@@ -16,7 +16,7 @@ public class ConstructionExecutor {
     private final StackProps stackProps;
 
     @Autowired
-    public ConstructionExecutor(Stack stack, List<IServiceConstruct> serviceConstructs, StackProps stackProps) {
+    public ConstructionExecutor(ComputeStack stack, List<IServiceConstruct> serviceConstructs, StackProps stackProps) {
         this.stack = stack;
         this.serviceConstructs = serviceConstructs;
         this.stackProps = stackProps;
