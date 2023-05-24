@@ -53,8 +53,8 @@ public abstract class AbstractLambdaServiceConstruct implements IServiceConstruc
                 .handler("org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest")
                 .code(code)
                 .build();
-
-        return getAlias(stack, functionName, springCloudFunction);
+        return springCloudFunction;
+//        return getAlias(stack, functionName, springCloudFunction);
     }
 
     @NotNull
