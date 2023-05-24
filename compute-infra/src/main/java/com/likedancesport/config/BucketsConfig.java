@@ -55,8 +55,9 @@ public class BucketsConfig extends AbstractCdkConfig {
                 .publicReadAccess(false)
                 .cors(new ArrayList<>(){{
                     add(CorsRule.builder()
-                            .allowedMethods(List.of(HttpMethods.PUT, HttpMethods.POST))
+                            .allowedMethods(List.of(HttpMethods.PUT))
                             .allowedOrigins(List.of("*"))
+                            .allowedHeaders(List.of("*"))
                             .build());
                 }})
                 .eventBridgeEnabled(true)
