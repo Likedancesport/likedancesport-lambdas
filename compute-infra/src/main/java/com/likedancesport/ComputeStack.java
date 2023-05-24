@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import software.amazon.awscdk.App;
 import software.amazon.awscdk.CfnParameter;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -16,9 +17,8 @@ public class ComputeStack extends Stack {
     private final StackProps stackProps;
 
     @Autowired
-    public ComputeStack(@Nullable ParentStack scope, @Qualifier("stageModifier") CfnParameter stageModifier, @Nullable StackProps props) {
+    public ComputeStack(@Nullable App scope, @Nullable StackProps props) {
         super(scope, "LikedancesportComputeStack-" + "DEV", props);
-        System.out.println(stageModifier.getValueAsString());
         this.stackProps = props;
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 @Configuration
 public class LambdaConfig extends AbstractCdkConfig{
 
-    public LambdaConfig(ComputeStack stack, StackProps stackProps) {
+    public LambdaConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

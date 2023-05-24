@@ -12,7 +12,7 @@ import software.amazon.awscdk.services.events.IEventBus;
 @Configuration
 public class EventBridgeConfig extends AbstractCdkConfig {
     @Autowired
-    public EventBridgeConfig(ComputeStack stack, StackProps stackProps) {
+    public EventBridgeConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

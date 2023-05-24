@@ -14,7 +14,7 @@ import software.amazon.awscdk.services.dynamodb.TableClass;
 
 @Configuration
 public class DynamoDBConfig extends AbstractCdkConfig{
-    public DynamoDBConfig(ComputeStack stack, StackProps stackProps) {
+    public DynamoDBConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

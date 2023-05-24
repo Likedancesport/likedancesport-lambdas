@@ -1,11 +1,11 @@
 package com.likedancesport.config;
 
-import com.likedancesport.StaticStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.RemovalPolicy;
+import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.s3.BlockPublicAccess;
 import software.amazon.awscdk.services.s3.Bucket;
@@ -24,7 +24,7 @@ public class BucketsConfig extends AbstractCdkConfig {
     private static final RemovalPolicy REMOVAL_POLICY = RemovalPolicy.DESTROY;
 
     @Autowired
-    public BucketsConfig(StaticStack stack, StackProps stackProps) {
+    public BucketsConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

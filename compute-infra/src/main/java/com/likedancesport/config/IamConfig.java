@@ -1,7 +1,5 @@
 package com.likedancesport.config;
 
-import com.likedancesport.ComputeStack;
-import com.likedancesport.StaticStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +11,7 @@ import software.amazon.awscdk.services.iam.Role;
 @Configuration
 public class IamConfig extends AbstractCdkConfig {
     @Autowired
-    public IamConfig(StaticStack stack, StackProps stackProps) {
+    public IamConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

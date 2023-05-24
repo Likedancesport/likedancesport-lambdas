@@ -1,6 +1,5 @@
 package com.likedancesport.config;
 
-import com.likedancesport.StaticStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +15,7 @@ import software.amazon.awscdk.services.s3.IBucket;
 @Configuration
 public class CloudfrontConfig extends AbstractCdkConfig {
     @Autowired
-    public CloudfrontConfig(StaticStack stack, StackProps stackProps) {
+    public CloudfrontConfig(Stack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

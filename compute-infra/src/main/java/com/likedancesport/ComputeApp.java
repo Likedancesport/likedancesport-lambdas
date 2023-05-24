@@ -33,14 +33,5 @@ public class ComputeApp {
                         .build())
                 .build();
     }
-
-    @Bean("stageModifier")
-    public CfnParameter stageModifier(ParentStack parentStack) {
-        return CfnParameter.Builder.create(parentStack, "stageModifier")
-                .type("String")
-                .allowedValues(List.of("DEV", "PROD", "TEST"))
-                .description("This parameter specifies which env would be used for deployment")
-                .build();
-    }
 }
 

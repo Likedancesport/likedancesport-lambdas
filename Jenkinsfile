@@ -1,7 +1,4 @@
 pipeline {
-    parameters {
-        choice(name: 'stageModifier', choices: 'DEV\nTEST\nPROD')
-    }
     agent any
     options {
         // This is required if you want to clean before build
@@ -54,7 +51,7 @@ pipeline {
                 echo 'Deploying....'
                 dir('compute-infra') {
                     sh 'ls -la'
-                    sh "cdk deploy * --require-approval never --force --parameters stageModifier=${params.stageModifier}"
+                    sh "cdk deploy * --require-approval never --force"
                 }
             }
         }
