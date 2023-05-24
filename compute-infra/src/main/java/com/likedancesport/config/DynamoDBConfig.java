@@ -1,5 +1,6 @@
 package com.likedancesport.config;
 
+import com.likedancesport.ComputeStack;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awscdk.RemovalPolicy;
@@ -13,7 +14,7 @@ import software.amazon.awscdk.services.dynamodb.TableClass;
 
 @Configuration
 public class DynamoDBConfig extends AbstractCdkConfig{
-    public DynamoDBConfig(Stack stack, StackProps stackProps) {
+    public DynamoDBConfig(ComputeStack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

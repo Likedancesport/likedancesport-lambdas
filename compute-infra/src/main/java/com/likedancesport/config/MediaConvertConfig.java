@@ -1,5 +1,6 @@
 package com.likedancesport.config;
 
+import com.likedancesport.StaticStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,7 @@ import software.amazon.awscdk.services.mediaconvert.CfnQueue;
 @Configuration
 public class MediaConvertConfig extends AbstractCdkConfig {
     @Autowired
-    public MediaConvertConfig(Stack stack, StackProps stackProps) {
+    public MediaConvertConfig(StaticStack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

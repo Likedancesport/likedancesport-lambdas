@@ -1,5 +1,6 @@
 package com.likedancesport.config;
 
+import com.likedancesport.ComputeStack;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import java.util.List;
 @Configuration
 public class LambdaConfig extends AbstractCdkConfig{
 
-    public LambdaConfig(Stack stack, StackProps stackProps) {
+    public LambdaConfig(ComputeStack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 

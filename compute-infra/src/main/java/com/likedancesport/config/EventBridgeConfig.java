@@ -1,5 +1,6 @@
 package com.likedancesport.config;
 
+import com.likedancesport.ComputeStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,7 @@ import software.amazon.awscdk.services.events.IEventBus;
 @Configuration
 public class EventBridgeConfig extends AbstractCdkConfig {
     @Autowired
-    public EventBridgeConfig(Stack stack, StackProps stackProps) {
+    public EventBridgeConfig(ComputeStack stack, StackProps stackProps) {
         super(stack, stackProps);
     }
 
