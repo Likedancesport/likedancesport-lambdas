@@ -1,4 +1,4 @@
-package com.likedancesport.service.mediamanagement;
+package com.likedancesport.service;
 
 import com.likedancesport.service.AbstractLambdaServiceConstruct;
 import org.springframework.beans.factory.annotation.Autowired;

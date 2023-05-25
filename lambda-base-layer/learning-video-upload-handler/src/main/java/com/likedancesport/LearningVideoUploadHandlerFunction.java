@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 @Component
 @Slf4j
-public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Void> {
+public class LearningVideoUploadHandlerFunction implements Function<S3Event, Void> {
     private final IVideoProcessingService videoEncodingService;
 
     @Autowired
@@ -25,18 +25,20 @@ public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Vo
 
     @Override
     @Transactional
-    public Void apply(SQSEvent sqsEvent) {
-        for (SQSEvent.SQSMessage sqsMessage : sqsEvent.getRecords()) {
-            log.debug("----- HANDLING MESSAGE");
-            log.debug("----- MESSAGE BODY: {}", sqsMessage.getBody());
-            S3Event s3Event = JsonUtils.s3EventFromJson(sqsMessage.getBody());
-            log.debug("----- EVENT PARSED");
-            processS3Event(s3Event);
-        }
-        return null;
+    public Void apply(S3Event s3Event) {
+        processS3Event(s3Event);
+//        for (SQSEvent.SQSMessage sqsMessage : sqsEvent.getRecords()) {
+//            log.debug("----- HANDLING MESSAGE");
+//            log.debug("----- MESSAGE BODY: {}", sqsMessage.getBody());
+//            S3Event s3Event = JsonUtils.s3EventFromJson(sqsMessage.getBody());
+//            log.debug("----- EVENT PARSED");
+//            processS3Event(s3Event);
+//        }
+//        return null;
     }
 
     private void processS3Event(S3Event s3Event) {
+        log.debug("PROCESSING S3 EVENT");
         s3Event.getRecords().forEach(record ->
                 videoEncodingService.processVideo(S3Key.of(record.getS3().getBucket().getName(),
                         record.getS3().getObject().getKey())));
