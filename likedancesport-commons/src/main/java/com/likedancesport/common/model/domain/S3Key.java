@@ -1,5 +1,6 @@
 package com.likedancesport.common.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,11 @@ public class S3Key {
     private String bucketName;
     @Column(name = "key")
     private String key;
+
+    @JsonIgnore
+    public String getUri() {
+        return String.format("s3://%s/%s", bucketName, key);
+    }
 
     public static S3Key ofUri(String s3Uri) {
         Matcher matcher = S3_URI_PATTERN.matcher(s3Uri);

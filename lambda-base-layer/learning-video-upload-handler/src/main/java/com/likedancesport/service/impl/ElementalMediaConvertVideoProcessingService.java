@@ -8,8 +8,8 @@ import com.likedancesport.common.model.domain.S3Key;
 import com.likedancesport.common.model.domain.learning.Video;
 import com.likedancesport.common.model.internal.TranscodingJob;
 import com.likedancesport.common.service.S3StorageService;
-import com.likedancesport.common.utils.ParameterNames;
 import com.likedancesport.common.utils.MediaConvertUtils;
+import com.likedancesport.common.utils.ParameterNames;
 import com.likedancesport.service.IVideoProcessingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -99,7 +99,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
                 return;
             }
 
-            String key = video.getMp4AssetS3Key().getKey();
+            S3Key key = video.getMp4AssetS3Key();
 
             CreateJobRequest createJobRequest = getCreateJobRequest(key);
 
@@ -119,7 +119,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
         }
     }
 
-    private CreateJobRequest getCreateJobRequest(String key) {
+    private CreateJobRequest getCreateJobRequest(S3Key key) {
         OutputGroup appleHLS = getOutputGroup();
 
         Map<String, AudioSelector> audioSelectors = new HashMap<>();
@@ -132,7 +132,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
                         .filterEnable(InputFilterEnable.AUTO).filterStrength(0).deblockFilter(InputDeblockFilter.DISABLED)
                         .denoiseFilter(InputDenoiseFilter.DISABLED).psiControl(InputPsiControl.USE_PSI)
                         .timecodeSource(InputTimecodeSource.EMBEDDED)
-                        .fileInput(key).build())
+                        .fileInput(key.getUri()).build())
                 .outputGroups(appleHLS).build();
 
         return CreateJobRequest.builder()
