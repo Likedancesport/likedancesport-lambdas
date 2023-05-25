@@ -11,6 +11,7 @@ import com.likedancesport.common.service.S3StorageService;
 import com.likedancesport.common.utils.ParameterNames;
 import com.likedancesport.common.utils.MediaConvertUtils;
 import com.likedancesport.service.IVideoProcessingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.mediaconvert.MediaConvertClient;
@@ -54,6 +55,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ElementalMediaConvertVideoProcessingService implements IVideoProcessingService {
     private final IVideoDao videoDao;
 
@@ -79,6 +81,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
     @Override
     @Transactional
     public void processVideo(S3Key s3Key) {
+        log.info("---- PROCESSING VIDEO");
         try (MediaConvertClient mc = MediaConvertClient.create()) {
 
             DescribeEndpointsResponse res = mc
