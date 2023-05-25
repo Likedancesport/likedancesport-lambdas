@@ -34,7 +34,7 @@ public class LearningVideoUploadHandlerFunction implements Function<S3Event, Voi
 //            log.debug("----- EVENT PARSED");
 //            processS3Event(s3Event);
 //        }
-//        return null;
+        return null;
     }
 
     private void processS3Event(S3Event s3Event) {
