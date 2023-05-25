@@ -5,6 +5,7 @@ import com.likedancesport.common.aws.OutputDetail;
 import com.likedancesport.common.aws.OutputGroupDetail;
 import com.likedancesport.common.model.domain.HlsGroup;
 import com.likedancesport.common.model.domain.S3Key;
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.mediaconvert.model.AacAudioDescriptionBroadcasterMix;
 import software.amazon.awssdk.services.mediaconvert.model.AacCodecProfile;
 import software.amazon.awssdk.services.mediaconvert.model.AacCodingMode;
@@ -74,6 +75,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
+@Slf4j
 public class MediaConvertUtils {
     private static final Pattern NAME_MODIFIER_PATTERN = Pattern.compile("_(\\d+p).");
 
@@ -122,6 +124,7 @@ public class MediaConvertUtils {
                                       int qvbrQualityLevel,
                                       int targetWidth,
                                       int targetHeight) {
+        log.info("Creating {} output", nameModifier);
         Output output = null;
         try {
             output = Output.builder().nameModifier(nameModifier).outputSettings(OutputSettings.builder()

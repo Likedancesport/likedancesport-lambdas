@@ -83,7 +83,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
     public void processVideo(S3Key s3Key) {
         log.info("---- PROCESSING VIDEO");
         try (MediaConvertClient mc = MediaConvertClient.create()) {
-
+            log.info("---- Building MediaConvertClient");
             DescribeEndpointsResponse res = mc
                     .describeEndpoints(DescribeEndpointsRequest.builder().maxResults(20).build());
             String endpointURL = res.endpoints().get(0).url();
@@ -100,7 +100,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
             }
 
             S3Key key = video.getMp4AssetS3Key();
-
+            log.info("S3 URI: {}", key.getUri());
             CreateJobRequest createJobRequest = getCreateJobRequest(key);
 
             CreateJobResponse createJobResponse = mediaConvertClient.createJob(createJobRequest);
@@ -120,6 +120,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
     }
 
     private CreateJobRequest getCreateJobRequest(S3Key key) {
+        log.info("---- Creating Job");
         OutputGroup appleHLS = getOutputGroup();
 
         Map<String, AudioSelector> audioSelectors = new HashMap<>();
@@ -142,17 +143,19 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
     }
 
     private Video getVideo(S3Key s3Key) {
+        log.info("--- Finding Video");
         Optional<Video> videoOptional = videoDao.findByMp4AssetS3Key(s3Key);
 
         if (videoOptional.isEmpty()) {
             s3StorageService.deleteObject(s3Key);
             return null;
         }
-
+        log.info("---- Video Found");
         return videoOptional.get();
     }
 
     private OutputGroup getOutputGroup() {
+        log.info("Creating Output Group");
         Output output720p = MediaConvertUtils.createOutput("720p", "720p",
                 1200000, 7, 1280, 720);
 
@@ -160,6 +163,8 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
                 3500000, 8, 1920, 1080);
 
         String destination = "s3://" + hlsBucketName + "/" + UUID.randomUUID() + "/";
+
+        log.info("DESTINATION: {}", destination);
 
         return OutputGroup.builder().name("Apple HLS").customName("Example")
                 .outputGroupSettings(OutputGroupSettings.builder().type(OutputGroupType.HLS_GROUP_SETTINGS)
