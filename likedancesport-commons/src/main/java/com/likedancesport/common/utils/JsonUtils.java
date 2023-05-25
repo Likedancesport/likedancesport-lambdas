@@ -4,7 +4,9 @@ import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.lambda.runtime.serialization.events.serializers.S3EventSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JsonUtils {
     private static final ObjectMapper OBJECT_MAPPER;
     private static final S3EventSerializer<S3Event> S3_EVENT_SERIALIZER;
@@ -31,6 +33,7 @@ public class JsonUtils {
     }
 
     public static S3Event s3EventFromJson(String s3EventString) {
+        log.debug("PARSING S3 EVENT");
         return S3_EVENT_SERIALIZER.fromJson(s3EventString);
     }
 }
