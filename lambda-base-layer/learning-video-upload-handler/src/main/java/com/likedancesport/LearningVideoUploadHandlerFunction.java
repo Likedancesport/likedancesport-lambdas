@@ -1,9 +1,7 @@
 package com.likedancesport;
 
 import com.amazonaws.services.lambda.runtime.events.S3Event;
-import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.likedancesport.common.model.domain.S3Key;
-import com.likedancesport.common.utils.JsonUtils;
 import com.likedancesport.service.IVideoProcessingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import java.util.function.Function;
 
 @Component
 @Slf4j
-public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Void> {
+public class LearningVideoUploadHandlerFunction implements Function<S3Event, Void> {
     private final IVideoProcessingService videoEncodingService;
 
     @Autowired
@@ -25,15 +23,16 @@ public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Vo
 
     @Override
     @Transactional
-    public Void apply(SQSEvent sqsEvent) {
-//TODO: try to implement with SQS
-        for (SQSEvent.SQSMessage sqsMessage : sqsEvent.getRecords()) {
-            log.debug("----- HANDLING MESSAGE");
-            log.debug("----- MESSAGE BODY: {}", sqsMessage.getBody());
-            S3Event s3Event = JsonUtils.s3EventFromJson(sqsMessage.getBody());
-            log.debug("----- EVENT PARSED");
-            processS3Event(s3Event);
-        }
+    public Void apply(S3Event s3Event) {
+        // TODO: try to implement with SQS
+        processS3Event(s3Event);
+//        for (SQSEvent.SQSMessage sqsMessage : sqsEvent.getRecords()) {
+//            log.debug("----- HANDLING MESSAGE");
+//            log.debug("----- MESSAGE BODY: {}", sqsMessage.getBody());
+//            S3Event s3Event = JsonUtils.s3EventFromJson(sqsMessage.getBody());
+//            log.debug("----- EVENT PARSED");
+//            processS3Event(s3Event);
+//        }
         return null;
     }
 
