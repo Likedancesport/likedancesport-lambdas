@@ -1,6 +1,5 @@
 package com.likedancesport.service;
 
-import com.likedancesport.service.AbstractLambdaServiceConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import software.amazon.awscdk.services.lambda.eventsources.SqsEventSource;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.EventType;
 import software.amazon.awscdk.services.s3.IBucket;
-import software.amazon.awscdk.services.s3.notifications.LambdaDestination;
 import software.amazon.awscdk.services.s3.notifications.SqsDestination;
 import software.amazon.awscdk.services.sqs.Queue;
 
@@ -39,15 +37,16 @@ public class LearningVideoUploadHandlerServiceConstruct extends AbstractLambdaSe
         String functionName = "learning-video-upload-handler";
 
         IFunction function = buildSpringCloudFunctionLambda(stack, code, functionName);
+//TODO: try to implement with SQS
 
-//        Queue queue = Queue.Builder.create(stack, "learning-asset-upload-handler-queue")
-//                .visibilityTimeout(Duration.seconds(10))
-//                .retentionPeriod(Duration.hours(5))
-//                .queueName("learning-asset-upload-handler-queue")
-//                .build();
+        Queue queue = Queue.Builder.create(stack, "learning-asset-upload-handler-queue")
+                .visibilityTimeout(Duration.seconds(10))
+                .retentionPeriod(Duration.hours(5))
+                .queueName("learning-asset-upload-handler-queue")
+                .build();
 
-        mp4AssetsBucket.addEventNotification(EventType.OBJECT_CREATED, new LambdaDestination(function));
-//
-//        function.addEventSource(new SqsEventSource(queue));
+        mp4AssetsBucket.addEventNotification(EventType.OBJECT_CREATED, new SqsDestination(queue));
+
+        function.addEventSource(new SqsEventSource(queue));
     }
 }

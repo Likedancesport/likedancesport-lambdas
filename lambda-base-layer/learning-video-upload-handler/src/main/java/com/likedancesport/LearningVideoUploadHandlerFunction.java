@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 @Component
 @Slf4j
-public class LearningVideoUploadHandlerFunction implements Function<S3Event, Void> {
+public class LearningVideoUploadHandlerFunction implements Function<SQSEvent, Void> {
     private final IVideoProcessingService videoEncodingService;
 
     @Autowired
@@ -25,16 +25,15 @@ public class LearningVideoUploadHandlerFunction implements Function<S3Event, Voi
 
     @Override
     @Transactional
-    public Void apply(S3Event s3Event) {
-
-        processS3Event(s3Event);
-//        for (SQSEvent.SQSMessage sqsMessage : sqsEvent.getRecords()) {
-//            log.debug("----- HANDLING MESSAGE");
-//            log.debug("----- MESSAGE BODY: {}", sqsMessage.getBody());
-//            S3Event s3Event = JsonUtils.s3EventFromJson(sqsMessage.getBody());
-//            log.debug("----- EVENT PARSED");
-//            processS3Event(s3Event);
-//        }
+    public Void apply(SQSEvent sqsEvent) {
+//TODO: try to implement with SQS
+        for (SQSEvent.SQSMessage sqsMessage : sqsEvent.getRecords()) {
+            log.debug("----- HANDLING MESSAGE");
+            log.debug("----- MESSAGE BODY: {}", sqsMessage.getBody());
+            S3Event s3Event = JsonUtils.s3EventFromJson(sqsMessage.getBody());
+            log.debug("----- EVENT PARSED");
+            processS3Event(s3Event);
+        }
         return null;
     }
 

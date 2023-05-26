@@ -33,6 +33,7 @@ public class VideoEntityListener  {
 
     @PrePersist
     public void generateAssetS3Key(Video video){
+        //TODO: mp4 specification
         S3Key assetS3Key = S3Key.of(mp4AssetsBucketName, "learning-assets/" + UUID.randomUUID());
         video.setMp4AssetS3Key(assetS3Key);
         video.setStatus(VideoStatus.UPLOADING);
