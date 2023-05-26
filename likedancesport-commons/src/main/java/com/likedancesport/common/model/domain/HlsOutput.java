@@ -12,6 +12,6 @@ import javax.persistence.Embeddable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Output {
+public class HlsOutput {
     private S3Key m3u8Key;
 }

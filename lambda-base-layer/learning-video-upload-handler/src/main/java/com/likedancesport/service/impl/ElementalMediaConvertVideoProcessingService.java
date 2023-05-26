@@ -10,6 +10,7 @@ import com.likedancesport.common.model.internal.TranscodingJob;
 import com.likedancesport.common.service.S3StorageService;
 import com.likedancesport.common.utils.MediaConvertUtils;
 import com.likedancesport.common.utils.ParameterNames;
+import com.likedancesport.model.OutputParams;
 import com.likedancesport.service.IVideoProcessingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,6 @@ import software.amazon.awssdk.services.mediaconvert.model.AudioSelector;
 import software.amazon.awssdk.services.mediaconvert.model.ColorSpace;
 import software.amazon.awssdk.services.mediaconvert.model.CreateJobRequest;
 import software.amazon.awssdk.services.mediaconvert.model.CreateJobResponse;
-import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsRequest;
-import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsResponse;
 import software.amazon.awssdk.services.mediaconvert.model.HlsCaptionLanguageSetting;
 import software.amazon.awssdk.services.mediaconvert.model.HlsClientCache;
 import software.amazon.awssdk.services.mediaconvert.model.HlsCodecSpecification;
@@ -48,11 +47,12 @@ import software.amazon.awssdk.services.mediaconvert.model.OutputGroupSettings;
 import software.amazon.awssdk.services.mediaconvert.model.OutputGroupType;
 import software.amazon.awssdk.services.mediaconvert.model.VideoSelector;
 
-import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -65,9 +65,6 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
 
     @InjectSsmParameter(parameterName = "media-convert-role-arn", encrypted = true)
     private String mediaConvertRoleArn;
-
-    @InjectSsmParameter(parameterName = "emc-job-template-name")
-    private String emcJobTemplateName;
 
     @InjectSsmParameter(parameterName = ParameterNames.HLS_LEARNING_VIDEOS_BUCKET_NAME)
     private String hlsBucketName;
@@ -82,41 +79,33 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
     @Transactional
     public void processVideo(S3Key s3Key) {
         log.info("---- PROCESSING VIDEO");
-        try (MediaConvertClient mc = MediaConvertClient.create()) {
-            log.info("---- Building MediaConvertClient");
-            DescribeEndpointsResponse res = mc
-                    .describeEndpoints(DescribeEndpointsRequest.builder().maxResults(20).build());
-            String endpointURL = res.endpoints().get(0).url();
+        MediaConvertUtils.withMediaConvertClient(mediaConvertClient -> startProcessing(s3Key, mediaConvertClient));
+    }
 
-            MediaConvertClient mediaConvertClient = MediaConvertClient.builder()
-                    .region(mc.serviceClientConfiguration().region())
-                    .endpointOverride(URI.create(endpointURL))
-                    .build();
+    private void startProcessing(S3Key s3Key, MediaConvertClient mediaConvertClient) {
+        Video video = getVideo(s3Key);
 
-            Video video = getVideo(s3Key);
-
-            if (video == null) {
-                return;
-            }
-
-            S3Key key = video.getMp4AssetS3Key();
-            log.info("S3 URI: {}", key.getUri());
-            CreateJobRequest createJobRequest = getCreateJobRequest(key);
-
-            CreateJobResponse createJobResponse = mediaConvertClient.createJob(createJobRequest);
-
-            String jobId = createJobResponse.job().id();
-
-            TranscodingJob transcodingJob = TranscodingJob.builder()
-                    .jobId(jobId)
-                    .videoId(video.getId())
-                    .build();
-
-            transcodingJobDao.save(transcodingJob);
-            video.setStatus(VideoStatus.PROCESSING);
-
-            videoDao.save(video);
+        if (video == null) {
+            return;
         }
+
+        S3Key key = video.getMp4AssetS3Key();
+        log.info("S3 URI: {}", key.getUri());
+        CreateJobRequest createJobRequest = getCreateJobRequest(key);
+
+        CreateJobResponse createJobResponse = mediaConvertClient.createJob(createJobRequest);
+
+        String jobId = createJobResponse.job().id();
+
+        TranscodingJob transcodingJob = TranscodingJob.builder()
+                .jobId(jobId)
+                .videoId(video.getId())
+                .build();
+
+        transcodingJobDao.save(transcodingJob);
+        video.setStatus(VideoStatus.PROCESSING);
+
+        videoDao.save(video);
     }
 
     private CreateJobRequest getCreateJobRequest(S3Key key) {
@@ -156,11 +145,6 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
 
     private OutputGroup getOutputGroup() {
         log.info("Creating Output Group");
-        Output output720p = MediaConvertUtils.createOutput("720p", "720p",
-                1200000, 7, 1280, 720);
-
-        Output output1080p = MediaConvertUtils.createOutput("1080p", "_1080p",
-                3500000, 8, 1920, 1080);
 
         String destination = "s3://" + hlsBucketName + "/" + UUID.randomUUID() + "/";
 
@@ -188,7 +172,9 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
                                 .minSegmentLength(0)
                                 .build())
                         .build())
-                .outputs(output720p, output1080p)
+                .outputs(Arrays.stream(OutputParams.values())
+                        .map(OutputParams::buildOutput)
+                        .collect(Collectors.toList()))
                 .build();
     }
 

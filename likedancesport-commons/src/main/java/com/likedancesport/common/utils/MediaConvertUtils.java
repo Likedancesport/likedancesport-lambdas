@@ -6,6 +6,7 @@ import com.likedancesport.common.aws.OutputGroupDetail;
 import com.likedancesport.common.model.domain.HlsGroup;
 import com.likedancesport.common.model.domain.S3Key;
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.services.mediaconvert.MediaConvertClient;
 import software.amazon.awssdk.services.mediaconvert.model.AacAudioDescriptionBroadcasterMix;
 import software.amazon.awssdk.services.mediaconvert.model.AacCodecProfile;
 import software.amazon.awssdk.services.mediaconvert.model.AacCodingMode;
@@ -23,6 +24,8 @@ import software.amazon.awssdk.services.mediaconvert.model.AudioTypeControl;
 import software.amazon.awssdk.services.mediaconvert.model.ColorMetadata;
 import software.amazon.awssdk.services.mediaconvert.model.ContainerSettings;
 import software.amazon.awssdk.services.mediaconvert.model.ContainerType;
+import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsRequest;
+import software.amazon.awssdk.services.mediaconvert.model.DescribeEndpointsResponse;
 import software.amazon.awssdk.services.mediaconvert.model.DropFrameTimecode;
 import software.amazon.awssdk.services.mediaconvert.model.H264AdaptiveQuantization;
 import software.amazon.awssdk.services.mediaconvert.model.H264CodecLevel;
@@ -66,10 +69,12 @@ import software.amazon.awssdk.services.mediaconvert.model.VideoCodecSettings;
 import software.amazon.awssdk.services.mediaconvert.model.VideoDescription;
 import software.amazon.awssdk.services.mediaconvert.model.VideoTimecodeInsertion;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalLong;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -78,6 +83,23 @@ import java.util.stream.LongStream;
 @Slf4j
 public class MediaConvertUtils {
     private static final Pattern NAME_MODIFIER_PATTERN = Pattern.compile("_(\\d+p).");
+
+    public static void withMediaConvertClient(Consumer<MediaConvertClient> operation) {
+        try (MediaConvertClient mc = MediaConvertClient.create()) {
+            log.info("---- Building MediaConvertClient");
+            DescribeEndpointsResponse res = mc
+                    .describeEndpoints(DescribeEndpointsRequest.builder().maxResults(20).build());
+            String endpointURL = res.endpoints().get(0).url();
+
+            MediaConvertClient mediaConvertClient = MediaConvertClient.builder()
+                    .region(mc.serviceClientConfiguration().region())
+                    .endpointOverride(URI.create(endpointURL))
+                    .build();
+
+
+            operation.accept(mediaConvertClient);
+        }
+    }
 
     public static HlsGroup getHlsGroup(MediaConvertJobStateChangeEvent mediaConvertJobStateChangeEvent) {
         List<S3Key> s3Keys = mediaConvertJobStateChangeEvent.getDetail().getOutputGroupDetails().stream()
