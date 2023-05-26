@@ -41,7 +41,6 @@ import software.amazon.awssdk.services.mediaconvert.model.InputPsiControl;
 import software.amazon.awssdk.services.mediaconvert.model.InputRotate;
 import software.amazon.awssdk.services.mediaconvert.model.InputTimecodeSource;
 import software.amazon.awssdk.services.mediaconvert.model.JobSettings;
-import software.amazon.awssdk.services.mediaconvert.model.Output;
 import software.amazon.awssdk.services.mediaconvert.model.OutputGroup;
 import software.amazon.awssdk.services.mediaconvert.model.OutputGroupSettings;
 import software.amazon.awssdk.services.mediaconvert.model.OutputGroupType;
@@ -68,6 +67,9 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
 
     @InjectSsmParameter(parameterName = ParameterNames.HLS_LEARNING_VIDEOS_BUCKET_NAME)
     private String hlsBucketName;
+
+    @InjectSsmParameter(parameterName = "likedancesport-learning-transcoding-queue-name")
+    private String queueName;
 
     public ElementalMediaConvertVideoProcessingService(IVideoDao videoDao, ITranscodingJobDao transcodingJobDao, S3StorageService s3StorageService) {
         this.videoDao = videoDao;
@@ -108,6 +110,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
         videoDao.save(video);
     }
 
+    // TODO: set proper queue for media-convert
     private CreateJobRequest getCreateJobRequest(S3Key key) {
         log.info("---- Creating Job");
         OutputGroup appleHLS = getOutputGroup();
@@ -123,9 +126,11 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
                         .denoiseFilter(InputDenoiseFilter.DISABLED).psiControl(InputPsiControl.USE_PSI)
                         .timecodeSource(InputTimecodeSource.EMBEDDED)
                         .fileInput(key.getUri()).build())
-                .outputGroups(appleHLS).build();
+                .outputGroups(appleHLS)
+                .build();
 
         return CreateJobRequest.builder()
+                .queue(queueName)
                 .role(mediaConvertRoleArn)
                 .settings(jobSettings)
                 .build();

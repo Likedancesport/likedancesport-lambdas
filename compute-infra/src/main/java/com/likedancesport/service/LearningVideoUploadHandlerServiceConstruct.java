@@ -41,14 +41,14 @@ public class LearningVideoUploadHandlerServiceConstruct extends AbstractLambdaSe
         IFunction function = buildSpringCloudFunctionLambda(stack, code, functionName);
 //TODO: try to implement with SQS
 
-//        Queue queue = Queue.Builder.create(stack, "learning-asset-upload-handler-queue")
-//                .visibilityTimeout(Duration.seconds(10))
-//                .retentionPeriod(Duration.hours(5))
-//                .queueName("learning-asset-upload-handler-queue")
-//                .build();
+        Queue queue = Queue.Builder.create(stack, "learning-asset-upload-handler-queue")
+                .visibilityTimeout(Duration.seconds(10))
+                .retentionPeriod(Duration.hours(5))
+                .queueName("learning-asset-upload-handler-queue")
+                .build();
 
-        mp4AssetsBucket.addEventNotification(EventType.OBJECT_CREATED, new LambdaDestination(function));
+        mp4AssetsBucket.addEventNotification(EventType.OBJECT_CREATED, new SqsDestination(queue));
 //
-//        function.addEventSource(new SqsEventSource(queue));
+        function.addEventSource(new SqsEventSource(queue));
     }
 }

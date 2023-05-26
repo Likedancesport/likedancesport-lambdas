@@ -11,6 +11,11 @@ import software.amazon.awscdk.StackProps;
 
 import java.util.List;
 
+// TODO: split app in two stacks:
+//      1: Buckets and other static infra with sensitive info
+//      2: Computational stateless resources
+
+
 @SpringBootApplication
 public class ComputeApp {
     public static void main(final String[] args) {

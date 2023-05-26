@@ -3,6 +3,7 @@ package com.likedancesport.common.utils;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.lambda.runtime.serialization.events.serializers.S3EventSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,11 +25,27 @@ public class JsonUtils {
         }
     }
 
+    public static <T> T parseJsonNode(JsonNode jsonNode, Class<T> clazz) {
+        try {
+            return OBJECT_MAPPER.treeToValue(jsonNode, clazz);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static <T> String toJson(T item) {
         try {
             return OBJECT_MAPPER.writeValueAsString(item);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static JsonNode parseStringToNode(String source) {
+        try {
+            return OBJECT_MAPPER.readTree(source);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 
