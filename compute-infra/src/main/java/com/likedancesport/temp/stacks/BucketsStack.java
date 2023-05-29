@@ -1,9 +1,11 @@
-package com.likedancesport.config;
+package com.likedancesport.temp.stacks;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.NestedStack;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -15,22 +17,22 @@ import software.amazon.awscdk.services.s3.IBucket;
 import software.amazon.awscdk.services.s3.LifecycleRule;
 import software.amazon.awscdk.services.s3.StorageClass;
 import software.amazon.awscdk.services.s3.Transition;
+import software.constructs.Construct;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class BucketsConfig extends AbstractCdkConfig {
+public class BucketsStack extends NestedStack {
     private static final RemovalPolicy REMOVAL_POLICY = RemovalPolicy.DESTROY;
 
-    @Autowired
-    public BucketsConfig(Stack stack, StackProps stackProps) {
-        super(stack, stackProps);
+    public BucketsStack(@NotNull IamStack scope, @NotNull String id) {
+        super(scope, "BucketsStack");
     }
 
     @Bean("codebaseBucket")
     public IBucket codebaseBucket() {
-        return Bucket.fromBucketArn(stack, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
+        return Bucket.fromBucketArn(this, "likedancesport-codebase", "arn:aws:s3:::likedancesport-codebase");
     }
 
     @Bean(name = "mp4AssetsBucket")
@@ -46,7 +48,7 @@ public class BucketsConfig extends AbstractCdkConfig {
                 .transitions(List.of(mp4VideoTransition))
                 .build();
 
-        return Bucket.Builder.create(stack, "likedancesport-mp4-assets")
+        return Bucket.Builder.create(this, "likedancesport-mp4-assets")
                 .bucketName("likedancesport-mp4-assets")
                 .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
                 .publicReadAccess(false)
@@ -65,7 +67,7 @@ public class BucketsConfig extends AbstractCdkConfig {
 
     @Bean(name = "hlsBucket")
     public Bucket hlsBucket() {
-        return Bucket.Builder.create(stack, "likedancesport-hls-bucket")
+        return Bucket.Builder.create(this, "likedancesport-hls-bucket")
                 .bucketName("likedancesport-hls-bucket")
                 .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
                 .removalPolicy(REMOVAL_POLICY)
@@ -74,7 +76,7 @@ public class BucketsConfig extends AbstractCdkConfig {
 
     @Bean(name = "thumbnailsBucket")
     public Bucket thumbnailsBucket() {
-        return Bucket.Builder.create(stack, "likedancesport-thumbnails-bucket")
+        return Bucket.Builder.create(this, "likedancesport-thumbnails-bucket")
                 .bucketName("likedancesport-thumbnails-bucket")
                 .removalPolicy(REMOVAL_POLICY)
                 .build();

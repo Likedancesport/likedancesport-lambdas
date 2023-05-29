@@ -1,7 +1,9 @@
-package com.likedancesport.service;
+package com.likedancesport.temp.service;
 
-import com.likedancesport.util.CdkUtils;
+import com.likedancesport.temp.stacks.bucket_sub.eventbridge_sub.ComputeStack;
+import com.likedancesport.temp.util.CdkUtils;
 import org.jetbrains.annotations.NotNull;
+import software.amazon.awscdk.NestedStack;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.services.iam.IRole;
 import software.amazon.awscdk.services.lambda.Alias;
@@ -14,18 +16,23 @@ import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.s3.IBucket;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
-public abstract class AbstractLambdaServiceConstruct implements IServiceConstruct {
+public abstract class AbstractLambdaServiceStack extends NestedStack {
     protected final IRole role;
     protected final IBucket codebaseBucket;
     protected final LayerVersion commonLambdaLayer;
 
-    public AbstractLambdaServiceConstruct(IRole role, IBucket codebaseBucket, LayerVersion commonLambdaLayer) {
+    public AbstractLambdaServiceStack(@NotNull ComputeStack scope, @NotNull String id, IRole role, IBucket codebaseBucket, LayerVersion commonLambdaLayer) {
+        super(scope, id);
         this.role = role;
         this.codebaseBucket = codebaseBucket;
         this.commonLambdaLayer = commonLambdaLayer;
     }
+
+    @PostConstruct
+    public abstract void construct();
 
     protected IFunction buildSpringRestLambda(Stack stack, Code code, String functionName, String handler) {
         final Function restLambda = Function.Builder.create(stack, functionName)

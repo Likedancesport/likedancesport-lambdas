@@ -5,7 +5,11 @@ import com.amazonaws.services.lambda.runtime.serialization.events.serializers.S3
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.likedancesport.common.model.domain.S3Key;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class JsonUtils {
@@ -22,6 +26,29 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(stringRepresentation, clazz);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
+    public static List<S3Key> getS3KeysFromS3Event(String source) {
+        JsonNode jsonNode = parseStringToNode(source);
+        JsonNode recordsNode = jsonNode.get("Records");
+        if (recordsNode == null) {
+            throw new IllegalArgumentException("Invalid source");
+        }
+        List<S3Key> s3Keys = new ArrayList<>();
+        recordsNode.spliterator().forEachRemaining(recordNode -> s3Keys.add(getS3KeyFromRecordsNode(recordNode)));
+        return s3Keys;
+    }
+
+    public static S3Key getS3KeyFromRecordsNode(JsonNode recordNode) {
+        try {
+            JsonNode s3 = recordNode.get("s3");
+            String bucketName = s3.get("bucket").get("name").textValue();
+            String key = s3.get("object").get("key").textValue();
+            return S3Key.of(bucketName, key);
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Invalid node");
         }
     }
 

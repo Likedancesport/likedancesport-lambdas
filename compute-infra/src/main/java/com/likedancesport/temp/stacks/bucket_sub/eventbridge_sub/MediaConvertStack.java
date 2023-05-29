@@ -1,22 +1,21 @@
-package com.likedancesport.config;
+package com.likedancesport.temp.stacks.bucket_sub.eventbridge_sub;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.likedancesport.temp.stacks.bucket_sub.EventBridgeStack;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.NestedStack;
 import software.amazon.awscdk.services.mediaconvert.CfnQueue;
 
 @Configuration
-public class MediaConvertConfig extends AbstractCdkConfig {
-    @Autowired
-    public MediaConvertConfig(Stack stack, StackProps stackProps) {
-        super(stack, stackProps);
+public class MediaConvertStack extends NestedStack {
+    public MediaConvertStack(@NotNull EventBridgeStack scope, @NotNull String id) {
+        super(scope, "MediaConvertStack");
     }
 
     @Bean(name = "likedancesportLearningMediaConvertQueue")
     public CfnQueue likedancesportLearningMediaConvertQueue() {
-        return CfnQueue.Builder.create(stack, "likedancesport-learning-transcoding-queue")
+        return CfnQueue.Builder.create(this, "likedancesport-learning-transcoding-queue")
                 .name("likedancesport-learning-transcoding-queue")
                 .pricingPlan("ON_DEMAND")
                 .status("ACTIVE")

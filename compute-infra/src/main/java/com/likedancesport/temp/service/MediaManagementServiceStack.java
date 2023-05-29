@@ -1,12 +1,9 @@
-package com.likedancesport.service;
+package com.likedancesport.temp.service;
 
-import com.likedancesport.service.AbstractLambdaServiceConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.likedancesport.temp.stacks.bucket_sub.eventbridge_sub.ComputeStack;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.apigateway.AuthorizationType;
 import software.amazon.awscdk.services.apigateway.LambdaIntegration;
 import software.amazon.awscdk.services.apigateway.Method;
@@ -24,24 +21,21 @@ import software.amazon.awscdk.services.s3.IBucket;
 import java.util.HashMap;
 
 @Component
-public class MediaManagementServiceConstruct extends AbstractLambdaServiceConstruct {
+public class MediaManagementServiceStack extends AbstractLambdaServiceStack {
     public static final String POST = HttpMethod.POST.name();
     public static final String DELETE = HttpMethod.DELETE.name();
     public static final String PUT = HttpMethod.PUT.name();
     public static final String GET = HttpMethod.GET.name();
 
-    @Autowired
-    public MediaManagementServiceConstruct(IRole role,
-                                           @Qualifier("codebaseBucket") IBucket codebaseBucket,
-                                           LayerVersion commonLambdaLayer) {
-        super(role, codebaseBucket, commonLambdaLayer);
+    public MediaManagementServiceStack(@NotNull ComputeStack scope, @NotNull String id, IRole role, IBucket codebaseBucket, LayerVersion commonLambdaLayer) {
+        super(scope, "MediaManagementServiceStack", role, codebaseBucket, commonLambdaLayer);
     }
 
     @Override
-    public void construct(Stack stack, StackProps stackProps) {
+    public void construct() {
         final Code mediaManagementLambdaCode = Code.fromBucket(codebaseBucket, "likedancesport-media-management-lambda.jar");
 
-        final IFunction mediaManagementFunction = buildSpringRestLambda(stack, mediaManagementLambdaCode,
+        final IFunction mediaManagementFunction = buildSpringRestLambda(this, mediaManagementLambdaCode,
                 "likedancesport-media-management-lambda",
                 "com.likedancesport.MediaManagementLambdaHandler::handleRequest");
 
@@ -59,7 +53,7 @@ public class MediaManagementServiceConstruct extends AbstractLambdaServiceConstr
                 .apiKeyRequired(false)
                 .build();
 
-        RestApi mediaManagementApi = RestApi.Builder.create(stack, "likedancesport-management-api")
+        RestApi mediaManagementApi = RestApi.Builder.create(this, "likedancesport-management-api")
                 .restApiName("likedancesport-management-api")
                 .deploy(true)
                 .deployOptions(StageOptions.builder()

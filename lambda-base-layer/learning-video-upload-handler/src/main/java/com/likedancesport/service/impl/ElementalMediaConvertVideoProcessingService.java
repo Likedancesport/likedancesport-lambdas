@@ -81,6 +81,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
     @Transactional
     public void processVideo(S3Key s3Key) {
         log.info("---- PROCESSING VIDEO");
+        log.info("---- S3 KEY: {}", s3Key);
         MediaConvertUtils.withMediaConvertClient(mediaConvertClient -> startProcessing(s3Key, mediaConvertClient));
     }
 
@@ -93,7 +94,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
 
         S3Key key = video.getMp4AssetS3Key();
         log.info("S3 URI: {}", key.getUri());
-        CreateJobRequest createJobRequest = getCreateJobRequest(key);
+        CreateJobRequest createJobRequest = createJobRequest(key);
 
         CreateJobResponse createJobResponse = mediaConvertClient.createJob(createJobRequest);
 
@@ -111,7 +112,7 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
     }
 
     // TODO: set proper queue for media-convert
-    private CreateJobRequest getCreateJobRequest(S3Key key) {
+    private CreateJobRequest createJobRequest(S3Key key) {
         log.info("---- Creating Job");
         OutputGroup appleHLS = getOutputGroup();
 
@@ -119,13 +120,21 @@ public class ElementalMediaConvertVideoProcessingService implements IVideoProces
         audioSelectors.put("Audio Selector 1",
                 AudioSelector.builder().defaultSelection(AudioDefaultSelection.DEFAULT).offset(0).build());
 
+        String uri = key.getUri();
+
         JobSettings jobSettings = JobSettings.builder().inputs(Input.builder().audioSelectors(audioSelectors)
-                        .videoSelector(
-                                VideoSelector.builder().colorSpace(ColorSpace.FOLLOW).rotate(InputRotate.DEGREE_0).build())
-                        .filterEnable(InputFilterEnable.AUTO).filterStrength(0).deblockFilter(InputDeblockFilter.DISABLED)
-                        .denoiseFilter(InputDenoiseFilter.DISABLED).psiControl(InputPsiControl.USE_PSI)
+                        .videoSelector(VideoSelector.builder()
+                                .colorSpace(ColorSpace.FOLLOW)
+                                .rotate(InputRotate.DEGREE_0)
+                                .build())
+                        .filterEnable(InputFilterEnable.AUTO)
+                        .filterStrength(0)
+                        .deblockFilter(InputDeblockFilter.DISABLED)
+                        .denoiseFilter(InputDenoiseFilter.DISABLED)
+                        .psiControl(InputPsiControl.USE_PSI)
                         .timecodeSource(InputTimecodeSource.EMBEDDED)
-                        .fileInput(key.getUri()).build())
+                        .fileInput(uri)
+                        .build())
                 .outputGroups(appleHLS)
                 .build();
 

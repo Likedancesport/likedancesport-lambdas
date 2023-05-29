@@ -1,5 +1,6 @@
-package com.likedancesport.config;
+package com.likedancesport.temp.stacks.bucket_sub;
 
+import com.likedancesport.temp.stacks.BucketsStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,15 +14,15 @@ import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.s3.IBucket;
 
 @Configuration
-public class CloudfrontConfig extends AbstractCdkConfig {
+public class CloudfrontStack extends Stack {
     @Autowired
-    public CloudfrontConfig(Stack stack, StackProps stackProps) {
-        super(stack, stackProps);
+    public CloudfrontStack(BucketsStack stack, StackProps stackProps) {
+        super(stack, "CloudfrontStack", stackProps);
     }
 
     @Bean
     public Distribution distribution(@Qualifier("hlsBucket") IBucket hlsBucket) {
-        return Distribution.Builder.create(stack, "likedancesport-hls-cdn")
+        return Distribution.Builder.create(this, "likedancesport-hls-cdn")
                 .priceClass(PriceClass.PRICE_CLASS_100)
                 .defaultBehavior(BehaviorOptions.builder()
                         .origin(new S3Origin(hlsBucket))
