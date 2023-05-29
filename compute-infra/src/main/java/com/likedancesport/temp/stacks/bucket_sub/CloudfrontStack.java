@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.NestedStack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.cloudfront.BehaviorOptions;
 import software.amazon.awscdk.services.cloudfront.Distribution;
@@ -14,10 +14,10 @@ import software.amazon.awscdk.services.cloudfront.origins.S3Origin;
 import software.amazon.awscdk.services.s3.IBucket;
 
 @Configuration
-public class CloudfrontStack extends Stack {
+public class CloudfrontStack extends NestedStack {
     @Autowired
     public CloudfrontStack(BucketsStack stack, StackProps stackProps) {
-        super(stack, "CloudfrontStack", stackProps);
+        super(stack, "CloudfrontStack");
     }
 
     @Bean

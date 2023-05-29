@@ -2,6 +2,7 @@ package com.likedancesport.temp.stacks.bucket_sub.eventbridge_sub;
 
 import com.likedancesport.temp.stacks.bucket_sub.EventBridgeStack;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,8 @@ import java.util.List;
 @Configuration
 public class ComputeStack extends NestedStack {
 
-    public ComputeStack(@NotNull EventBridgeStack scope, @NotNull String id) {
+    @Autowired
+    public ComputeStack(EventBridgeStack scope) {
         super(scope, "ComputeStack");
     }
 

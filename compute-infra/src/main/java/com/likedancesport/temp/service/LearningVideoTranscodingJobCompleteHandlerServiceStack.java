@@ -3,6 +3,7 @@ package com.likedancesport.temp.service;
 import com.likedancesport.temp.stacks.bucket_sub.eventbridge_sub.ComputeStack;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.StackProps;
@@ -29,10 +30,10 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceStack extends Abst
     private final StackProps stackProps;
 
     @Autowired
-    public LearningVideoTranscodingJobCompleteHandlerServiceStack(@NotNull ComputeStack scope, @NotNull String id,
-                                                                  IRole role, IBucket codebaseBucket,
+    public LearningVideoTranscodingJobCompleteHandlerServiceStack(@NotNull ComputeStack scope, IRole role,
+                                                                  @Qualifier("codebaseBucket") IBucket codebaseBucket,
                                                                   LayerVersion commonLambdaLayer,
-                                                                  CfnQueue mediaConvertQueue,
+                                                                  @Qualifier("likedancesportLearningMediaConvertQueue") CfnQueue mediaConvertQueue,
                                                                   IEventBus likedancesportEventBus,
                                                                   StackProps stackProps) {
         super(scope, "LearningVideoTranscodingJobCompleteHandlerServiceStack", role, codebaseBucket, commonLambdaLayer);
@@ -40,6 +41,7 @@ public class LearningVideoTranscodingJobCompleteHandlerServiceStack extends Abst
         this.likedancesportEventBus = likedancesportEventBus;
         this.stackProps = stackProps;
     }
+
     @Override
     public void construct() {
         Queue transcodingCompleteLambdaQueue = Queue.Builder.create(this, "learning-video-transcoding-job-complete-handler-queue")

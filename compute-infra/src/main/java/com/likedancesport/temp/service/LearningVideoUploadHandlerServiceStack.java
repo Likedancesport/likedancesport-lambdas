@@ -2,6 +2,7 @@ package com.likedancesport.temp.service;
 
 import com.likedancesport.temp.stacks.bucket_sub.eventbridge_sub.ComputeStack;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.iam.IRole;
@@ -19,9 +20,10 @@ import software.amazon.awscdk.services.sqs.Queue;
 public class LearningVideoUploadHandlerServiceStack extends AbstractLambdaServiceStack {
     private final Bucket mp4AssetsBucket;
 
-    public LearningVideoUploadHandlerServiceStack(@NotNull ComputeStack scope, IRole role,
-                                                  IBucket codebaseBucket, LayerVersion commonLambdaLayer,
-                                                  Bucket mp4AssetsBucket) {
+    public LearningVideoUploadHandlerServiceStack(ComputeStack scope, IRole role,
+                                                  @Qualifier("codebaseBucket")IBucket codebaseBucket,
+                                                  LayerVersion commonLambdaLayer,
+                                                  @Qualifier("mp4AssetsBucket")Bucket mp4AssetsBucket) {
         super(scope, "LearningVideoUploadHandlerServiceStack", role, codebaseBucket, commonLambdaLayer);
         this.mp4AssetsBucket = mp4AssetsBucket;
     }

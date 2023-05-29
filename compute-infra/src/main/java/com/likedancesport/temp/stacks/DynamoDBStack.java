@@ -1,22 +1,21 @@
 package com.likedancesport.temp.stacks;
 
-import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awscdk.NestedStack;
 import software.amazon.awscdk.RemovalPolicy;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.dynamodb.Attribute;
 import software.amazon.awscdk.services.dynamodb.AttributeType;
 import software.amazon.awscdk.services.dynamodb.BillingMode;
 import software.amazon.awscdk.services.dynamodb.Table;
 import software.amazon.awscdk.services.dynamodb.TableClass;
-import software.constructs.Construct;
 
 @Configuration
-public class DynamoDBStack extends Stack {
-    public DynamoDBStack(@Nullable IamStack scope, @Nullable String id, @Nullable StackProps props) {
-        super(scope, "DynamoDBStack", props);
+public class DynamoDBStack extends NestedStack {
+    @Autowired
+    public DynamoDBStack(IamStack scope) {
+        super(scope, "DynamoDBStack");
     }
 
     @Bean

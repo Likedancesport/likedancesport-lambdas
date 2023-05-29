@@ -1,7 +1,8 @@
 package com.likedancesport.temp.service;
 
 import com.likedancesport.temp.stacks.bucket_sub.eventbridge_sub.ComputeStack;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.apigateway.AuthorizationType;
@@ -27,7 +28,10 @@ public class MediaManagementServiceStack extends AbstractLambdaServiceStack {
     public static final String PUT = HttpMethod.PUT.name();
     public static final String GET = HttpMethod.GET.name();
 
-    public MediaManagementServiceStack(@NotNull ComputeStack scope, @NotNull String id, IRole role, IBucket codebaseBucket, LayerVersion commonLambdaLayer) {
+    @Autowired
+    public MediaManagementServiceStack(ComputeStack scope, IRole role,
+                                       @Qualifier("codebaseBucket") IBucket codebaseBucket,
+                                       LayerVersion commonLambdaLayer) {
         super(scope, "MediaManagementServiceStack", role, codebaseBucket, commonLambdaLayer);
     }
 

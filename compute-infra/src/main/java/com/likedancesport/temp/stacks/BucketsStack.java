@@ -2,6 +2,7 @@ package com.likedancesport.temp.stacks;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awscdk.Duration;
@@ -26,7 +27,8 @@ import java.util.List;
 public class BucketsStack extends NestedStack {
     private static final RemovalPolicy REMOVAL_POLICY = RemovalPolicy.DESTROY;
 
-    public BucketsStack(@NotNull IamStack scope, @NotNull String id) {
+    @Autowired
+    public BucketsStack(@NotNull IamStack scope) {
         super(scope, "BucketsStack");
     }
 
