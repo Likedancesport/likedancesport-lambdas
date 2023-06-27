@@ -51,7 +51,7 @@ public abstract class MediaResource implements IPreviewable {
             @AttributeOverride(name = "bucketName", column = @Column(name = "preview_photo_bucket_name")),
             @AttributeOverride(name = "key", column = @Column(name = "preview_photo_key"))
     })
-    private S3Key previewPhotoS3Key;
+    private S3Key photoS3Key;
 
     @Override
     public boolean equals(Object o) {
@@ -76,18 +76,4 @@ public abstract class MediaResource implements IPreviewable {
     @PreRemove
     @Transactional
     public abstract void remove();
-
-    @Override
-    public S3Key getPhotoS3Key() {
-        return previewPhotoS3Key;
-    }
-
-    @Override
-    public void setPhotoS3Key(S3Key s3Key) {
-        this.previewPhotoS3Key = s3Key;
-    }
-
-    public static String generatePreviewPhotoS3Key() {
-        return UUID.randomUUID().toString() + "-preview";
-    }
 }

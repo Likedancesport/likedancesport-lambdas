@@ -3,6 +3,7 @@ package com.likedancesport.common.config;
 import com.likedancesport.common.annotation.InjectSsmParameter;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import javax.annotation.PostConstruct;
 @Getter
 @Component
 @ToString
+@Slf4j
 public class DbCredentialsBean {
     @InjectSsmParameter(parameterName = "like-db-url")
     private String dbUrl;
@@ -25,6 +27,6 @@ public class DbCredentialsBean {
 
     @PostConstruct
     private void test() {
-        System.out.println("post contruct");
+        log.info("post contruct");
     }
 }

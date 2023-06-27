@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 public class MarketplacePhoto extends MarketplaceMediaResource {
     @Override
-    public String getPrefix() {
+    public String getS3KeyPrefix() {
         return "photos";
     }
 }

@@ -49,7 +49,7 @@ public abstract class TaggableMediaResource extends MediaResource {
 
     /**
      * Runs before resource removal
-     * Dissociates entity and all its tags
+     * Dissociates entity with all its tags
      */
     @Override
     public void remove() {

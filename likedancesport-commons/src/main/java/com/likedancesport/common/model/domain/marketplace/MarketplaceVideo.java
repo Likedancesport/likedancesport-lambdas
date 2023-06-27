@@ -25,7 +25,7 @@ public class MarketplaceVideo extends MarketplaceMediaResource {
     private S3Key thumbnailVideoS3Key;
 
     @Override
-    public String getPrefix() {
+    public String getS3KeyPrefix() {
         return "videos";
     }
 }

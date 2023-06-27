@@ -3,9 +3,10 @@ package com.likedancesport.common.model.domain.learning;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.likedancesport.common.enums.VideoStatus;
 import com.likedancesport.common.lifecycle.VideoEntityListener;
+import com.likedancesport.common.model.domain.HlsGroup;
 import com.likedancesport.common.model.domain.IOrderableEntity;
 import com.likedancesport.common.model.domain.S3Key;
-import com.likedancesport.common.utils.misc.StringUtils;
+import com.likedancesport.common.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +26,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @AllArgsConstructor
@@ -35,7 +37,7 @@ import javax.persistence.Table;
 @Entity(name = "Video")
 @Table(name = "video")
 @NoArgsConstructor
-@EntityListeners(VideoEntityListener.class)
+@EntityListeners({VideoEntityListener.class})
 public class Video extends TaggableMediaResource implements IOrderableEntity {
     @Column(nullable = false, name = "order_in_section")
     private Integer orderInSection;
@@ -54,12 +56,9 @@ public class Video extends TaggableMediaResource implements IOrderableEntity {
     })
     private S3Key mp4AssetS3Key;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "bucketName", column = @Column(name = "hls_video_bucket_name")),
-            @AttributeOverride(name = "key", column = @Column(name = "hls_video_key"))
-    })
-    private S3Key hlsVideoS3Key;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "id", name = "hls_group_id", unique = true)
+    private HlsGroup hlsGroup;
 
     @ManyToOne
     @JoinColumn(name = "section_id", nullable = false)

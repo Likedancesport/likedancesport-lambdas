@@ -2,8 +2,8 @@ package com.likedancesport.controller;
 
 import com.likedancesport.common.dto.full.SectionDto;
 import com.likedancesport.common.model.domain.learning.Section;
-import com.likedancesport.common.utils.rest.HttpHeadersManager;
-import com.likedancesport.common.utils.rest.RestUtils;
+import com.likedancesport.common.utils.HttpHeadersManager;
+import com.likedancesport.common.utils.RestUtils;
 import com.likedancesport.request.SectionUpdateRequest;
 import com.likedancesport.service.ISectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,7 @@ public class SectionController extends AbstractController {
     public ResponseEntity<SectionDto> updateSection(@PathVariable(name = "sectionId") Long sectionId, @RequestBody SectionUpdateRequest updateRequest) {
         Section section = sectionService.updateSection(sectionId, updateRequest);
         HttpHeaders headers = httpHeadersManager.generateUploadHeaders(section);
+
         return ResponseEntity.ok().headers(headers).body(SectionDto.of(section));
     }
 

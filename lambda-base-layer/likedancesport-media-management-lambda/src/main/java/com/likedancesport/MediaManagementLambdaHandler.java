@@ -5,7 +5,9 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MediaManagementLambdaHandler implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
     public MediaManagementLambdaHandler() throws ContainerInitializationException {
         MediaManagementApplication.main(new String[]{});

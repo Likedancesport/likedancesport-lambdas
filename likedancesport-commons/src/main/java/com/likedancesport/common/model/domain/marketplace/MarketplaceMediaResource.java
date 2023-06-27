@@ -47,7 +47,7 @@ public abstract class MarketplaceMediaResource implements IPreviewable {
             @AttributeOverride(name = "bucketName", column = @Column(name = "preview_photo_bucket_name")),
             @AttributeOverride(name = "key", column = @Column(name = "preview_photo_key"))
     })
-    private S3Key previewPhotoS3Key;
+    private S3Key photoS3Key;
 
     @Embedded
     @AttributeOverrides({
@@ -55,16 +55,6 @@ public abstract class MarketplaceMediaResource implements IPreviewable {
             @AttributeOverride(name = "key", column = @Column(name = "resource_key"))
     })
     private S3Key resourceS3Key;
-
-    @Override
-    public S3Key getPhotoS3Key() {
-        return previewPhotoS3Key;
-    }
-
-    @Override
-    public void setPhotoS3Key(S3Key s3Key) {
-        this.previewPhotoS3Key = s3Key;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -79,7 +69,7 @@ public abstract class MarketplaceMediaResource implements IPreviewable {
         return getClass().hashCode();
     }
 
-    public abstract String getPrefix();
+    public abstract String getS3KeyPrefix();
 
     @PreRemove
     public void remove() {

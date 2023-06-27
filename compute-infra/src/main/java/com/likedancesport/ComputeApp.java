@@ -1,30 +1,42 @@
 package com.likedancesport;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import software.amazon.awscdk.App;
+import software.amazon.awscdk.CfnParameter;
 import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 
-import java.nio.file.Path;
+import java.util.List;
 
+// TODO: split app in two stacks:
+//      1: Buckets and other static infra with sensitive info
+//      2: Computational stateless resources
+
+
+@SpringBootApplication
 public class ComputeApp {
     public static void main(final String[] args) {
-        App app = new App();
-        new ComputeServerlessStack(app, "ComputeServerlessStack", StackProps.builder()
-                .env(Environment.builder()
-                        .account("066002146890")
-                        .region("eu-central-1")
-                        .build())
-                .build());
-
-   /*     new LikedancesportStaticStack(app, "LikedancesportStaticStack", StackProps.builder()
-                .env(Environment.builder()
-                        .account("066002146890")
-                        .region("eu-central-1")
-                        .build())
-                .build());*/
-
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(ComputeApp.class, args);
+        App app = applicationContext.getBean(App.class);
         app.synth();
+    }
+
+    @Bean
+    public App app() {
+        return new App();
+    }
+
+    @Bean
+    public StackProps stackProps() {
+        return StackProps.builder()
+                .env(Environment.builder()
+                        .account("066002146890")
+                        .region("eu-central-1")
+                        .build())
+                .build();
     }
 }
 
